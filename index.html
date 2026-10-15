@@ -126,7 +126,7 @@ async function onApi(d){const a=d.arg||{},M=me.id,min={headers:{Prefer:'return=m
  if(d.op=='state')return rpc('get_state',{});
  if(d.op=='earn'){if(a.src=='endless')return rpc('earn_endless',{lanes:Math.max(0,Math.min(300,(+a.n)|0))});if(a.src=='story')return rpc('earn_story',{d:String(a.d||'')});throw 0}
  if(d.op=='buy')return rpc('buy_box',{kind:a.k=='large'?'large':'small'});
- if(d.op=='buyseason')return rpc('buy_season_box',{});  if(d.op=='selscene')return rpc('select_scene',{sid:String(a.id||'').slice(0,40)});  if(d.op=='selskin')return rpc('select_skin',{sid:String(a.id||'').slice(0,40)});
+ if(d.op=='selskin')return rpc('select_skin',{sid:String(a.id||'').slice(0,40)});
  if(d.op=='setavatar'){const v=String(a.d||'');if(v&&(v.length>60000||!/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(v)))throw 0;return rpc('set_avatar',{d:v})}
  if(d.op=='players')return rpc('get_players',{});
  throw 0}
