@@ -87,16 +87,17 @@ const store=()=>{try{ses?localStorage.setItem('chs',ses.refresh_token):localStor
 async function auth(body,q){const r=await fetch(SB+'/auth/v1/token?grant_type='+q,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify(body)});const j=await r.json();if(!r.ok)throw j;ses=j;store();return j}
 const refresh=()=>auth({refresh_token:ses.refresh_token},'refresh_token');
 async function api(path,opt={}){const go=()=>fetch(SB+path,{...opt,headers:{apikey:KEY,Authorization:'Bearer '+ses.access_token,'Content-Type':'application/json',...(opt.headers||{})}});let r=await go();if(r.status==401){await refresh();r=await go()}if(!r.ok){let e={};try{e=await r.json()}catch(_){}throw e}return r.json().catch(()=>null)}
+const rpc=(n,b)=>api('/rest/v1/rpc/'+n,{method:'POST',body:JSON.stringify(b)});
 async function fn(b){await refresh();const r=await fetch(SB+'/functions/v1/admin-users',{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+ses.access_token,'Content-Type':'application/json'},body:JSON.stringify(b)});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||'Chyba serveru ('+r.status+')');return j}
 const setBlock=(h,id,v)=>h.replace(new RegExp('(<script type="application/json" id="'+id+'">)[\\s\\S]*?(<\/script>)'),(m,p,q)=>p+v+q);
-const pre=(d,a)=>'<script id="accpre">window.ACC_ADMIN='+(a?1:0)+';window.ACC_NAME='+JSON.stringify(me.name).replace(/</g,'\\u003c')+';window.ACCD='+JSON.stringify(d).replace(/</g,'\\u003c')+';(function(){var s=function(){parent.postMessage({t:"save",d:ACCD},"*")};window.ACCLS={getItem:function(k){return k in ACCD?ACCD[k]:null},setItem:function(k,v){ACCD[k]=String(v);s()},removeItem:function(k){delete ACCD[k];s()}};window.ACCAPI=function(o,a){return new Promise(function(res,rej){var id=String(Math.random());var f=function(e){if(e.data&&e.data.id==id){removeEventListener("message",f);e.data.ok?res(e.data.data):rej()}};addEventListener("message",f);parent.postMessage({t:"api",id:id,op:o,arg:a},"*")})};window.claude={use:async function(n){return n=="artifact"&&ACC_ADMIN?{publish:function(h){return new Promise(function(res,rej){var id=String(Math.random());var f=function(e){if(e.data&&e.data.id==id){removeEventListener("message",f);e.data.ok?res():rej({code:"err"})}};addEventListener("message",f);parent.postMessage({t:"pub",id:id,h:h},"*")})}}:null}}})();<\/script>';
+const pre=(d,a,st)=>'<script id="accpre">window.ACC_ADMIN='+(a?1:0)+';window.ACC_NAME='+JSON.stringify(me.name).replace(/</g,'\\u003c')+';window.ACCST='+JSON.stringify(st||null).replace(/</g,'\\u003c')+';window.ACCD='+JSON.stringify(d).replace(/</g,'\\u003c')+';(function(){var s=function(){parent.postMessage({t:"save",d:ACCD},"*")};window.ACCLS={getItem:function(k){return k in ACCD?ACCD[k]:null},setItem:function(k,v){ACCD[k]=String(v);s()},removeItem:function(k){delete ACCD[k];s()}};window.ACCAPI=function(o,a){return new Promise(function(res,rej){var id=String(Math.random());var f=function(e){if(e.data&&e.data.id==id){removeEventListener("message",f);e.data.ok?res(e.data.data):rej(e.data.m)}};addEventListener("message",f);parent.postMessage({t:"api",id:id,op:o,arg:a},"*")})};window.claude={use:async function(n){return n=="artifact"&&ACC_ADMIN?{publish:function(h){return new Promise(function(res,rej){var id=String(Math.random());var f=function(e){if(e.data&&e.data.id==id){removeEventListener("message",f);e.data.ok?res():rej({code:"err"})}};addEventListener("message",f);parent.postMessage({t:"pub",id:id,h:h},"*")})}}:null}}})();<\/script>';
 function fail(t){const m=$('msg');m.style.color='#ff6b6b';m.textContent=t||'Brána zůstává zavřená…';const p=$('portal');p.classList.remove('shake');void p.offsetWidth;p.classList.add('shake');busy=false}
 async function enter(){
  const uid=ses.user.id;
- const [pr,pg,cf,gm]=await Promise.all([api('/rest/v1/profiles?id=eq.'+uid+'&select=username,is_admin'),api('/rest/v1/progress?user_id=eq.'+uid+'&select=data'),api('/rest/v1/config?select=key,value'),fetch('game.html').then(r=>{if(!r.ok)throw 0;return r.text()})]);
+ const [pr,pg,cf,gm,st]=await Promise.all([api('/rest/v1/profiles?id=eq.'+uid+'&select=username,is_admin'),api('/rest/v1/progress?user_id=eq.'+uid+'&select=data'),api('/rest/v1/config?select=key,value'),fetch('game.html').then(r=>{if(!r.ok)throw 0;return r.text()}),rpc('get_state',{}).catch(()=>null)]);
  me={id:uid,name:pr[0].username,admin:!!pr[0].is_admin};
  let html=gm;for(const c of cf||[])if(c.key=='credata'||c.key=='devdata')html=setBlock(html,c.key,c.value);
- html=html.replace('<head>','<head>'+pre((pg&&pg[0]&&pg[0].data)||{},me.admin));
+ html=html.replace('<head>','<head>'+pre((pg&&pg[0]&&pg[0].data)||{},me.admin,st));
  $('portal').classList.add('open');
  setTimeout(()=>{$('portal').style.display='none';const f=document.createElement('iframe');f.srcdoc=html;$('game').appendChild(f);$('game').style.display='block';$('adm').style.display=me.admin?'block':'none';if(me.admin)api('/rest/v1/bug_reports?select=id&limit=1').then(r=>$('adm').classList.toggle('dot',!!(r&&r.length)),()=>{})},850)}
 async function login(){const u=$('user').value.trim().toLowerCase(),p=$('code').value;if(busy||!u||!p)return;busy=true;const m=$('msg');m.style.color='#ff9a9a';m.textContent='Probouzím portál…';
@@ -122,10 +123,16 @@ async function onApi(d){const a=d.arg||{},M=me.id,min={headers:{Prefer:'return=m
   api('/rest/v1/dms?to_id=eq.'+M+'&from_id=eq.'+w+'&read=eq.false',{method:'PATCH',...min,body:JSON.stringify({read:true})}).catch(()=>{});
   return r.reverse().map(x=>({id:x.id,mine:x.from_id==M,b:x.body,t:x.created_at}))}
  if(d.op=='dmsend'){const b=String(a.body||'').trim().slice(0,300);if(!b)throw 0;await api('/rest/v1/dms',{method:'POST',...min,body:JSON.stringify({from_id:M,to_id:a.to,body:b})});return 1}
+ if(d.op=='state')return rpc('get_state',{});
+ if(d.op=='earn'){if(a.src=='endless')return rpc('earn_endless',{lanes:Math.max(0,Math.min(300,(+a.n)|0))});if(a.src=='story')return rpc('earn_story',{d:String(a.d||'')});throw 0}
+ if(d.op=='buy')return rpc('buy_box',{kind:a.k=='large'?'large':'small'});
+ if(d.op=='selskin')return rpc('select_skin',{sid:String(a.id||'').slice(0,40)});
+ if(d.op=='setavatar'){const v=String(a.d||'');if(v&&(v.length>60000||!/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(v)))throw 0;return rpc('set_avatar',{d:v})}
+ if(d.op=='players')return rpc('get_players',{});
  throw 0}
 addEventListener('message',e=>{const f=document.querySelector('#game iframe'),d=e.data;if(!d||!f||e.source!==f.contentWindow)return;
  if(d.t=='save'){pend=d.d;clearTimeout(saveT);saveT=setTimeout(flush,1500)}
- else if(d.t=='api')onApi(d).then(x=>e.source.postMessage({id:d.id,ok:1,data:x},'*'),()=>e.source.postMessage({id:d.id,ok:0},'*'))
+ else if(d.t=='api')onApi(d).then(x=>e.source.postMessage({id:d.id,ok:1,data:x},'*'),(er)=>e.source.postMessage({id:d.id,ok:0,m:String((er&&er.message)||'')},'*'))
  else if(d.t=='pub')pubCfg(d.h).then(()=>e.source.postMessage({id:d.id,ok:1},'*'),()=>e.source.postMessage({id:d.id,ok:0},'*'))});
 addEventListener('visibilitychange',()=>{if(document.hidden)flush()});
 $('x').addEventListener('click',async()=>{try{await flush()}catch(e){}ses=null;store();location.reload()});
