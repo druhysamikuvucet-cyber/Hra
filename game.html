@@ -22,6 +22,9 @@ canvas{width:100%;height:100%;display:block}
 .in>*{flex:none}
 #ui>*{flex:none}
 #ui.ov{background:rgba(0,0,0,.8)}
+#ui.sb::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background:linear-gradient(rgba(0,0,0,.15),rgba(0,0,0,.45)),var(--sbg) center bottom/cover no-repeat}
+#ui.sb .in{position:relative;z-index:1}
+#ui.sb .cd{background:rgba(0,0,0,.38)}
 #ui.dem:not(.ov){background:radial-gradient(circle at 50% 0,#6b1520 0,#2a0a12 55%,#0d0407 100%)}
 #ui.dem{animation:pl 1.4s infinite}
 @keyframes pl{50%{box-shadow:inset 0 0 80px #e5383b}}
@@ -102,7 +105,7 @@ demon:['Démonická: 3 životy, auta stejně rychlá jako v Hard (a tramvaje).',
 const E=['Silnice se donekonečna posouvá – nejdeš po checkpointech, ale co nejdál.','Body: 1 bod za každý přejitý pruh. Za každý pruh dostaneš také 1 coin 🪙.','Máš jen 1 život – jedna srážka a je konec.','Na začátku je hra velmi snadná, každých 10 pruhů je těžší: auta jsou rychlejší a hustší, později přijdou tramvaje a demonstrace.','Boosty: 🛡️ štít (7 s, ochrání před 1 srážkou) · ⛏️ vrták (5 s, projedeš auty i tramvajemi) · ⚡ elektrický vozík (5 s, rychlost ×1,5).','Pozor na demonstraci SPD – zablokuje většinu cesty a pošle tě o 3 pruhy zpět (−3 body).'];
 const R={endless:[...G,...E]};for(const d of['easy','medium','hard','demon'])R[d]=[...G,...S,...XR[d]];
 const ula=a=>'<ul>'+a.map(t=>'<li>'+t+'</li>').join('')+'</ul>',ul=d=>ula(R[d]);
-function show(h,dem,bk,ov){commitRun();ui.style.background='';document.body.classList.remove('indm');clearInterval(chT);ui.innerHTML=(bk?'<button class="bk" onclick="'+bk+'">←</button>':'')+'<div class="in">'+h+'</div>'+(h.indexOf('class="un"')<0?'<div class="cc"><b class="cn">'+coinTxt()+'</b></div>':'');ui.className=(dem?'dem ':'')+(ov?'ov':'');ui.style.display='flex';bt2(ui)}
+function show(h,dem,bk,ov){commitRun();ui.style.background='';document.body.classList.remove('indm');clearInterval(chT);ui.innerHTML=(bk?'<button class="bk" onclick="'+bk+'">←</button>':'')+'<div class="in">'+h+'</div>'+(h.indexOf('class="un"')<0?'<div class="cc"><b class="cn">'+coinTxt()+'</b></div>':'');ui.className=(dem?'dem ':'')+(ov?'ov':'')+(!dem&&!ov&&sbSel?' sb':'');ui.style.display='flex';bt2(ui)}
 function hide(){clearInterval(chT);ui.style.display='none';shut()}
 function menu(){mode='menu';over=false;shut();show(userCard()+'<div style="display:flex;gap:4px;justify-content:center;align-items:flex-end"><canvas id="mh0" width="60" height="85" style="width:54px;height:77px"></canvas><canvas id="mh1" width="60" height="85" style="width:54px;height:77px"></canvas><canvas id="mh2" width="60" height="85" style="width:54px;height:77px"></canvas></div><h1>Jízda na Chodov</h1><p class="sub">Přejdi silnici a dojdi za Ivanou</p><button class="b y" style="--bc:#ffd400;--bx:#1a1a1a" onclick="play()">▶ Hrát!</button><button class="b y" style="--bc:#4cc9f0" onclick="onl()">🌍 ONLINE</button><button class="b" onclick="rules()">📖 Pravidla hry</button><button class="b" onclick="chars()">👥 Postavy</button><button class="b y" style="--bc:#ffd166;--bx:#1a1a1a" onclick="shop()">🛒 Obchod</button><button class="b" onclick="skins()">🎭 Vybrat skin</button><button class="b" onclick="prof()">👤 Profil</button><button class="b" onclick="lb()">🏆 Leaderboards</button><button class="b" onclick="edit()">🖌 Upravit plochu</button><button class="b s" onclick="bug()">🐞 Nahlásit bug</button><button class="b s" onclick="sup()">💖 Podpoř vývoj hry</button><button class="b s" onclick="credits()">Credits</button><button class="b s" onclick="fs()">⛶ Celá obrazovka (beta)</button>'+(window.ACC_ADMIN?'<button class="b s" onclick="devLogin()">🛠 Režim pro vývojáře (beta)</button>':'')+'');[0,1,2].forEach(i=>mini('mh'+i,CH[i][2]));mini('mh0',()=>{x.clearRect(0,0,60,85);chair(30,50,1,0)});coinUpd()}
 function play(){mode='menu';over=false;show('<h1>Hrát!</h1><p class="sub">Vyber si režim</p><button class="b" onclick="pre(\'endless\')">🏃 Dojeď co nejdál<small>Nekonečný běh · 1 život</small></button><button class="b" onclick="story()">📖 Story mode<small>Úrovně s různou náročností</small></button>',0,'menu()')}
@@ -171,12 +174,12 @@ function x2hsl(h){const[r,g,b]=[1,3,5].map(i=>parseInt(h.substr(i,2),16)/255),mx
 const lum=h=>([1,3,5].map(i=>parseInt(h.substr(i,2),16)).reduce((a,v,i)=>a+v*[.299,.587,.114][i],0))/255;
 const SW=[];for(const l of[28,42,58])for(let h=0;h<360;h+=30)SW.push(h2x(h,l==42?65:55,l));SW.push('#000000','#2a2d33','#555a63','#8a8f99','#c5c9d1','#ffffff');
 const BG0='#2b4a7a';let bg=BG0,bt=null;try{bg=ACCLS.getItem('chbg')||BG0;bt=ACCLS.getItem('chbtn')||null}catch(e){}
-function applyTh(){ui.style.setProperty('--m1',bg);ui.style.setProperty('--m2',MX(bg,.47));ui.style.setProperty('--m3',MX(bg,.2));
+function applyTh(){sbApply();ui.style.setProperty('--m1',bg);ui.style.setProperty('--m2',MX(bg,.47));ui.style.setProperty('--m3',MX(bg,.2));
  if(bt){ui.style.setProperty('--bc',bt);ui.style.setProperty('--bx',lum(bt)>.6?'#222':'#fff')}else{ui.style.removeProperty('--bc');ui.style.removeProperty('--bx')}}
 function grid(fn,cur){return '<div id="pg">'+SW.map(c=>`<button class="sw${c==cur?' on':''}" style="background:${c}" onclick="${fn}('${c}')"></button>`).join('')+'</div>'}
-function edit(){show('<h1>Upravit plochu</h1><p class="sub">Přizpůsob si vzhled menu</p><button class="b" onclick="pickBg()">🎨 Upravit barvu pozadí</button><button class="b" onclick="pickBtn()">🔘 Upravit barvu tlačítek</button>',0,'menu()')}
+function edit(){show('<h1>Upravit plochu</h1><p class="sub">Přizpůsob si vzhled menu</p><button class="b" onclick="pickBg()">🎨 Upravit barvu pozadí</button><button class="b" onclick="pickBtn()">🔘 Upravit barvu tlačítek</button><button class="b" onclick="pickSb()">🏙 Sezonní pozadí</button>',0,'menu()')}
 function pickBg(){show('<h1>Barva pozadí</h1><p class="sub">Vyber barvu pozadí menu</p>'+grid('setBg',bg)+`<button class="b s" onclick="setBg('${BG0}')">↺ Výchozí barva</button>`,0,'edit()')}
-function setBg(c){bg=c;try{ACCLS.setItem('chbg',c)}catch(e){}applyTh();pickBg()}
+function setBg(c){sbSel='';try{ACCLS.removeItem('chsb')}catch(e){}bg=c;try{ACCLS.setItem('chbg',c)}catch(e){}applyTh();pickBg()}
 function pickBtn(){show('<h1>Barva tlačítek</h1><p class="sub">Vyber barvu tlačítek v menu</p>'+grid('setBt',bt)+'<button class="b s" onclick="syncBt()">🔗 Synchronizovat s pozadím menu</button><button class="b s" onclick="setBt(null)">↺ Výchozí barva</button>',0,'edit()')}
 function setBt(c){bt=c;try{c?ACCLS.setItem('chbtn',c):ACCLS.removeItem('chbtn')}catch(e){}applyTh();pickBtn()}
 function syncBt(){const[h,sa]=x2hsl(bg);setBt(h2x(h,Math.min(sa,75),86))}
@@ -442,12 +445,12 @@ function prof(msg){mode='menu';const cur=SKIN&&SKN[SKIN]?SKN[SKIN]:'Jiří Bohá
 function avUp(f){if(!f)return;const m=document.getElementById('pm');m.style.color='#fff';m.textContent='Zpracovávám…';const r=new FileReader();r.onerror=()=>{m.textContent='Obrázek se nepodařilo načíst.'};r.onload=()=>{const im=new Image();im.onerror=()=>{m.style.color='#ffb3b3';m.textContent='Tohle není platný obrázek.'};im.onload=()=>{const S=160,cv=document.createElement('canvas');cv.width=cv.height=S;const q=cv.getContext('2d'),k=Math.min(im.width,im.height);q.fillStyle='#fff';q.fillRect(0,0,S,S);q.drawImage(im,(im.width-k)/2,(im.height-k)/2,k,k,0,0,S,S);const d=cv.toDataURL('image/jpeg',.82);AP('setavatar',{d}).then(s=>{stSet(s);prof('Profilovka uložena ✔')},()=>{m.style.color='#ffb3b3';m.textContent='Uložení se nepovedlo (je spuštěný SQL soubor 06-coiny-skiny.sql?).'})};im.src=r.result};r.readAsDataURL(f)}
 function avDel(){AP('setavatar',{d:''}).then(s=>{stSet(s);prof('Profilovka odebrána.')},()=>prof('Odebrání se nepovedlo.'))}
 // --- obchod
-const boxSvg=(k,s=110)=>{const c=k=='small'?['#b9824a','#8a5a2b','#f0cf8a']:['#6a3dbf','#3f2380','#ffd23f'];return `<svg viewBox="0 0 100 100" width="${s}" height="${s}"><g class="lid"><rect x="10" y="26" width="80" height="18" rx="3" fill="${c[0]}" stroke="${c[1]}" stroke-width="2.4"/><rect x="44" y="26" width="12" height="18" fill="${c[2]}"/></g><rect x="15" y="44" width="70" height="44" rx="3" fill="${c[0]}" stroke="${c[1]}" stroke-width="2.4"/><rect x="44" y="44" width="12" height="44" fill="${c[2]}"/><rect x="40" y="40" width="20" height="10" rx="2" fill="${c[2]}" stroke="${c[1]}" stroke-width="1.5"/>${k=='large'?'<text x="50" y="22" text-anchor="middle" font-size="14">✨</text>':''}</svg>`};
+const boxSvg=(k,s=110)=>{const c=k=='small'?['#b9824a','#8a5a2b','#f0cf8a']:k=='season'?['#2a9d8f','#14585a','#ffe66d']:['#6a3dbf','#3f2380','#ffd23f'];return `<svg viewBox="0 0 100 100" width="${s}" height="${s}"><g class="lid"><rect x="10" y="26" width="80" height="18" rx="3" fill="${c[0]}" stroke="${c[1]}" stroke-width="2.4"/><rect x="44" y="26" width="12" height="18" fill="${c[2]}"/></g><rect x="15" y="44" width="70" height="44" rx="3" fill="${c[0]}" stroke="${c[1]}" stroke-width="2.4"/><rect x="44" y="44" width="12" height="44" fill="${c[2]}"/><rect x="40" y="40" width="20" height="10" rx="2" fill="${c[2]}" stroke="${c[1]}" stroke-width="1.5"/>${k!='small'?'<text x="50" y="22" text-anchor="middle" font-size="14">'+(k=='season'?'🍂':'✨')+'</text>':''}</svg>`};
 const boxCan=k=>SKL.some(s=>BOXT[k].includes(s[2])&&!OWN.includes(s[0]));
 function boxCard(k){const sm=k=='small',p=BOXP[k],can=boxCan(k),ok=can&&COINS>=p,all=OWN.length>=SKL.length;
  return `<div class="cd" style="text-align:center"><div>${boxSvg(k,96)}</div><b style="font-size:18px">${sm?'Malý box':'Velký box'}</b><div style="margin:6px 0 10px;font-size:13px">${BOXT[k].map((t,i)=>`<div style="display:flex;justify-content:space-between"><span style="color:${RAR[t].c}">● ${RAR[t].n}</span><span>${BOXO[k][i]} %</span></div>`).join('')}</div><button class="b y" ${ok?'':'disabled'} onclick="buyBox('${k}')">Koupit · ${p} 🪙</button>${!can?`<p style="font-size:12px;opacity:.75;margin:6px 0 0">${all?'Už máš všechny skiny.':'Z tohoto boxu už nemáš co získat.'}</p>`:COINS<p?`<p style="font-size:12px;opacity:.75;margin:6px 0 0">Chybí ti ${p-COINS} 🪙</p>`:''}</div>`}
 function shop(msg){mode='menu';show('<h1>🛒 Obchod</h1><p class="sub">Načítám…</p>',0,'menu()');
- const go=m=>{show(`<h1>🛒 Obchod</h1><p class="sub">Zůstatek: <b class="cn" style="color:#ffd400"></b> · Skiny: ${OWN.length}/${SKL.length}</p>${boxCard('small')}${boxCard('large')}<p id="sm3" style="min-height:18px;font-size:13px;color:#ffb3b3">${m||''}</p><button class="b" onclick="skins()">🎭 Vybrat skin</button>`,0,'menu()');coinUpd()};
+ const go=m=>{show(`<h1>🛒 Obchod</h1><p class="sub">Zůstatek: <b class="cn" style="color:#ffd400"></b> · Skiny: ${OWN.length}/${SKL.length}</p>${boxCard('small')}${boxCard('large')}${seasonCard()}<p id="sm3" style="min-height:18px;font-size:13px;color:#ffb3b3">${m||''}</p><button class="b" onclick="skins()">🎭 Vybrat skin</button>`,0,'menu()');coinUpd()};
  AP('state').then(s=>{stSet(s);go(msg)},()=>go(msg||'Obchod se nepodařilo načíst (je spuštěný SQL soubor 06-coiny-skiny.sql?).'))}
 function buyBox(k){if(busyB)return;busyB=1;AP('buy',{k}).then(s=>{busyB=0;stSet(s);boxAnim(k,s.got)},e=>{busyB=0;const t=String(e||'');shop(/enough/.test(t)?'Nemáš dost coinů.':/all skins|nothing left/.test(t)?'Z tohoto boxu už nemáš co získat.':'Nákup se nepovedl.')})}
 function boxAnim(k,id){const t=++bxK,sk=SKL.find(s=>s[0]==id);if(!sk)return shop();
@@ -465,6 +468,75 @@ function skins(msg){mode='menu';const ids=['_'].concat(SKL.filter(s=>OWN.include
  show(`<h1>🎭 Vybrat skin</h1><p class="sub">Získáno z boxů: ${OWN.length}/${SKL.length}</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:clamp(310px,30vw,420px)">${ids.map(card).join('')}</div>${OWN.length?'':'<p class="sub">Zatím nemáš žádný skin z boxu – koukni do obchodu.</p>'}<button class="b y" onclick="shop()">🛒 Obchod</button><p id="sm3" style="min-height:18px;font-size:13px;color:#ffb3b3">${msg||''}</p>`,0,'menu()');
  ids.forEach(id=>mini('sk_'+id,()=>{PV=id;chair(28,52,1,0);PV=null}))}
 function selSkin(id,fromBox){const prev=SKIN;SKIN=id=='_'?null:id;AP('selskin',{id:SKIN||''}).then(s=>{stSet(s);fromBox?skins():skins()},()=>{SKIN=prev;skins('Skin se nepodařilo změnit.')})}
+
+// --- sezonní pozadí (menu → Upravit plochu → Sezonní pozadí)
+const SBL=[['musil_jaro','Musilkova – jaro','rare'],['musil_leto','Musilkova – léto','rare'],['musil_podzim','Musilkova – podzim','super_rare'],['musil_zima','Musilkova – zima','super_rare'],['musil_noc','Musilkova v noci','epic'],['musil_halloween','Musilkova – Halloween','mythic'],['musil_vanoce','Musilkova – Vánoce','legendary']];
+const SBW={rare:40,super_rare:30,epic:18,mythic:8,legendary:4},SBCD=864e5,SBC={};
+var sbSel='',sbOwn=[];
+try{sbSel=ACCLS.getItem('chsb')||'';sbOwn=JSON.parse(ACCLS.getItem('chsbo'))||[];if(!Array.isArray(sbOwn))sbOwn=[]}catch(e){sbOwn=[]}
+if(sbSel&&!sbOwn.includes(sbSel))sbSel='';
+function sbScene(id){
+ const T={
+ musil_jaro:{sky:['#8fd3ff','#e8f7ff'],sun:'#fff3a0',tr:'blossom',pa:'petal'},
+ musil_leto:{sky:['#2f9bff','#c4ebff'],sun:'#ffe14d',tr:'green',pa:''},
+ musil_podzim:{sky:['#e39a4f','#f8dcae'],sun:'#fff0c0',tr:'autumn',pa:'leaf'},
+ musil_zima:{sky:['#9fb4c9','#eef3f8'],sun:'',tr:'snowy',pa:'snow',snow:1},
+ musil_noc:{sky:['#070b24','#2a3568'],moon:'#f4f1d0',tr:'dark',night:1,stars:1},
+ musil_halloween:{sky:['#1b0a2a','#b4500f'],moon:'#ffb347',tr:'bare',night:1,pa:'bat',pump:1,stars:1},
+ musil_vanoce:{sky:['#0a1233','#3a4b86'],moon:'#f4f1d0',tr:'snowy',night:1,pa:'snow',snow:1,xmas:1,stars:1}}[id];
+ const n=T.night,sn=T.snow;
+ const bc=n?'#2a2f4f':sn?'#d5dbe3':'#c9ccd3',wl=n?'#ffd36b':'#7fa6c9',wd=n?'#1d2140':'#6f93b3';
+ let s='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 640" preserveAspectRatio="xMidYMax slice"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="'+T.sky[0]+'"/><stop offset="1" stop-color="'+T.sky[1]+'"/></linearGradient><radialGradient id="lg"><stop offset="0" stop-color="#ffe9a0" stop-opacity=".55"/><stop offset="1" stop-color="#ffe9a0" stop-opacity="0"/></radialGradient></defs><rect width="360" height="640" fill="url(#g)"/>';
+ if(T.stars)for(let i=0;i<30;i++)s+='<circle cx="'+((i*53)%360)+'" cy="'+((i*37)%230)+'" r="'+(.7+(i%3)*.4)+'" fill="#fff" opacity="'+(.5+(i%4)*.12)+'"/>';
+ if(T.sun)s+='<circle cx="280" cy="110" r="52" fill="'+T.sun+'" opacity=".3"/><circle cx="280" cy="110" r="34" fill="'+T.sun+'"/>';
+ if(T.moon)s+='<circle cx="285" cy="100" r="44" fill="'+T.moon+'" opacity=".18"/><circle cx="285" cy="100" r="26" fill="'+T.moon+'"/>';
+ if(!n)s+='<ellipse cx="80" cy="120" rx="46" ry="14" fill="#fff" opacity=".8"/><ellipse cx="110" cy="110" rx="30" ry="12" fill="#fff" opacity=".8"/><ellipse cx="220" cy="190" rx="50" ry="13" fill="#fff" opacity=".7"/>';
+ const blk=(x,w,h)=>{const y=450-h;let r='<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="'+bc+'"/><rect x="'+x+'" y="'+y+'" width="'+w+'" height="5" fill="'+(n?'#1c2040':'#a9adb6')+'"/>';
+  if(sn)r+='<rect x="'+(x-2)+'" y="'+(y-6)+'" width="'+(w+4)+'" height="8" rx="4" fill="#fff"/>';
+  const cols=Math.floor((w-12)/22),rows=Math.floor((h-18)/26);
+  for(let i=0;i<cols;i++)for(let j=0;j<rows;j++){const lit=(i*7+j*3+x)%4!=0;r+='<rect x="'+(x+10+i*22)+'" y="'+(y+14+j*26)+'" width="12" height="16" rx="1.5" fill="'+(lit?wl:wd)+'"/>'}
+  return r};
+ s+=blk(-10,112,230)+blk(98,92,170)+blk(186,124,250)+blk(306,70,190);
+ s+='<rect y="450" width="360" height="30" fill="'+(n?'#3b3f5c':sn?'#e6edf3':'#b9b9bd')+'"/><rect y="478" width="360" height="4" fill="'+(n?'#2a2d46':sn?'#c9d3dd':'#8f8f95')+'"/><rect y="482" width="360" height="158" fill="'+(n?'#1d1f2b':sn?'#8c93a0':'#4a4d55')+'"/><path d="M0 566H360" stroke="#fff" stroke-width="5" stroke-dasharray="28 18" opacity=".75"/>';
+ const tree=(x,r)=>{let t='<rect x="'+(x-6)+'" y="350" width="12" height="102" fill="#5b3b25"/>';
+  const cc={blossom:['#f7b6cf','#f295b8','#ffd6e6'],green:['#3fa34d','#2d8a3c','#57bd63'],autumn:['#e07a1f','#c4511a','#f0a830'],dark:['#1f4d3a','#16382b','#2a6049'],snowy:['#e8f0f7','#cfdbe6','#fff'],bare:['']}[T.tr];
+  if(T.tr=='bare'||T.tr=='snowy')t+='<path d="M'+x+' 380L'+(x-34)+' 322M'+x+' 370L'+(x+36)+' 318M'+x+' 350L'+(x-14)+' 296M'+x+' 345L'+(x+16)+' 292" stroke="#4a3220" stroke-width="5" stroke-linecap="round"/>';
+  if(T.tr=='snowy')t+='<circle cx="'+(x-34)+'" cy="322" r="9" fill="#fff"/><circle cx="'+(x+36)+'" cy="318" r="9" fill="#fff"/><circle cx="'+(x-14)+'" cy="296" r="8" fill="#fff"/><circle cx="'+(x+16)+'" cy="292" r="8" fill="#fff"/>';
+  if(T.tr!='bare'&&T.tr!='snowy')t+='<circle cx="'+x+'" cy="330" r="'+r+'" fill="'+cc[0]+'"/><circle cx="'+(x-r*.7)+'" cy="352" r="'+(r*.75)+'" fill="'+cc[1]+'"/><circle cx="'+(x+r*.7)+'" cy="350" r="'+(r*.75)+'" fill="'+cc[2]+'"/>';
+  return t};
+ s+=tree(34,40)+tree(330,38);
+ s+='<rect x="248" y="330" width="5" height="122" fill="#33363d"/><rect x="236" y="328" width="22" height="4" fill="#33363d"/>';
+ if(n)s+='<circle cx="238" cy="336" r="70" fill="url(#lg)"/>';
+ s+='<circle cx="238" cy="334" r="7" fill="'+(n?'#ffe9a0':'#cfd3da')+'"/>';
+ s+='<rect x="116" y="388" width="4" height="64" fill="#6b6f78"/><rect x="62" y="372" width="112" height="28" rx="3" fill="#1d4ea3" stroke="#fff" stroke-width="2"/><text x="118" y="391" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="15" font-weight="700" fill="#fff">Musilkova</text>';
+ const cl=n?'#6b2230':sn?'#b8453a':'#c0392b';
+ s+='<path d="M196 506h96q6 0 6 6v10h-108v-10q0-6 6-6z" fill="'+cl+'"/><path d="M212 506l14-16h42l14 16z" fill="'+cl+'"/><path d="M222 505l10-12h14v12zM252 505v-12h14l9 12z" fill="'+(n?'#2a3358':'#bfe3f5')+'"/><circle cx="222" cy="524" r="9" fill="#222"/><circle cx="272" cy="524" r="9" fill="#222"/>';
+ if(T.pump)[70,150,300].forEach((x,i)=>{s+='<ellipse cx="'+x+'" cy="466" rx="13" ry="11" fill="#ff8a1f"/><path d="M'+(x-5)+' 463l4 0l-2 -5zM'+(x+1)+' 463l4 0l-2 -5z" fill="#ffd35a"/><path d="M'+(x-6)+' 470q6 5 12 0" stroke="#ffd35a" stroke-width="2" fill="none"/><rect x="'+(x-1)+'" y="453" width="3" height="5" fill="#3b5a1f"/>'});
+ if(T.xmas){const P=(t)=>[(1-t)*(1-t)*118+2*t*(1-t)*185+t*t*238,(1-t)*(1-t)*372+2*t*(1-t)*420+t*t*334];s+='<path d="M118 372Q185 420 238 334" stroke="#1f6b3a" stroke-width="2" fill="none"/>';
+  for(let i=0;i<=12;i++){const p=P(i/12);s+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="3.4" fill="'+['#ff4d4d','#ffd23f','#4dd2ff','#6bff7a'][i%4]+'"><animate attributeName="opacity" values="1;.3;1" dur="1.6s" begin="-'+(i*.3).toFixed(1)+'s" repeatCount="indefinite"/></circle>'}}
+ if(T.pa=='bat')for(let i=0;i<5;i++)s+='<g><path d="M0 0q6-8 12 0q6-8 12 0q-6 3-12 6q-6-3-12-6z" fill="#120816"/><animateTransform attributeName="transform" type="translate" from="-30 '+(60+i*38)+'" to="390 '+(90+i*30)+'" dur="'+(9+i*2)+'s" begin="-'+(i*3)+'s" repeatCount="indefinite"/></g>';
+ if(T.pa&&T.pa!='bat'){const col={snow:['#fff'],petal:['#ffc2d9','#ffe0ec'],leaf:['#d9731c','#b9461a','#e8a530']}[T.pa];
+  for(let i=0;i<26;i++){const dx=((i%5)-2)*(T.pa=='snow'?14:34),r=T.pa=='snow'?1.6+(i%3)*.8:3;
+   s+='<ellipse cx="'+((i*47)%360)+'" cy="0" rx="'+r+'" ry="'+(T.pa=='snow'?r:r*.65)+'" fill="'+col[i%col.length]+'" opacity=".85"><animateTransform attributeName="transform" type="translate" from="0 -20" to="'+dx+' 660" dur="'+(6+(i%5)*1.7).toFixed(1)+'s" begin="-'+(i*.9).toFixed(1)+'s" repeatCount="indefinite"/></ellipse>'}}
+ return s+'</svg>'}
+function sbUrl(id){return SBC[id]||(SBC[id]="url('data:image/svg+xml;utf8,"+encodeURIComponent(sbScene(id)).replace(/'/g,'%27').replace(/\(/g,'%28').replace(/\)/g,'%29')+"')")}
+function sbApply(){ui.style.setProperty('--sbg',sbSel?sbUrl(sbSel):'none')}
+function sbSet(id){sbSel=id;try{id?ACCLS.setItem('chsb',id):ACCLS.removeItem('chsb')}catch(e){}sbApply();pickSb()}
+function pickSb(){mode='menu';const card=s=>{const id=s[0],ok=sbOwn.includes(id),on=sbSel==id,c=RAR[s[2]].c;return `<div ${ok?`onclick="sbSet('${id}')"`:''} style="position:relative;cursor:${ok?'pointer':'default'};border:2px solid ${on?'#ffd400':c};border-radius:14px;overflow:hidden;height:150px;background:${ok?sbUrl(id)+' center bottom/cover':'#222'};${on?'box-shadow:0 0 12px #ffd40088;':''}">${ok?'':'<div style="position:absolute;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;font-size:30px">🔒</div>'}<div style="position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);padding:4px;font-size:12px"><b>${s[1]}</b><br><span style="color:${c}">${RAR[s[2]].n}</span>${on?' · ✓ Zvoleno':''}</div></div>`};
+ show(`<h1>🏙 Sezonní pozadí</h1><p class="sub">Získáno ze sezonních boxů: ${sbOwn.length}/${SBL.length}</p><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;max-width:clamp(310px,30vw,420px)">${SBL.map(card).join('')}</div>${sbSel?'<button class="b s" onclick="sbSet(\'\')">↺ Vrátit barevné pozadí</button>':''}<button class="b y" onclick="shop()">🛒 Sezonní box v obchodě</button>`,0,'edit()')}
+function sbLeft(){let t=0;try{t=+ACCLS.getItem('chsbt')||0}catch(e){}return Math.max(0,t+SBCD-Date.now())}
+function sbFmt(ms){const m=Math.ceil(ms/6e4),h=Math.floor(m/60);return h?h+' h '+(m%60)+' min':m+' min'}
+function seasonCard(){const all=sbOwn.length>=SBL.length,l=sbLeft(),ok=!all&&!l;return `<div class="cd" style="text-align:center"><div>${boxSvg('season',96)}</div><b style="font-size:18px">Sezonní box</b><p style="font-size:12px;opacity:.8;margin:2px 0 0">Pozadí menu – ulice Musilkova</p><div style="margin:6px 0 10px;font-size:13px">${RO.map(r=>`<div style="display:flex;justify-content:space-between"><span style="color:${RAR[r].c}">● ${RAR[r].n}</span><span>${SBW[r]} %</span></div>`).join('')}</div><button class="b y" ${ok?'':'disabled'} onclick="sbxOpen()">Otevřít · zdarma</button><p style="font-size:12px;opacity:.75;margin:6px 0 0">${all?'Už máš všechna sezonní pozadí.':l?'Další box za '+sbFmt(l)+'.':'1 box zdarma každých 24 hodin · '+sbOwn.length+'/'+SBL.length}</p></div>`}
+function sbPick(){const un=SBL.filter(s=>!sbOwn.includes(s[0]));if(!un.length)return null;let r=Math.random()*un.reduce((a,s)=>a+SBW[s[2]],0);for(const s of un){r-=SBW[s[2]];if(r<0)return s[0]}return un[un.length-1][0]}
+function sbxOpen(){if(sbLeft()||sbOwn.length>=SBL.length)return;const id=sbPick();if(!id)return;sbOwn.push(id);try{ACCLS.setItem('chsbo',JSON.stringify(sbOwn));ACCLS.setItem('chsbt',Date.now())}catch(e){}sbxAnim(id)}
+function sbxAnim(id){const t=++bxK;
+ show(`<div style="height:34px"></div><div class="bxs s1" id="bx"><div class="glow"></div>${boxSvg('season',130)}</div><p class="sub" style="letter-spacing:2px">Otevírám box…</p>`);
+ const st=(f,ms)=>setTimeout(()=>{if(bxK==t&&document.getElementById('bx'))f()},ms),cl=v=>{const e=document.getElementById('bx');if(e)e.className='bxs '+v};
+ st(()=>cl('s2'),1100);st(()=>cl('s3'),1900);st(()=>cl('s3 op'),2600);st(()=>sbReveal(id),3050)}
+function sbReveal(id){const sk=SBL.find(s=>s[0]==id),r=RAR[sk[2]],c=r.c;
+ let pt='';for(let i=0;i<30;i++)pt+=`<i class="pt" style="left:${Math.random()*100}%;background:${i%3?c:'#fff'};animation-delay:${-Math.random()*3}s;animation-duration:${2+Math.random()*2}s"></i>`;
+ show(`<div class="ray"></div>${pt}<div class="fl"></div><div style="position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:10px;width:100%"><p class="sub" style="letter-spacing:4px;font-weight:700">NOVÉ POZADÍ!</p><div class="rv" style="width:170px;height:230px;border-radius:16px;border:3px solid ${c};box-shadow:0 0 24px ${c}99;background:${sbUrl(id)} center bottom/cover"></div><div class="rv" style="background:rgba(0,0,0,.55);border:2px solid ${c};color:${c};padding:3px 16px;border-radius:20px;font-weight:800;letter-spacing:2px;animation-delay:.15s">${r.n.toUpperCase()}</div><h1 class="rv" style="animation-delay:.25s;text-shadow:0 2px 12px rgba(0,0,0,.6)">${sk[1]}</h1><button class="b y" onclick="sbSet('${id}')">✅ Nastavit jako pozadí</button><button class="b" onclick="shop()">🛒 Zpět do obchodu</button></div>`);
+ ui.classList.remove('sb');ui.style.background=`radial-gradient(circle at 50% 35%,${c} 0,${MX(c,.5)} 60%,${MX(c,.16)} 100%)`}
 
 applyTh();reset();menu();loop();
 </script></body></html>
