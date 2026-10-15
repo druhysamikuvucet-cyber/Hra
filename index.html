@@ -125,7 +125,9 @@ async function onApi(d){const a=d.arg||{},M=me.id,min={headers:{Prefer:'return=m
  if(d.op=='dmsend'){const b=String(a.body||'').trim().slice(0,300);if(!b)throw 0;await api('/rest/v1/dms',{method:'POST',...min,body:JSON.stringify({from_id:M,to_id:a.to,body:b})});return 1}
  if(d.op=='state')return rpc('get_state',{});
  if(d.op=='earn'){if(a.src=='endless')return rpc('earn_endless',{lanes:Math.max(0,Math.min(300,(+a.n)|0))});if(a.src=='story')return rpc('earn_story',{d:String(a.d||'')});throw 0}
- if(d.op=='buy')return rpc('buy_box',{kind:a.k=='large'?'large':'small'});
+ if(d.op=='buy')return rpc('buy_box',{kind:a.k=='large'?'large':a.k=='season'?'season':'small'});
+ if(d.op=='selbg')return rpc('select_bg',{bid:String(a.id||'').slice(0,40)});
+ if(d.op=='useboost')return rpc('use_boosts',{ids:(Array.isArray(a.ids)?a.ids:[]).filter(i=>['revive','spd','long'].includes(i))});
  if(d.op=='selskin')return rpc('select_skin',{sid:String(a.id||'').slice(0,40)});
  if(d.op=='setavatar'){const v=String(a.d||'');if(v&&(v.length>60000||!/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(v)))throw 0;return rpc('set_avatar',{d:v})}
  if(d.op=='players')return rpc('get_players',{});
@@ -138,10 +140,10 @@ addEventListener('visibilitychange',()=>{if(document.hidden)flush()});
 $('x').addEventListener('click',async()=>{try{await flush()}catch(e){}ses=null;store();location.reload()});
 // ---- admin panel
 const ap=$('ap'),DN=['easy','medium','hard','demon'],NM={easy:'Easy',medium:'Medium',hard:'Hard',demon:'Démon'};
-const tabs=t=>'<div class="tb"><button class="gb'+(t=='lb'?'':' s')+'" data-t="lb">🏆 Žebříček</button><button class="gb'+(t=='ac'?'':' s')+'" data-t="ac">👥 Účty</button><button class="gb'+(t=='bg'?'':' s')+'" data-t="bg">🐞 Bugy</button></div>';
+const tabs=t=>'<div class="tb"><button class="gb'+(t=='lb'?'':' s')+'" data-t="lb">🏆 Žebříček</button><button class="gb'+(t=='ac'?'':' s')+'" data-t="ac">👥 Účty</button><button class="gb'+(t=='bg'?'':' s')+'" data-t="bg">💡 Podněty</button></div>';
 async function bugs(){ap.style.display='block';ap.innerHTML='<h2>Admin</h2>'+tabs('bg')+'<p class="nt">Načítám…</p>';
  try{const r=await api('/rest/v1/bug_reports?select=id,body,created_at,profiles(username)&order=id.desc&limit=100');$('adm').classList.toggle('dot',r.length>0);
-  ap.innerHTML='<h2>Admin</h2>'+tabs('bg')+(r.length?r.map(x=>'<div class="ac" style="display:block"><div style="display:flex;gap:8px;align-items:center"><b style="flex:1">'+esc(x.profiles?x.profiles.username:'?')+'</b><span>'+new Date(x.created_at).toLocaleString('cs-CZ',{dateStyle:'short',timeStyle:'short'})+'</span><button data-bd="'+x.id+'">✔ Vyřešeno</button></div><div style="margin-top:6px;font-size:13px;white-space:pre-wrap;word-break:break-word">'+esc(x.body)+'</div></div>').join(''):'<p class="nt">Žádné hlášené bugy 🎉</p>')+'<button class="gb s" data-cl="1">Zavřít</button>'}
+  ap.innerHTML='<h2>Admin</h2>'+tabs('bg')+(r.length?r.map(x=>'<div class="ac" style="display:block"><div style="display:flex;gap:8px;align-items:center"><b style="flex:1">'+esc(x.profiles?x.profiles.username:'?')+'</b><span>'+new Date(x.created_at).toLocaleString('cs-CZ',{dateStyle:'short',timeStyle:'short'})+'</span><button data-bd="'+x.id+'">✔ Vyřešeno</button></div><div style="margin-top:6px;font-size:13px;white-space:pre-wrap;word-break:break-word">'+esc(x.body)+'</div></div>').join(''):'<p class="nt">Žádné podněty ani bugy 🎉</p>')+'<button class="gb s" data-cl="1">Zavřít</button>'}
  catch(e){ap.innerHTML='<h2>Admin</h2>'+tabs('bg')+'<p class="fm">Načtení se nepovedlo (je spuštěný soubor 05-bugy.sql?).</p><button class="gb s" data-cl="1">Zavřít</button>'}}
 async function lb(){ap.style.display='block';ap.innerHTML='<h2>Admin</h2>'+tabs('lb')+'<p class="nt">Načítám…</p>';
  try{const r=await api('/rest/v1/progress?select=best,done,updated_at,profiles(username,is_admin)&order=best.desc');
