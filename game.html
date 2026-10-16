@@ -627,7 +627,7 @@ const MPR=['Do lobby se připojíš kódem. Každá lobby má krále 👑 – to
 const MPC=[['shield','🛡️ Štít'],['drill','⛏️ Vrták'],['ev','⚡ Elektro'],['metro','🚇 Metro'],['spd','🛑 Demonstrace SPD'],['sb','🚀 Startovní boosty z boxů']];
 const MPB='border:0;border-radius:10px;padding:8px 12px;font-size:16px;font-weight:700;background:#fff;color:#222;touch-action:manipulation';
 let MP=null,MPT=0,MPUI='',mpSB=0,mpErr=0,mpTk=0,mpOff=0,mpStartAt=0,mpN=15,mpO={},mpT=-999,mpSeed=0,mpFin=0,mpCr=0,mpTot=1,mpGh={},BPF=null,mpBusy=0;
-const MPE=m=>({lobby_not_found:'Lobby s tímto kódem neexistuje.',lobby_full:'Lobby je plná (max. 8 hráčů).',race_running:'V této lobby právě běží závod, zkus to za chvíli.',not_king:'Tohle může jen král lobby.',bad_state:'Teď to nejde.'})[m]||'Nepodařilo se spojit se serverem. Zkus to znovu.';
+const MPE=m=>({lobby_not_found:'Lobby s tímto kódem neexistuje.',lobby_full:'Lobby je plná (max. 8 hráčů).',race_running:'V této lobby právě běží závod, zkus to za chvíli.',not_king:'Tohle může jen král lobby.',bad_state:'Teď to nejde.'})[m]||(m?'Chyba serveru: '+m:'Server neodpověděl na multiplayer. Nahrál jsi na GitHub NOVÝ index.html (verze 2.2)?');
 const mpRng=a=>()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
 const mpFmt=ms=>{const q=ms/1000;return q>=60?Math.floor(q/60)+':'+(q%60).toFixed(1).padStart(4,'0'):q.toFixed(1)+' s'};
 function mpStop(){clearInterval(MPT);MPT=0}
