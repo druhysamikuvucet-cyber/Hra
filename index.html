@@ -193,6 +193,14 @@ async function onApi(d){const a=d.arg||{},M=me.id,min={headers:{Prefer:'return=m
  if(d.op=='players')return rpc('get_players',{});
  if(d.op=='kvstate')return rpc('kavadle_state',{});
  if(d.op=='kvguess'){const r=await rpc('kavadle_guess',{p_name:String(a.name||'').slice(0,80)});const f=document.querySelector('#game iframe');if(r&&r.won&&r.gain&&f)f.contentWindow.postMessage({t:'kvstate',s:r},'*');return r}
+ if(d.op=='mp_create')return rpc('mp_create',{});
+ if(d.op=='mp_join')return rpc('mp_join',{p_code:String(a.code||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8)});
+ if(d.op=='mp_leave')return rpc('mp_leave',{});
+ if(d.op=='mp_set')return rpc('mp_set',{p_lanes:(+a.lanes)|0,p_opts:(a.opts&&typeof a.opts=='object')?a.opts:{}});
+ if(d.op=='mp_start')return rpc('mp_start',{});
+ if(d.op=='mp_sync')return rpc('mp_sync',{p_x:a.x==null?null:+a.x,p_prog:a.prog==null?null:+a.prog,p_crash:a.crash==null?null:(+a.crash)|0,p_skin:a.skin==null?null:String(a.skin).slice(0,40)});
+ if(d.op=='mp_finish')return rpc('mp_finish',{});
+ if(d.op=='mp_back')return rpc('mp_back',{});
  throw 0}
 addEventListener('message',e=>{const f=document.querySelector('#game iframe'),k=document.querySelector('#kv iframe'),d=e.data;if(!d||!f||(e.source!==f.contentWindow&&!(k&&e.source===k.contentWindow)))return;
  if(d.t=='kv'){if(e.source===f.contentWindow)openKv();return}
