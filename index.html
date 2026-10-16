@@ -41,6 +41,11 @@ input:focus{box-shadow:0 0 14px rgba(255,40,40,.6),inset 0 0 12px rgba(193,18,31
 #adm{left:46px;display:none}
 #adm.dot::after{content:"";position:absolute;top:0;right:0;width:9px;height:9px;border-radius:50%;background:#e5383b}
 #ap .tb .gb{letter-spacing:0;font-size:12px}
+#mt{position:fixed;inset:0;z-index:20;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:24px;text-align:center;background:rgba(5,2,4,.97)}
+#mt h2{font:700 24px 'Cinzel Decorative',Cinzel,serif;color:#ff3b3b;letter-spacing:3px;margin:0;text-shadow:0 0 14px #c1121f}
+#mt p{max-width:340px;font-size:14px;line-height:1.5;margin:0}
+#mt .sp{font-size:56px;animation:spin 4s linear infinite}
+#mb{position:fixed;top:0;left:0;right:0;z-index:6;display:none;padding:3px 8px;font-size:11px;text-align:center;background:#a64f00;color:#fff;letter-spacing:1px}
 #row{margin-top:0}
 #ap{position:fixed;inset:0;z-index:9;display:none;overflow:auto;background:rgba(5,2,4,.96);padding:calc(env(safe-area-inset-top,0px) + 18px) 14px 28px;text-align:center}
 #ap h2{font:700 20px Cinzel,serif;letter-spacing:2px;color:#ff3b3b;margin:6px 0}
@@ -59,8 +64,59 @@ input:focus{box-shadow:0 0 14px rgba(255,40,40,.6),inset 0 0 12px rgba(193,18,31
 .gb{display:block;width:100%;max-width:380px;margin:10px auto;padding:11px;font:700 13px Cinzel,serif;letter-spacing:2px;color:#fff;background:linear-gradient(#a50f1a,#4a0509);border:1px solid #ff3b3b;border-radius:8px}
 .gb.s{background:#2a0a0e;border-color:#5a0a0f}
 .fm{min-height:16px;font-size:13px;color:#ff6b6b}
+/* Lucifer: decorative guardian, isolated from the login controls. */
+#lucifer{position:fixed;left:50%;top:50%;width:min(110vw,850px);height:min(110vw,850px);transform:translate(-50%,-61%);pointer-events:none;opacity:.92;filter:drop-shadow(0 0 24px #710b1c);}
+#lucifer svg{position:static;width:100%;height:100%;overflow:visible}
+#lucifer .demon-breath{transform-origin:400px 430px;animation:demonBreath 7s ease-in-out infinite}
+#lucifer .demon-eyes{animation:demonEyes 4s ease-in-out infinite;filter:drop-shadow(0 0 5px #ff331f)}
+#portal{isolation:isolate}
+#inner{background:radial-gradient(ellipse,rgba(5,2,4,.75),transparent 70%)}
+@keyframes demonBreath{50%{transform:translateY(-5px) scale(1.012)}}
+@keyframes demonEyes{50%{opacity:.55}}
+@media(max-width:600px){#lucifer{width:150vw;height:150vw;max-width:700px;max-height:700px;transform:translate(-50%,-66%);opacity:.85}}
+@media(max-height:540px) and (min-width:601px){#lucifer{width:690px;height:690px;transform:translate(-50%,-55%)}}
+@media(prefers-reduced-motion:reduce){#lucifer .demon-breath,#lucifer .demon-eyes{animation:none}}
+
+#kv{position:fixed;inset:0;z-index:8;display:none;background:#fff}
+#kv iframe{width:100%;height:100%;border:0;display:block}
+#kvx{position:fixed;left:8px;bottom:calc(env(safe-area-inset-bottom,0px) + 8px);z-index:10;display:none;padding:8px 14px;border-radius:20px;border:1px solid #c1121f;background:rgba(0,0,0,.78);color:#fff;font:700 12px Cinzel,serif;letter-spacing:1px}
 </style></head><body>
 <div id="bg"></div><canvas id="em"></canvas><div id="vig"></div>
+
+<div id="lucifer" aria-hidden="true">
+<svg viewBox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+<defs>
+ <linearGradient id="demonSkin" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#5f1723"/><stop offset=".45" stop-color="#210b14"/><stop offset="1" stop-color="#080309"/></linearGradient>
+ <linearGradient id="demonHorn" x1="0" y1="1" x2="1" y2="0"><stop stop-color="#571c27"/><stop offset=".6" stop-color="#241018"/><stop offset="1" stop-color="#a05b52"/></linearGradient>
+ <radialGradient id="demonAura"><stop stop-color="#bd182d" stop-opacity=".24"/><stop offset="1" stop-color="#bd182d" stop-opacity="0"/></radialGradient>
+ <linearGradient id="demonWing" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#41101c" stop-opacity=".9"/><stop offset="1" stop-color="#0d030a" stop-opacity=".1"/></linearGradient>
+ <g id="demonLeftWing">
+ <path d="M365 350 Q260 187 67 176 Q128 254 53 420 Q131 358 161 465 Q208 400 236 510 Q287 439 337 524 L378 421Z" fill="url(#demonWing)" stroke="#7f2331" stroke-width="2"/>
+ <path d="M365 350 Q231 239 67 176 M365 350 Q154 271 53 420 M365 350 Q213 325 161 465 M365 350 Q266 356 236 510" fill="none" stroke="#70202d" stroke-width="3"/>
+ </g>
+</defs>
+<ellipse cx="400" cy="330" rx="330" ry="300" fill="url(#demonAura)"/>
+<g class="demon-breath">
+<use href="#demonLeftWing"/><use href="#demonLeftWing" transform="translate(800 0) scale(-1 1)"/>
+<!-- Shoulders and long, clawed arms framing the portal. -->
+<path d="M360 307 Q302 302 277 363 L238 486 L205 562 L224 588 L252 557 L293 480 L328 424 L345 619 L455 619 L472 424 L507 480 L548 557 L576 588 L595 562 L562 486 L523 363 Q498 302 440 307Z" fill="url(#demonSkin)" stroke="#77303b" stroke-width="2"/>
+<path d="M282 360 L302 327 L306 364 M494 364 L498 327 L518 360 M340 332 Q400 372 460 332 M350 373 Q400 398 450 373" fill="none" stroke="#9c3b44" stroke-width="2" opacity=".65"/>
+<g fill="#13070d" stroke="#a44b4c" stroke-width="2">
+<path d="M223 545 Q192 549 191 580 L189 605 L202 584 L208 570 L205 607 L215 594 L222 574 L221 604 L232 589 L236 567 L239 587 L248 571 L245 549Z"/>
+<path d="M577 545 Q608 549 609 580 L611 605 L598 584 L592 570 L595 607 L585 594 L578 574 L579 604 L568 589 L564 567 L561 587 L552 571 L555 549Z"/>
+</g>
+<!-- Swept horns and angular face. -->
+<path d="M365 242 C301 222 292 157 320 115 C300 178 341 195 380 201Z" fill="url(#demonHorn)" stroke="#934350" stroke-width="2"/>
+<path d="M435 242 C499 222 508 157 480 115 C500 178 459 195 420 201Z" fill="url(#demonHorn)" stroke="#934350" stroke-width="2"/>
+<path d="M359 220 L382 204 L400 184 L418 204 L441 220 L444 262 L427 297 L410 315 L400 334 L390 315 L373 297 L356 262Z" fill="url(#demonSkin)" stroke="#a2464f" stroke-width="2"/>
+<path d="M400 194 L390 237 L400 251 L410 237Z M360 239 L384 245 L391 256 L371 251Z M440 239 L416 245 L409 256 L429 251Z" fill="#13060d"/>
+<g class="demon-eyes" fill="#ff7252"><path d="M368 249 L389 255 L379 259 L370 256Z"/><path d="M432 249 L411 255 L421 259 L430 256Z"/></g>
+<path d="M400 253 L393 277 L400 281 L407 277 M380 289 L393 286 L400 290 L407 286 L420 289 L409 298 L391 298Z" fill="#11050a" stroke="#82313c" stroke-width="1.5"/>
+<path d="M385 290 L389 298 L392 290 M408 290 L411 298 L415 290" fill="#d6a397"/>
+<path d="M366 266 L380 278 M434 266 L420 278 M391 307 L400 320 L409 307" fill="none" stroke="#b04a50" stroke-width="1.5"/>
+</g>
+</svg></div>
+
 <div id="portal">
 <svg viewBox="0 0 400 400" aria-hidden="true">
 <defs><path id="cp" d="M200,200 m-178,0 a178,178 0 1,1 356,0 a178,178 0 1,1 -356,0"/><radialGradient id="gl"><stop offset="55%" stop-color="#000" stop-opacity=".85"/><stop offset="100%" stop-color="#7a0a0a" stop-opacity=".25"/></radialGradient></defs>
@@ -78,7 +134,7 @@ input:focus{box-shadow:0 0 14px rgba(255,40,40,.6),inset 0 0 12px rgba(193,18,31
 <button id="go" type="button">OTEVŘÍT PORTÁL</button>
 <p id="msg"></p>
 </div></div>
-<div id="game"><button id="x" aria-label="Odhlásit">✕</button><button id="adm" aria-label="Admin">⚙</button></div><div id="ap"></div>
+<div id="game"><button id="x" aria-label="Odhlásit">✕</button><button id="adm" aria-label="Admin">⚙</button></div><div id="ap"></div><div id="kv"></div><button id="kvx" type="button">← Zpět do hry</button><div id="mt"><div class="sp">🛠</div><h2>MAINTENANCE BREAK</h2><p id="mtp"></p></div><div id="mb">🛠 ÚDRŽBA ZAPNUTÁ – hráči bez admina jsou zablokovaní</div>
 <script>
 const SB='https://gwkhtvgnwewtdmxiufoe.supabase.co',KEY='sb_publishable_9R7PdfrUK3ivnLgzDXYqiQ_71oaITPl',DOM='@chodov-hra.app';
 const $=i=>document.getElementById(i),esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
@@ -96,6 +152,7 @@ async function enter(){
  const uid=ses.user.id;
  const [pr,pg,cf,gm,st]=await Promise.all([api('/rest/v1/profiles?id=eq.'+uid+'&select=username,is_admin'),api('/rest/v1/progress?user_id=eq.'+uid+'&select=data'),api('/rest/v1/config?select=key,value'),fetch('game.html').then(r=>{if(!r.ok)throw 0;return r.text()}),rpc('get_state',{}).catch(()=>null)]);
  me={id:uid,name:pr[0].username,admin:!!pr[0].is_admin};
+ {const mr=await mtGet();mtStart();if(mr&&mr.on&&!me.admin){$('portal').style.display='none';mtBlock(mr);return}if(mr&&mr.on)$('mb').style.display='block'}
  let html=gm;for(const c of cf||[])if(c.key=='credata'||c.key=='devdata')html=setBlock(html,c.key,c.value);
  html=html.replace('<head>','<head>'+pre((pg&&pg[0]&&pg[0].data)||{},me.admin,st));
  $('portal').classList.add('open');
@@ -131,19 +188,45 @@ async function onApi(d){const a=d.arg||{},M=me.id,min={headers:{Prefer:'return=m
  if(d.op=='selskin')return rpc('select_skin',{sid:String(a.id||'').slice(0,40)});
  if(d.op=='setavatar'){const v=String(a.d||'');if(v&&(v.length>60000||!/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(v)))throw 0;return rpc('set_avatar',{d:v})}
  if(d.op=='players')return rpc('get_players',{});
+ if(d.op=='kvstate')return rpc('kavadle_state',{});
+ if(d.op=='kvguess'){const r=await rpc('kavadle_guess',{p_name:String(a.name||'').slice(0,80)});const f=document.querySelector('#game iframe');if(r&&r.won&&r.gain&&f)f.contentWindow.postMessage({t:'kvstate',s:r},'*');return r}
  throw 0}
-addEventListener('message',e=>{const f=document.querySelector('#game iframe'),d=e.data;if(!d||!f||e.source!==f.contentWindow)return;
+addEventListener('message',e=>{const f=document.querySelector('#game iframe'),k=document.querySelector('#kv iframe'),d=e.data;if(!d||!f||(e.source!==f.contentWindow&&!(k&&e.source===k.contentWindow)))return;
+ if(d.t=='kv'){if(e.source===f.contentWindow)openKv();return}
  if(d.t=='save'){pend=d.d;clearTimeout(saveT);saveT=setTimeout(flush,1500)}
  else if(d.t=='api')onApi(d).then(x=>e.source.postMessage({id:d.id,ok:1,data:x},'*'),(er)=>e.source.postMessage({id:d.id,ok:0,m:String((er&&er.message)||'')},'*'))
  else if(d.t=='pub')pubCfg(d.h).then(()=>e.source.postMessage({id:d.id,ok:1},'*'),()=>e.source.postMessage({id:d.id,ok:0},'*'))});
 addEventListener('visibilitychange',()=>{if(document.hidden)flush()});
 $('x').addEventListener('click',async()=>{try{await flush()}catch(e){}ses=null;store();location.reload()});
+
+
+// ---- Kavadle (overlay nad hrou, stejné přihlášení)
+let KH=null;
+const preK=a=>'<script>window.ACC_ADMIN='+(a?1:0)+';window.ACC_NAME='+JSON.stringify(me.name).replace(/</g,'\\u003c')+';window.ACCAPI=function(o,a){return new Promise(function(res,rej){var id=String(Math.random());var f=function(e){if(e.data&&e.data.id==id){removeEventListener("message",f);e.data.ok?res(e.data.data):rej(e.data.m)}};addEventListener("message",f);parent.postMessage({t:"api",id:id,op:o,arg:a},"*")})};<\/script>';
+async function openKv(){if(!me)return;const m=await mtGet();if(m&&m.on&&!me.admin)return;
+ if(!KH){const r=await fetch('kavadle.html');if(!r.ok)return;KH=await r.text()}
+ $('kv').innerHTML='';const f=document.createElement('iframe');f.srcdoc=KH.replace('<head>','<head>'+preK(me.admin));$('kv').appendChild(f);$('kv').style.display='block';$('kvx').style.display='block'}
+function closeKv(){$('kv').style.display='none';$('kvx').style.display='none';$('kv').innerHTML=''}
+$('kvx').onclick=closeKv;
+// ---- maintenance
+let mtOn=0,mtI=0;const MTDEF='Maintenance break – fixujeme bugy nebo nasazujeme novou verzi. Prosím počkej.';
+const mtGet=()=>rpc('get_maintenance',{}).catch(()=>null);
+function mtBlock(r){mtOn=1;closeKv();$('mtp').textContent=(r&&r.msg)||MTDEF;$('mt').style.display='flex';$('adm').style.display='none';$('mb').style.display='none'}
+async function mtCheck(){if(!ses||!me)return;const r=await mtGet();if(!r)return;
+ if(r.on&&!me.admin){if(!mtOn){try{await flush()}catch(e){}const f=document.querySelector('#game iframe');if(f)f.remove();$('game').style.display='none'}mtBlock(r)}
+ else if(mtOn){location.reload()}
+ $('mb').style.display=(r.on&&me.admin)?'block':'none'}
+function mtStart(){clearInterval(mtI);mtI=setInterval(mtCheck,15000)}
+async function mtPanel(msg){ap.style.display='block';ap.innerHTML='<h2>Admin</h2>'+tabs('mt')+'<p class="nt">Načítám…</p>';
+ const r=await mtGet();if(!r){ap.innerHTML='<h2>Admin</h2>'+tabs('mt')+'<p class="fm">Načtení se nepovedlo (je spuštěný soubor 09-update-1-2.sql?).</p><button class="gb s" data-cl="1">Zavřít</button>';return}
+ ap.innerHTML='<h2>Admin</h2>'+tabs('mt')+'<p class="nt">Stav: <b>'+(r.on?'🛠 ÚDRŽBA ZAPNUTÁ':'🟢 hra běží')+'</b><br>Při údržbě se hráči bez admina nedostanou do hry (běžící hra se jim zavře) a uvidí obrazovku „Maintenance break“. Admini hrají dál.</p><input id="mm" type="text" maxlength="200" placeholder="Vlastní text (prázdné = výchozí)" value="'+esc(r.msg||'')+'"><button class="gb" data-mt="'+(r.on?0:1)+'">'+(r.on?'✅ Ukončit údržbu':'🛠 Zapnout údržbu')+'</button><button class="gb s" data-cl="1">Zavřít</button><p class="fm">'+(msg||'')+'</p>'}
+async function mtSet(on){const m=$('mm');try{await rpc('set_maintenance',{p_on:on,p_msg:m?m.value.trim().slice(0,200):''});await mtCheck();mtPanel(on?'Údržba zapnuta ✔':'Údržba ukončena ✔')}catch(e){mtPanel('Nepovedlo se (jsi admin? běžel SQL 09?)')}}
 // ---- admin panel
 const ap=$('ap'),DN=['easy','medium','hard','demon'],NM={easy:'Easy',medium:'Medium',hard:'Hard',demon:'Démon'};
-const tabs=t=>'<div class="tb"><button class="gb'+(t=='lb'?'':' s')+'" data-t="lb">🏆 Žebříček</button><button class="gb'+(t=='ac'?'':' s')+'" data-t="ac">👥 Účty</button><button class="gb'+(t=='bg'?'':' s')+'" data-t="bg">💡 Podněty</button></div>';
+const tabs=t=>'<div class="tb"><button class="gb'+(t=='lb'?'':' s')+'" data-t="lb">🏆 Žebříček</button><button class="gb'+(t=='ac'?'':' s')+'" data-t="ac">👥 Účty</button><button class="gb'+(t=='bg'?'':' s')+'" data-t="bg">💡 Podněty</button><button class="gb'+(t=='mt'?'':' s')+'" data-t="mt">🛠 Údržba</button></div>';
 async function bugs(){ap.style.display='block';ap.innerHTML='<h2>Admin</h2>'+tabs('bg')+'<p class="nt">Načítám…</p>';
- try{const r=await api('/rest/v1/bug_reports?select=id,body,created_at,profiles(username)&order=id.desc&limit=100');$('adm').classList.toggle('dot',r.length>0);
-  ap.innerHTML='<h2>Admin</h2>'+tabs('bg')+(r.length?r.map(x=>'<div class="ac" style="display:block"><div style="display:flex;gap:8px;align-items:center"><b style="flex:1">'+esc(x.profiles?x.profiles.username:'?')+'</b><span>'+new Date(x.created_at).toLocaleString('cs-CZ',{dateStyle:'short',timeStyle:'short'})+'</span><button data-bd="'+x.id+'">✔ Vyřešeno</button></div><div style="margin-top:6px;font-size:13px;white-space:pre-wrap;word-break:break-word">'+esc(x.body)+'</div></div>').join(''):'<p class="nt">Žádné podněty ani bugy 🎉</p>')+'<button class="gb s" data-cl="1">Zavřít</button>'}
+ try{const r=await api('/rest/v1/bug_reports?select=id,body,created_at,priority,profiles(username)&order=priority.desc,id.desc&limit=100');$('adm').classList.toggle('dot',r.length>0);
+  ap.innerHTML='<h2>Admin</h2>'+tabs('bg')+(r.length?r.map(x=>'<div class="ac" style="display:block'+(x.priority>0?';border-color:#ff3b3b;background:rgba(193,18,31,.18)':'')+'"><div style="display:flex;gap:8px;align-items:center"><b style="flex:1">'+(x.priority>0?'🔥 ':'')+esc(x.profiles?x.profiles.username:'?')+'</b><span>'+new Date(x.created_at).toLocaleString('cs-CZ',{dateStyle:'short',timeStyle:'short'})+'</span><button data-bp="'+x.id+'" data-pv="'+(x.priority>0?0:1)+'">'+(x.priority>0?'🔥 Zrušit prioritu':'⭐ Priorita')+'</button><button data-bd="'+x.id+'">✔ Vyřešeno</button></div><div style="margin-top:6px;font-size:13px;white-space:pre-wrap;word-break:break-word">'+esc(x.body)+'</div></div>').join(''):'<p class="nt">Žádné podněty ani bugy 🎉</p>')+'<button class="gb s" data-cl="1">Zavřít</button>'}
  catch(e){ap.innerHTML='<h2>Admin</h2>'+tabs('bg')+'<p class="fm">Načtení se nepovedlo (je spuštěný soubor 05-bugy.sql?).</p><button class="gb s" data-cl="1">Zavřít</button>'}}
 async function lb(){ap.style.display='block';ap.innerHTML='<h2>Admin</h2>'+tabs('lb')+'<p class="nt">Načítám…</p>';
  try{const r=await api('/rest/v1/progress?select=best,done,updated_at,profiles(username,is_admin)&order=best.desc');
@@ -160,7 +243,7 @@ async function save(i){const n=$('fn').value.trim().toLowerCase(),p=$('fp').valu
  try{i==null?await fn({a:'create',username:n,password:p,is_admin:r}):await fn({a:'update',id:ACC[i].id,username:n,password:p||undefined,is_admin:r});ac('Uloženo ✔')}catch(e){m.style.color='#ff6b6b';m.textContent=e.message}}
 async function del(i){const m=$('fm');m.style.color='#ffb3b3';m.textContent='Mažu…';try{await fn({a:'delete',id:ACC[i].id});ac('Smazáno ✔')}catch(e){m.style.color='#ff6b6b';m.textContent=e.message}}
 ap.onclick=e=>{const d=e.target.dataset;if(!d)return;
- if(d.cl)ap.style.display='none';else if(d.t)d.t=='lb'?lb():d.t=='bg'?bugs():ac();else if(d.bd)api('/rest/v1/bug_reports?id=eq.'+(+d.bd),{method:'DELETE',headers:{Prefer:'return=minimal'}}).then(bugs,()=>{});else if(d.add)form(null);else if(d.ls)ac();else if(d.sv!=null)save(d.sv===''?null:+d.sv);
+ if(d.cl)ap.style.display='none';else if(d.t)d.t=='lb'?lb():d.t=='bg'?bugs():d.t=='mt'?mtPanel():ac();else if(d.bp)rpc('set_report_priority',{rid:+d.bp,pr:+d.pv}).then(bugs,()=>{});else if(d.mt!=null)mtSet(d.mt=='1');else if(d.bd)api('/rest/v1/bug_reports?id=eq.'+(+d.bd),{method:'DELETE',headers:{Prefer:'return=minimal'}}).then(bugs,()=>{});else if(d.add)form(null);else if(d.ls)ac();else if(d.sv!=null)save(d.sv===''?null:+d.sv);
  else if(d.e!=null&&d.e!=='')form(+d.e);
  else if(d.d!=null&&d.d!==''){if(delI==+d.d)del(+d.d);else{delI=+d.d;e.target.textContent='Opravdu?'}}}
 $('adm').addEventListener('click',lb);
