@@ -2,6 +2,9 @@
 <html lang="cs"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Hra</title><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Hra"><meta name="theme-color" content="#050204">
+<link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@500&display=swap" rel="stylesheet">
 <style>
@@ -156,7 +159,7 @@ async function enter(){
  let html=gm;for(const c of cf||[])if(c.key=='credata'||c.key=='devdata')html=setBlock(html,c.key,c.value);
  html=html.replace('<head>','<head>'+pre((pg&&pg[0]&&pg[0].data)||{},me.admin,st));
  $('portal').classList.add('open');
- setTimeout(()=>{$('portal').style.display='none';const f=document.createElement('iframe');f.srcdoc=html;$('game').appendChild(f);$('game').style.display='block';$('adm').style.display=me.admin?'block':'none';if(me.admin)api('/rest/v1/bug_reports?select=id&limit=1').then(r=>$('adm').classList.toggle('dot',!!(r&&r.length)),()=>{})},850)}
+ setTimeout(()=>{$('portal').style.display='none';const f=document.createElement('iframe');f.srcdoc=html;$('game').appendChild(f);$('game').style.display='block';$('adm').style.display=me.admin?'block':'none';if(me.admin)api('/rest/v1/bug_reports?select=id&status=is.null&limit=1').catch(()=>api('/rest/v1/bug_reports?select=id&limit=1')).then(r=>$('adm').classList.toggle('dot',!!(r&&r.length)),()=>{})},850)}
 async function login(){const u=$('user').value.trim().toLowerCase(),p=$('code').value;if(busy||!u||!p)return;busy=true;const m=$('msg');m.style.color='#ff9a9a';m.textContent='Probouzím portál…';
  try{await auth({email:u+DOM,password:p},'password')}catch(e){return fail()}
  try{await enter()}catch(e){fail('Hru se nepodařilo načíst.')}}
@@ -224,10 +227,29 @@ async function mtSet(on){const m=$('mm');try{await rpc('set_maintenance',{p_on:o
 // ---- admin panel
 const ap=$('ap'),DN=['easy','medium','hard','demon'],NM={easy:'Easy',medium:'Medium',hard:'Hard',demon:'Démon'};
 const tabs=t=>'<div class="tb"><button class="gb'+(t=='lb'?'':' s')+'" data-t="lb">🏆 Žebříček</button><button class="gb'+(t=='ac'?'':' s')+'" data-t="ac">👥 Účty</button><button class="gb'+(t=='bg'?'':' s')+'" data-t="bg">💡 Podněty</button><button class="gb'+(t=='mt'?'':' s')+'" data-t="mt">🛠 Údržba</button></div>';
-async function bugs(){ap.style.display='block';ap.innerHTML='<h2>Admin</h2>'+tabs('bg')+'<p class="nt">Načítám…</p>';
- try{const r=await api('/rest/v1/bug_reports?select=id,body,created_at,priority,profiles(username)&order=priority.desc,id.desc&limit=100');$('adm').classList.toggle('dot',r.length>0);
-  ap.innerHTML='<h2>Admin</h2>'+tabs('bg')+(r.length?r.map(x=>'<div class="ac" style="display:block'+(x.priority>0?';border-color:#ff3b3b;background:rgba(193,18,31,.18)':'')+'"><div style="display:flex;gap:8px;align-items:center"><b style="flex:1">'+(x.priority>0?'🔥 ':'')+esc(x.profiles?x.profiles.username:'?')+'</b><span>'+new Date(x.created_at).toLocaleString('cs-CZ',{dateStyle:'short',timeStyle:'short'})+'</span><button data-bp="'+x.id+'" data-pv="'+(x.priority>0?0:1)+'">'+(x.priority>0?'🔥 Zrušit prioritu':'⭐ Priorita')+'</button><button data-bd="'+x.id+'">✔ Vyřešeno</button></div><div style="margin-top:6px;font-size:13px;white-space:pre-wrap;word-break:break-word">'+esc(x.body)+'</div></div>').join(''):'<p class="nt">Žádné podněty ani bugy 🎉</p>')+'<button class="gb s" data-cl="1">Zavřít</button>'}
+let BR=[],BF='all',REP=null;
+const BK=b=>/^\[BUG\]/i.test(b)?'bug':/^\[NÁVRH SKINU\]/i.test(b)?'skin':'zmena',BKN={bug:'🐞 Bugy',zmena:'💡 Změny',skin:'🎭 Skiny'},bS=b=>String(b).replace(/^\[[^\]]+\]\s*/,''),
+ BST={accepted:['✅ zavedeme','#3ddc6b'],rejected:['❌ nezavedeme','#ff8a8a'],answered:['💬 odpovězeno','#4cc9f0']};
+async function bugs(msg){ap.style.display='block';ap.innerHTML='<h2>Admin</h2>'+tabs('bg')+'<p class="nt">Načítám…</p>';
+ try{let r;try{r=await api('/rest/v1/bug_reports?select=id,user_id,body,created_at,priority,status,profiles(username)&order=priority.desc,id.desc&limit=200')}catch(e){r=await api('/rest/v1/bug_reports?select=id,user_id,body,created_at,priority,profiles(username)&order=priority.desc,id.desc&limit=200')}
+  BR=r;bugsR(msg)}
  catch(e){ap.innerHTML='<h2>Admin</h2>'+tabs('bg')+'<p class="fm">Načtení se nepovedlo (je spuštěný soubor 05-bugy.sql?).</p><button class="gb s" data-cl="1">Zavřít</button>'}}
+function bugsR(msg){const open=BR.filter(x=>!x.status);$('adm').classList.toggle('dot',open.length>0);
+ const cnt=k=>BR.filter(x=>BK(x.body)==k&&!x.status).length,fb=(k,l)=>'<button class="gb'+(BF==k?'':' s')+'" data-bf="'+k+'" style="padding:8px 4px;font-size:11px;letter-spacing:0">'+l+'</button>';
+ const list=BR.filter(x=>BF=='all'||BK(x.body)==BF).sort((a,b)=>(!!a.status)-(!!b.status)||(b.priority||0)-(a.priority||0)||b.id-a.id);
+ ap.innerHTML='<h2>Admin</h2>'+tabs('bg')+'<div class="tb">'+fb('all','Vše ('+open.length+')')+fb('bug','🐞 Bugy ('+cnt('bug')+')')+fb('zmena','💡 Změny ('+cnt('zmena')+')')+fb('skin','🎭 Skiny ('+cnt('skin')+')')+'</div><p class="fm" style="color:#9fe6a8">'+(msg||'')+'</p>'+
+ (list.length?list.map(x=>{const k=BK(x.body),pr=x.priority>0,st=x.status&&BST[x.status];
+  return '<div class="ac" style="display:block'+(pr?';border-color:#ff3b3b;background:rgba(193,18,31,.18)':'')+(x.status?';opacity:.72':'')+'"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><b style="flex:1;min-width:90px">'+(pr?'🔥 ':'')+esc(x.profiles?x.profiles.username:'?')+'</b><span style="color:#ffd400">'+BKN[k]+'</span><span>'+new Date(x.created_at).toLocaleString('cs-CZ',{dateStyle:'short',timeStyle:'short'})+'</span></div>'+
+  (st?'<div style="margin-top:4px"><span style="color:'+st[1]+'">'+st[0]+'</span></div>':'')+
+  '<div style="margin-top:6px;font-size:13px;white-space:pre-wrap;word-break:break-word">'+esc(bS(x.body))+'</div>'+
+  '<div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap"><button data-rp="'+x.id+'">'+(REP==x.id?'✖ Zavřít odpověď':'💬 Odpovědět')+'</button><button data-bp="'+x.id+'" data-pv="'+(pr?0:1)+'">'+(pr?'🔥 Zrušit prioritu':'⭐ Priorita')+'</button><button data-bd="'+x.id+'">✔ Vyřešeno</button></div>'+
+  (REP==x.id?'<div style="margin-top:8px"><textarea id="rt" maxlength="180" rows="3" placeholder="Vlastní text odpovědi (nepovinný, max 180 znaků)" style="width:100%;box-sizing:border-box;padding:8px;border-radius:8px;border:1px solid #5a0a0f;background:#1a0508;color:#fff;font:inherit;font-size:13px"></textarea><div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap"><button data-rs="accepted" data-ri="'+x.id+'">✅ Zavedeme</button><button data-rs="rejected" data-ri="'+x.id+'">❌ Nezavedeme</button><button data-rs="answered" data-ri="'+x.id+'">💬 Jen odpověď</button></div><div style="font-size:11px;opacity:.65;margin-top:4px;text-align:left">Hráč dostane soukromou zprávu od tebe. „Jen odpověď“ vyžaduje text.</div></div>':'')+'</div>'}).join(''):'<p class="nt">Tady nic není 🎉</p>')+'<button class="gb s" data-cl="1">Zavřít</button>'}
+async function sendReply(id,st){const x=BR.find(q=>q.id==id);if(!x)return;const t=($('rt')?$('rt').value:'').trim().slice(0,180);
+ if(st=='answered'&&!t)return bugsR('Napiš text odpovědi.');
+ const s=bS(x.body).replace(/\s+/g,' '),pre={accepted:'✅ Tvůj podnět zavedeme.',rejected:'❌ Tvůj podnět zatím nezavedeme.',answered:'💬 Odpověď na tvůj podnět:'}[st],
+  body=('Re: „'+s.slice(0,60)+(s.length>60?'…':'')+'“ – '+pre+(t?' '+t:'')).slice(0,300);
+ try{await rpc('reply_report',{rid:id,p_body:body,p_status:st});REP=null;await bugs('Odpověď odeslána hráči '+(x.profiles?x.profiles.username:'')+' ✔')}
+ catch(e){bugsR('Odeslání se nepovedlo (je spuštěný soubor 11-update-2-1.sql?)')}}
 async function lb(){ap.style.display='block';ap.innerHTML='<h2>Admin</h2>'+tabs('lb')+'<p class="nt">Načítám…</p>';
  try{const r=await api('/rest/v1/progress?select=best,done,updated_at,profiles(username,is_admin)&order=best.desc');
   ap.innerHTML='<h2>Admin</h2>'+tabs('lb')+'<table><tr><th>Účet</th><th>🏃 Rekord</th><th>📖 Story</th><th>Naposledy</th></tr>'+r.map(x=>'<tr><td>'+esc(x.profiles.username)+(x.profiles.is_admin?' ★':'')+'</td><td>'+x.best+'</td><td>'+DN.map(d=>NM[d]+' '+(x.done&&x.done[d]?'✅'+'❤'.repeat(x.done[d]):'⬜')).join('<br>')+'</td><td>'+(x.updated_at?new Date(x.updated_at).toLocaleString('cs-CZ',{dateStyle:'short',timeStyle:'short'}):'')+'</td></tr>').join('')+'</table><button class="gb s" data-cl="1">Zavřít</button>'}
@@ -243,7 +265,7 @@ async function save(i){const n=$('fn').value.trim().toLowerCase(),p=$('fp').valu
  try{i==null?await fn({a:'create',username:n,password:p,is_admin:r}):await fn({a:'update',id:ACC[i].id,username:n,password:p||undefined,is_admin:r});ac('Uloženo ✔')}catch(e){m.style.color='#ff6b6b';m.textContent=e.message}}
 async function del(i){const m=$('fm');m.style.color='#ffb3b3';m.textContent='Mažu…';try{await fn({a:'delete',id:ACC[i].id});ac('Smazáno ✔')}catch(e){m.style.color='#ff6b6b';m.textContent=e.message}}
 ap.onclick=e=>{const d=e.target.dataset;if(!d)return;
- if(d.cl)ap.style.display='none';else if(d.t)d.t=='lb'?lb():d.t=='bg'?bugs():d.t=='mt'?mtPanel():ac();else if(d.bp)rpc('set_report_priority',{rid:+d.bp,pr:+d.pv}).then(bugs,()=>{});else if(d.mt!=null)mtSet(d.mt=='1');else if(d.bd)api('/rest/v1/bug_reports?id=eq.'+(+d.bd),{method:'DELETE',headers:{Prefer:'return=minimal'}}).then(bugs,()=>{});else if(d.add)form(null);else if(d.ls)ac();else if(d.sv!=null)save(d.sv===''?null:+d.sv);
+ if(d.cl)ap.style.display='none';else if(d.t)d.t=='lb'?lb():d.t=='bg'?bugs():d.t=='mt'?mtPanel():ac();else if(d.bf){BF=d.bf;REP=null;bugsR()}else if(d.rp){REP=REP==+d.rp?null:+d.rp;bugsR()}else if(d.rs)sendReply(+d.ri,d.rs);else if(d.bp)rpc('set_report_priority',{rid:+d.bp,pr:+d.pv}).then(bugs,()=>{});else if(d.mt!=null)mtSet(d.mt=='1');else if(d.bd)api('/rest/v1/bug_reports?id=eq.'+(+d.bd),{method:'DELETE',headers:{Prefer:'return=minimal'}}).then(bugs,()=>{});else if(d.add)form(null);else if(d.ls)ac();else if(d.sv!=null)save(d.sv===''?null:+d.sv);
  else if(d.e!=null&&d.e!=='')form(+d.e);
  else if(d.d!=null&&d.d!==''){if(delI==+d.d)del(+d.d);else{delI=+d.d;e.target.textContent='Opravdu?'}}}
 $('adm').addEventListener('click',lb);
