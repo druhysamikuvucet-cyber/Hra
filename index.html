@@ -83,6 +83,17 @@ input:focus{box-shadow:0 0 14px rgba(255,40,40,.6),inset 0 0 12px rgba(193,18,31
 #kv{position:fixed;inset:0;z-index:8;display:none;background:#fff}
 #kv iframe{width:100%;height:100%;border:0;display:block}
 #kvx{position:fixed;left:8px;bottom:calc(env(safe-area-inset-bottom,0px) + 8px);z-index:10;display:none;padding:8px 14px;border-radius:20px;border:1px solid #c1121f;background:rgba(0,0,0,.78);color:#fff;font:700 12px Cinzel,serif;letter-spacing:1px}
+
+/* ===== UPDATE 3.0: brana - jemne vyladeni, identita zachovana ===== */
+h1{font-variant-ligatures:none}
+input{transition:box-shadow .2s,border-color .2s}
+input:focus{border-color:#ff3b3b}
+#go{transition:transform .12s,box-shadow .2s,filter .2s;cursor:pointer;box-shadow:0 0 14px rgba(193,18,31,.6),inset 0 1px 0 rgba(255,255,255,.18)}
+@media (hover:hover){#go:hover{filter:brightness(1.15);box-shadow:0 0 22px rgba(255,40,40,.75),inset 0 1px 0 rgba(255,255,255,.22)}#eye:hover,#x:hover,#adm:hover{opacity:1}}
+#go:focus-visible,#eye:focus-visible,#x:focus-visible,#adm:focus-visible{outline:2px solid #ffd400;outline-offset:2px}
+#hint{opacity:.85}
+#msg{font-weight:600}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}#portal{transition-duration:.01ms!important}}
 </style></head><body>
 <div id="bg"></div><canvas id="em"></canvas><div id="vig"></div>
 

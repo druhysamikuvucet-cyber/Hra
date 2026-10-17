@@ -103,6 +103,28 @@ input:focus{outline:none;border-color:var(--bd2)}
 textarea{width:100%;min-height:120px;font:12px/1.3 monospace;padding:10px;border:2px solid var(--bd);border-radius:4px;background:var(--bg);color:var(--fg)}
 .opt:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
 @media (max-width:420px){.t{min-height:76px;font-size:10.5px;padding:3px}.t.nm{font-size:10px}.heads{font-size:9px}}
+
+/* ===== UPDATE 3.0: Kavadle - nocni prazsky styl jako hra, rozlozeni beze zmeny ===== */
+:root{--ac:#ffd400;--bg:#f4f1ea;--fg:#1b1e29;--bd:#d9d4c6;--bd2:#8a8574;--mute:#6f6a5c;--ok:#2e9e4f;--key:#e6e1d3;--tile:#fffdf8;--modal:#fffdf8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1020;--fg:#f2f4fa;--bd:rgba(255,255,255,.16);--bd2:#8a94b8;--mute:#97a1c0;--ok:#2fa84f;--key:#1d2a4a;--tile:#111a33;--modal:#14213a}}
+:root[data-theme="dark"]{--bg:#0b1020;--fg:#f2f4fa;--bd:rgba(255,255,255,.16);--bd2:#8a94b8;--mute:#97a1c0;--ok:#2fa84f;--key:#1d2a4a;--tile:#111a33;--modal:#14213a}
+body{font-family:"Segoe UI Variable Text","Segoe UI",Inter,system-ui,-apple-system,Roboto,sans-serif;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+body{background:radial-gradient(120% 60% at 50% 0,color-mix(in srgb,var(--bg) 82%,#2b4a7a) 0,var(--bg) 60%) fixed,var(--bg)}
+header{border-bottom:2px solid var(--ac);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+h1{font-family:"Segoe UI Variable Display","Segoe UI",Inter,system-ui,sans-serif;font-weight:800;letter-spacing:-.01em}
+.ib{border-radius:10px;transition:background .15s,transform .1s}
+.ib:hover{background:var(--bd)}.ib:active{transform:scale(.92)}
+.key{border-radius:10px;border:1px solid var(--bd);transition:background .25s,transform .15s}
+.key.on{box-shadow:0 0 0 1px rgba(0,0,0,.15),0 4px 12px rgba(0,0,0,.2)}
+input{border-radius:12px;transition:border-color .15s,box-shadow .15s}
+input:focus{border-color:var(--ac);box-shadow:0 0 0 3px rgba(255,212,0,.28)}
+#list{border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+#list li{transition:background .12s}
+.btn{border-radius:12px;font-weight:700;transition:transform .1s,filter .15s}
+.btn:hover{filter:brightness(1.08)}.btn:active{transform:scale(.97)}
+.modal{border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.45);border:1px solid var(--bd)}
+.ib:focus-visible,input:focus-visible,.close:focus-visible,.btn:focus-visible,#list li:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>

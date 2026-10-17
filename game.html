@@ -81,6 +81,37 @@ body.indm #dmb{display:none}
 #ui.sbg .cd{background:rgba(15,8,4,.62)}
 #ui.sbg h1,#ui.sbg h2,#ui.sbg p{text-shadow:0 2px 8px rgba(0,0,0,.8)}
 @keyframes lvt{0%{opacity:0;transform:translate(-50%,-14px)}10%,80%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,-6px)}}
+
+/* ===== UPDATE 3.0: REDESIGN (tokeny + komponenty, rozlozeni beze zmeny) ===== */
+:root{--ac:#ffd400;--ac-ink:#1a1500;--line:rgba(255,255,255,.14);--sf:rgba(255,255,255,.07);--sf2:rgba(255,255,255,.12);--rd:14px;--ease:cubic-bezier(.2,.8,.2,1);--danger:#e5383b;--ok:#3ddc6b}
+body{font-family:"Segoe UI Variable Text","Segoe UI",Inter,system-ui,-apple-system,Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+#hud{font-variant-numeric:tabular-nums;letter-spacing:.01em}
+#ui h1{font-size:30px;font-weight:800;letter-spacing:-.01em;text-shadow:0 2px 14px rgba(0,0,0,.35)}
+#ui h2{font-weight:700;font-size:13px;letter-spacing:.09em;text-transform:uppercase;opacity:.7}
+#ui .sub{opacity:.72;letter-spacing:.01em}
+#ui{background:radial-gradient(120% 70% at 50% 0,var(--m1,#2b4a7a) 0,var(--m2,#14213a) 58%,var(--m3,#0b1020) 100%)}
+.cd{background:linear-gradient(180deg,var(--sf2),var(--sf));border:1px solid var(--line);box-shadow:0 8px 24px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.08);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.b{position:relative;border:1px solid rgba(0,0,0,.18);box-shadow:0 3px 0 rgba(0,0,0,.28),0 8px 18px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.55);transition:transform .12s var(--ease),filter .15s,box-shadow .15s;letter-spacing:.005em}
+.b small{opacity:.7;letter-spacing:.01em}
+.b.y{background:linear-gradient(180deg,#ffe24d,var(--bc,#ffd400));color:var(--bx,var(--ac-ink))}
+@media (hover:hover){.b:hover{filter:brightness(1.07);transform:translateY(-1px)}.pk:hover,.bk:hover,#dmb:hover{background:rgba(255,255,255,.32)}}
+.b:active{transform:translateY(2px) scale(.98);filter:brightness(.95)}
+.b.s,#ui .b.s{box-shadow:0 2px 0 rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.12);border-color:var(--line)}
+.b.r{border-color:rgba(255,255,255,.18)}
+.bk,.pk,#dmb{border:1px solid var(--line);background:rgba(255,255,255,.16);transition:background .15s,transform .12s var(--ease)}
+.bk:active,.pk:active,#dmb:active{transform:scale(.92)}
+.ip,.ta{background:rgba(255,255,255,.95);color:#1a1d24;border:2px solid transparent;box-shadow:inset 0 1px 3px rgba(0,0,0,.18);transition:border-color .15s,box-shadow .15s}
+.ip:focus,.ta:focus{outline:0;border-color:var(--ac);box-shadow:0 0 0 3px rgba(255,212,0,.28)}
+.b:focus-visible,.hb:focus-visible,.bk:focus-visible,.pk:focus-visible,#dmb:focus-visible,#pad button:focus-visible,.sw:focus-visible,.rh:focus-visible{outline:3px solid var(--ac);outline-offset:2px}
+.hb,#pad button{border:1px solid var(--line);box-shadow:0 2px 6px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.08);transition:transform .1s var(--ease)}
+#pad button:active,.hb:active{transform:scale(.94)}
+.rh{padding:2px 0}
+#ui .un,#ui .cc{border:1px solid var(--line);background:rgba(8,12,24,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);font-variant-numeric:tabular-nums}
+#pg,#pal,#sp{border:1px solid var(--line)}
+.sw.on{outline-color:var(--ac)}
+.ic{width:1.15em;height:1.15em;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.2em;margin-right:.4em;display:inline-block}
+.bk .ic,.pk .ic,#dmb .ic{margin:0;width:20px;height:20px}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style></head><body>
 <div id="hud"><button class="hb" onclick="pause()">☰</button><span id="s">Přechody: 0/5</span><span id="l">❤❤❤</span><span id="cn" class="cn" style="color:#c98a00">🪙 0</span></div>
 <div id="w"><div id="g"><canvas id="c" width="360" height="520"></canvas><div id="ui"></div><button id="sb" class="bk" onclick="sTog()">🔊</button><button id="dmb" onclick="dms()" aria-label="Zprávy">✉️<b id="dmn"></b></button><div id="sp"><input id="sv" type="range" min="0" max="100" oninput="sVol(this.value)"><button id="sm" class="b s" onclick="sMute()">🔇 Ztlumit</button></div></div></div>
@@ -598,8 +629,10 @@ function bug(){mode='menu';show(`<h1>💡 Podněty</h1><p class="sub">Navrhni zm
 function bugSend(){const t=document.getElementById('bt'),v=t.value.trim(),m=document.getElementById('bm');if(v.length<3){m.style.color='#ff9a9a';m.textContent='Napiš aspoň pár slov.';return}m.style.color='#fff';m.textContent='Odesílám…';AP('bugsend',{body:BTY[BT][1]+' '+v}).then(()=>{t.value='';m.textContent='Díky! Zpráva byla odeslána adminům. 👍'},()=>{m.style.color='#ff9a9a';m.textContent='Odeslání se nepovedlo.'})}
 // --- novinky / patch notes (upravitelné ve vývojářském režimu)
 const NEWS0=[
+{v:'3.0',name:'Redesign',items:['🎨 **Nový vzhled**: sjednocené barvy, tlačítka, karty, vstupní pole a okna v nočním pražském stylu. Rozložení menu i hry zůstalo stejné.','🧭 Ikony v menu jsou nově jednotné čárové místo emoji.','♿ Viditelné zvýraznění při ovládání klávesnicí a podpora omezeného pohybu.']},
 {v:'2.2',name:'Multiplayer',items:['🌐 **Multiplayer**: nový režim v Hrát! Vytvoř lobby, pošli kamarádům kód a závoďte spolu online. Král lobby nastaví počet pruhů a povolené boosty. Když tě srazí auto, vracíš se na začátek závodu.','🚋 **Zastávky místo úrovní**: v Dojeď co nejdál jedeš z Kavalírky tramvají č. 10 a od I. P. Pavlova metrem C až na Chodov. Za Chodovem pokračuješ jako Chodov I, II… Název zastávky vidíš i na chodnících (checkpointech).','✉️ Tlačítko Zprávy v menu je větší.']},
 {v:'2.1',name:'Zprávy a leaderboardy',items:['🏆 **Leaderboards** jsou větší a vyšší v menu. Najdeš v nich světový žebříček Dojeď co nejdál i svoje osobní rekordy.','✉️ **Online** je nově **Zprávy**: chat a soukromé zprávy. Na své podněty a návrhy teď dostaneš odpověď přímo do zpráv.','🎭 Nové skiny v boxech.','😀 Hra má vlastní ikonku po přidání na plochu.']},
+{v:'2.0',name:'Kavadle',items:['🧩 **Kavadle**: nová minihra s vlastními výsledky a možností začít novou hru.']},
 {v:'1.1',name:'Levely',items:['📈 **Levely a XP**: za každý přejetý pruh v Dojeď co nejdál dostaneš 1 XP, za splněný level ve Story 50–100 XP. Svůj level vidíš v menu, ostatní hráči ho vidí u tvé profilovky.','🎁 Za každý 10. level (10, 20, 30…) dostaneš 50 🪙.','🎭 Další nové skiny v boxech.','📦 Startovní boosty z boxů padají po třech a Sezónní box má 60% šanci na sezónní věc.','🚌 Nový pomalý a velký autobus + opravy chyb (Story po prohře od checkpointu, hráč se už sám nehýbe).','📲 „Celá obrazovka“ je nově „Přidat na plochu“ s návodem.']},
 {v:'1.0',name:'Musílkova',items:['🍂 **Sezóna 1 – Musílkova**: nová položka v menu se zamčenými sezónními skiny a pozadím.','🎁 **Sezónní box** (450 🪙): malá šance na sezónní skin nebo pozadí. Sezónní věci mají vlastní raritu „Sezónní“.','🏙 Sezónní pozadí vybereš v Upravit plochu → Sezónní pozadí.','🚀 **Startovní boosty** z boxů: 2 životy, imunita proti SPD, delší boosty. Aktivuješ je před startem Dojeď co nejdál.','🚇 **Metro** – vzácný boost v Dojeď co nejdál, posune tě o 10 polí.','⚠️ Upozornění před koncem boostu (blikání, text a pípnutí).','💰 Nové ceny boxů: Malý 175 · Velký 250 · Sezónní 450 🪙.','🔍 Klepnutím na skin ve „Vybrat skin“ ho zvětšíš.','💡 „Nahlásit bug“ je nově Podněty: bug, návrh změny nebo návrh skinu.','🔄 Nové pořadí tlačítek v menu.']}];
 let NWC=!!(DV&&Array.isArray(DV.n)&&DV.n.length),NW=NWC?DV.n:NEWS0,NO=0;
@@ -681,6 +714,30 @@ function mpResUpd(){if(MPUI!='res'||!MP)return;const k=MP.king==MP.me,run=MP.sta
  r.innerHTML=L.map((q,i)=>`<div style="display:flex;align-items:center;gap:8px;padding:6px 0;${i?'border-top:1px solid rgba(255,255,255,.08);':''}${q.id==MP.me?'color:#ffd400;font-weight:700':''}"><span style="width:28px">${['🥇','🥈','🥉'][i]||(i+1)+'.'}</span><span style="flex:1;overflow:hidden;text-overflow:ellipsis">${esc(q.name)}</span><span>${q.st=='finished'?mpFmt(q.fin):Math.min(99,Math.round(q.prog/mpTot*100))+' %'+(q.st=='racing'?' 🏃':'')}</span><span style="width:44px;text-align:right;opacity:.8">💥${q.crashes}</span></div>`).join('');
  const sg=k+'|'+run;if(b.dataset.s!==sg){b.dataset.s=sg;b.innerHTML=(k?`<button class="b y" onclick="mpBack()">🔁 ${run?'Ukončit závod a zpět do lobby':'Zpět do lobby'}</button>`:`<p class="sub">${run?'':'Král lobby vás vrátí do lobby…'}</p>`)+'<button class="b s" onclick="mpLeave()">🚪 Opustit lobby</button>'}}
 function mpBack(){AP('mp_back').then(mpGot,()=>{})}
+
+
+/* ===== UPDATE 3.0: jednotne ikony misto emoji v tlacitkach ===== */
+(function(){
+const P={
+play:'<polygon points="6 3 20 12 6 21 6 3"/>',
+zap:'<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>',
+book:'<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>',
+globe:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+mail:'<rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
+news:'<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2z"/><path d="M4 22a2 2 0 0 1-2-2v-9h4"/><path d="M10 6h8"/><path d="M10 10h8"/><path d="M10 14h4"/>',
+trophy:'<path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-1.97 1.5C7.1 19 6 20.24 6 22"/><path d="M14 14.66V17c0 .55.47.98 1.97 1.5C16.9 19 18 20.24 18 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>',
+plus:'<path d="M12 5v14"/><path d="M5 12h14"/>',
+exit:'<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5"/><path d="M21 12H9"/>',
+redo:'<path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/><path d="M3 21v-5h5"/>',
+flag:'<path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><path d="M4 22v-7"/>'};
+const M={'🏃':'zap','📖':'book','🌐':'globe','✉️':'mail','✉':'mail','📰':'news','🏆':'trophy','▶':'play','➕':'plus','🚪':'exit','🔁':'redo','🏁':'flag'};
+const re=new RegExp('^\\s*('+Object.keys(M).map(k=>k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')\\uFE0F?\\s*');
+function ico(n){return '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">'+P[n]+'</svg>'}
+function run(root){root.querySelectorAll('.b,.pk,.bk,#dmb').forEach(b=>{if(b.dataset.ic)return;const t=b.firstChild;if(!t||t.nodeType!=3)return;const m=re.exec(t.nodeValue);if(!m)return;b.dataset.ic=1;t.nodeValue=t.nodeValue.slice(m[0].length);const sp=document.createElement('span');sp.innerHTML=ico(M[m[1]]);sp.appendChild(t);b.insertBefore(sp,b.firstChild)})}
+const ui=document.getElementById('ui');if(!ui||!window.MutationObserver)return;
+const mo=new MutationObserver(()=>{mo.disconnect();try{run(ui)}finally{mo.observe(ui,{childList:true,subtree:true})}});
+mo.observe(ui,{childList:true,subtree:true});run(ui);
+})();
 
 applyTh();reset();menu();if(needPatch())patch();loop();
 </script></body></html>
