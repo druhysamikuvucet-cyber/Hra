@@ -208,6 +208,13 @@ async function onApi(d){const a=d.arg||{},M=me.id,min={headers:{Prefer:'return=m
  if(d.op=='dstate')return rpc('daily_state',{});
  if(d.op=='dclaim')return rpc('daily_claim',{});
  if(d.op=='ping')return rpc('ping',{});
+ if(d.op=='invsend')return rpc('invite_send',{p_to:String(a.to||'').slice(0,40),p_code:String(a.code||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8)});
+ if(d.op=='invpoll')return rpc('invite_poll',{});
+ if(d.op=='evlist')return rpc('events_list',{});
+ if(d.op=='evnew'){if(!me.admin)throw 0;return rpc('event_create',{p_title:String(a.title||'').slice(0,80),p_body:String(a.body||'').slice(0,600),p_starts:a.starts?String(a.starts).slice(0,40):null})}
+ if(d.op=='evdel'){if(!me.admin)throw 0;return rpc('event_delete',{p_id:(+a.id)|0})}
+ if(d.op=='evjoin')return rpc('event_join',{p_id:(+a.id)|0});
+ if(d.op=='flappy')return rpc('earn_flappy',{p_levels:Math.max(0,Math.min(200,(+a.n)|0))});
  if(d.op=='jirka'){const ms=(Array.isArray(a.messages)?a.messages:[]).slice(-10).map(m=>({role:m.role=='assistant'?'assistant':'user',content:String(m.content||'').slice(0,400)}));const go=()=>fetch(SB+'/functions/v1/jirka-chat',{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+ses.access_token,'Content-Type':'application/json'},body:JSON.stringify({messages:ms})});let r=await go();if(r.status==401){await refresh();r=await go()}const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||('err '+r.status));return j}
  if(d.op=='ocet')return rpc('buy_ocet',{});
  if(d.op=='pack')return rpc('buy_pack',{b:['revive','spd','long'].includes(a.b)?a.b:'x'});
