@@ -207,6 +207,8 @@ async function onApi(d){const a=d.arg||{},M=me.id,min={headers:{Prefer:'return=m
  if(d.op=='dsub')return rpc('daily_submit',{p_lanes:Math.max(0,Math.min(2000,(+a.n)|0))});
  if(d.op=='dstate')return rpc('daily_state',{});
  if(d.op=='dclaim')return rpc('daily_claim',{});
+ if(d.op=='ping')return rpc('ping',{});
+ if(d.op=='jirka'){const ms=(Array.isArray(a.messages)?a.messages:[]).slice(-10).map(m=>({role:m.role=='assistant'?'assistant':'user',content:String(m.content||'').slice(0,400)}));const go=()=>fetch(SB+'/functions/v1/jirka-chat',{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+ses.access_token,'Content-Type':'application/json'},body:JSON.stringify({messages:ms})});let r=await go();if(r.status==401){await refresh();r=await go()}const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||('err '+r.status));return j}
  if(d.op=='ocet')return rpc('buy_ocet',{});
  if(d.op=='pack')return rpc('buy_pack',{b:['revive','spd','long'].includes(a.b)?a.b:'x'});
  if(d.op=='roul')return rpc('buy_roulette',{r:String(a.r||'').slice(0,20)});
