@@ -204,6 +204,12 @@ async function onApi(d){const a=d.arg||{},M=me.id,min={headers:{Prefer:'return=m
  if(d.op=='players')return rpc('get_players',{});
  if(d.op=='kvstate')return rpc('kavadle_state',{});
  if(d.op=='kvguess'){const r=await rpc('kavadle_guess',{p_name:String(a.name||'').slice(0,80)});const f=document.querySelector('#game iframe');if(r&&r.won&&r.gain&&f)f.contentWindow.postMessage({t:'kvstate',s:r},'*');return r}
+ if(d.op=='dsub')return rpc('daily_submit',{p_lanes:Math.max(0,Math.min(2000,(+a.n)|0))});
+ if(d.op=='dstate')return rpc('daily_state',{});
+ if(d.op=='dclaim')return rpc('daily_claim',{});
+ if(d.op=='ocet')return rpc('buy_ocet',{});
+ if(d.op=='pack')return rpc('buy_pack',{b:['revive','spd','long'].includes(a.b)?a.b:'x'});
+ if(d.op=='roul')return rpc('buy_roulette',{r:String(a.r||'').slice(0,20)});
  if(d.op=='mp_create')return rpc('mp_create',{});
  if(d.op=='mp_join')return rpc('mp_join',{p_code:String(a.code||'').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,8)});
  if(d.op=='mp_leave')return rpc('mp_leave',{});
@@ -245,7 +251,7 @@ async function mtPanel(msg){ap.style.display='block';ap.innerHTML='<h2>Admin</h2
 async function mtSet(on){const m=$('mm');try{await rpc('set_maintenance',{p_on:on,p_msg:m?m.value.trim().slice(0,200):''});await mtCheck();mtPanel(on?'Údržba zapnuta ✔':'Údržba ukončena ✔')}catch(e){mtPanel('Nepovedlo se (jsi admin? běžel SQL 09?)')}}
 // ---- admin panel
 const ap=$('ap'),DN=['easy','medium','hard','demon'],NM={easy:'Easy',medium:'Medium',hard:'Hard',demon:'Démon'};
-const tabs=t=>'<div class="tb"><button class="gb'+(t=='lb'?'':' s')+'" data-t="lb">🏆 Žebříček</button><button class="gb'+(t=='ac'?'':' s')+'" data-t="ac">👥 Účty</button><button class="gb'+(t=='bg'?'':' s')+'" data-t="bg">💡 Podněty</button><button class="gb'+(t=='mt'?'':' s')+'" data-t="mt">🛠 Údržba</button></div>';
+const tabs=t=>'<div class="tb"><button class="gb'+(t=='lb'?'':' s')+'" data-t="lb">🏆 Žebříček</button><button class="gb'+(t=='ac'?'':' s')+'" data-t="ac">👥 Účty</button><button class="gb'+(t=='bg'?'':' s')+'" data-t="bg">💡 Podněty</button><button class="gb'+(t=='mt'?'':' s')+'" data-t="mt">🛠 Údržba</button><button class="gb'+(t=='sk'?'':' s')+'" data-t="sk">🎭 Skiny</button></div>';
 let BR=[],BF='all',REP=null;
 const BK=b=>/^\[BUG\]/i.test(b)?'bug':/^\[NÁVRH SKINU\]/i.test(b)?'skin':'zmena',BKN={bug:'🐞 Bugy',zmena:'💡 Změny',skin:'🎭 Skiny'},bS=b=>String(b).replace(/^\[[^\]]+\]\s*/,''),
  BST={accepted:['✅ zavedeme','#3ddc6b'],rejected:['❌ nezavedeme','#ff8a8a'],answered:['💬 odpovězeno','#4cc9f0']};
@@ -283,8 +289,15 @@ async function save(i){const n=$('fn').value.trim().toLowerCase(),p=$('fp').valu
  m.style.color='#ffb3b3';m.textContent='Ukládám…';
  try{i==null?await fn({a:'create',username:n,password:p,is_admin:r}):await fn({a:'update',id:ACC[i].id,username:n,password:p||undefined,is_admin:r});ac('Uloženo ✔')}catch(e){m.style.color='#ff6b6b';m.textContent=e.message}}
 async function del(i){const m=$('fm');m.style.color='#ffb3b3';m.textContent='Mažu…';try{await fn({a:'delete',id:ACC[i].id});ac('Smazáno ✔')}catch(e){m.style.color='#ff6b6b';m.textContent=e.message}}
+async function skAdm(){ap.style.display='block';ap.innerHTML='<h2>Admin</h2>'+tabs('sk')+'<p class="nt">Načítám…</p>';
+ try{const r=await rpc('admin_skins',{});let X={},R={};try{const w=document.querySelector('#game iframe').contentWindow;(w.SKLX||[]).forEach(q=>X[q[0]]=q);R=w.RARX||{}}catch(e){}
+  const by={},od=['rare','super_rare','epic','mythic','legendary','seasonal'],oi=k=>{const n=od.indexOf(k);return n<0?99:n};
+  r.forEach(k=>(by[k.rarity]=by[k.rarity]||[]).push(k));
+  const h=Object.keys(by).sort((a,b)=>oi(a)-oi(b)).map(k=>{const c=(R[k]&&R[k].c)||'#9aa4b5',n=(R[k]&&R[k].n)||k;return '<p class="nt" style="color:'+c+';margin:10px 0 4px"><b>'+esc(n)+' ('+by[k].length+')</b></p><div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center">'+by[k].map(q=>'<span style="border:1px solid '+c+';border-radius:8px;padding:4px 8px;font-size:12px">'+esc((X[q.id]&&X[q.id][1])||q.name||q.id)+(q.kind&&q.kind!='skin'?' <small style="opacity:.6">'+esc(q.kind)+'</small>':'')+'</span>').join('')+'</div>'}).join('');
+  ap.innerHTML='<h2>Admin</h2>'+tabs('sk')+'<p class="nt">Všechny skiny ve hře: <b>'+r.length+'</b></p>'+h+'<button class="gb s" data-cl="1">Zavřít</button>'}
+ catch(e){ap.innerHTML='<h2>Admin</h2>'+tabs('sk')+'<p class="fm">Načtení se nepovedlo (je spuštěný soubor 13-update-3-1.sql?).</p><button class="gb s" data-cl="1">Zavřít</button>'}}
 ap.onclick=e=>{const d=e.target.dataset;if(!d)return;
- if(d.cl)ap.style.display='none';else if(d.t)d.t=='lb'?lb():d.t=='bg'?bugs():d.t=='mt'?mtPanel():ac();else if(d.bf){BF=d.bf;REP=null;bugsR()}else if(d.rp){REP=REP==+d.rp?null:+d.rp;bugsR()}else if(d.rs)sendReply(+d.ri,d.rs);else if(d.bp)rpc('set_report_priority',{rid:+d.bp,pr:+d.pv}).then(bugs,()=>{});else if(d.mt!=null)mtSet(d.mt=='1');else if(d.bd)api('/rest/v1/bug_reports?id=eq.'+(+d.bd),{method:'DELETE',headers:{Prefer:'return=minimal'}}).then(bugs,()=>{});else if(d.add)form(null);else if(d.ls)ac();else if(d.sv!=null)save(d.sv===''?null:+d.sv);
+ if(d.cl)ap.style.display='none';else if(d.t)d.t=='lb'?lb():d.t=='bg'?bugs():d.t=='mt'?mtPanel():d.t=='sk'?skAdm():ac();else if(d.bf){BF=d.bf;REP=null;bugsR()}else if(d.rp){REP=REP==+d.rp?null:+d.rp;bugsR()}else if(d.rs)sendReply(+d.ri,d.rs);else if(d.bp)rpc('set_report_priority',{rid:+d.bp,pr:+d.pv}).then(bugs,()=>{});else if(d.mt!=null)mtSet(d.mt=='1');else if(d.bd)api('/rest/v1/bug_reports?id=eq.'+(+d.bd),{method:'DELETE',headers:{Prefer:'return=minimal'}}).then(bugs,()=>{});else if(d.add)form(null);else if(d.ls)ac();else if(d.sv!=null)save(d.sv===''?null:+d.sv);
  else if(d.e!=null&&d.e!=='')form(+d.e);
  else if(d.d!=null&&d.d!==''){if(delI==+d.d)del(+d.d);else{delI=+d.d;e.target.textContent='Opravdu?'}}}
 $('adm').addEventListener('click',lb);
