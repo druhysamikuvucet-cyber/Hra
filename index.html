@@ -94,6 +94,68 @@ input:focus{border-color:#ff3b3b}
 #hint{opacity:.85}
 #msg{font-weight:600}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}#portal{transition-duration:.01ms!important}}
+/* ===== UPDATE 4.0: hub, zprávy, JB scroll ===== */
+#hub{position:fixed;inset:0;z-index:4;display:none;flex-direction:column;align-items:center;justify-content:center;padding:calc(env(safe-area-inset-top,0px) + 16px) 18px calc(env(safe-area-inset-bottom,0px) + 56px);overflow:auto;text-align:center}
+body.hubon #lucifer{opacity:.38}
+#hub h1{font-size:clamp(20px,5.6vw,32px);line-height:1.45;letter-spacing:2px;margin:0 0 20px;max-width:560px}
+#hn{color:#fff;text-shadow:0 0 12px #ff3b3b,0 0 26px #c1121f}
+.hbtn{position:relative;display:block;width:100%;max-width:400px;margin:9px auto;padding:17px 16px;font:700 19px Cinzel,Georgia,serif;letter-spacing:2px;color:#fff;background:linear-gradient(#a50f1a,#4a0509);border:1px solid #ff3b3b;border-radius:12px;box-shadow:0 0 18px rgba(193,18,31,.55),inset 0 1px 0 rgba(255,255,255,.18);cursor:pointer;transition:transform .12s,filter .2s}
+.hbtn small{display:block;margin-top:5px;font:500 11px Cinzel,Georgia,serif;letter-spacing:1px;opacity:.8}
+.hbtn:active{transform:scale(.97)}
+@media(hover:hover){.hbtn:hover{filter:brightness(1.2)}}
+.hbtn.p{font-size:24px;padding:22px 16px;background:linear-gradient(#d4161f,#6a060b)}
+.hbtn.ld{opacity:.6;pointer-events:none}
+.hbtn i{position:absolute;top:8px;right:10px;min-width:20px;padding:1px 6px;border-radius:10px;background:#ffd400;color:#1a0508;font:800 12px system-ui,sans-serif;font-style:normal;display:none}
+#hb,#hx,#hadm{position:fixed;bottom:calc(env(safe-area-inset-bottom,0px) + 8px);z-index:5;width:32px;height:32px;border-radius:50%;border:1px solid #c1121f;background:rgba(0,0,0,.55);color:#fff;font-size:14px;padding:0;cursor:pointer}
+#hx{left:8px}#hb{left:46px}#hadm{left:46px;display:none}#adm{left:84px}
+#hadm.dot::after{content:"";position:absolute;top:0;right:0;width:9px;height:9px;border-radius:50%;background:#e5383b}
+#ap .tb{flex-wrap:wrap;justify-content:center}
+#ms,#sc{position:fixed;inset:0;z-index:7;display:none;flex-direction:column;background:rgba(5,2,4,.97);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#fff}
+#ms .nt,#sc .nt{font-size:13px;opacity:.75;margin:6px 0 12px}
+.mbar{display:flex;align-items:center;gap:10px;padding:calc(env(safe-area-inset-top,0px) + 10px) 12px 10px;border-bottom:1px solid #5a0a0f;max-width:560px;width:100%;margin:0 auto}
+.mbar b{flex:1;font:700 17px Cinzel,serif;letter-spacing:2px;color:#ff6b6b;text-align:left}
+.rb{width:38px;height:38px;border-radius:50%;border:1px solid #c1121f;background:rgba(0,0,0,.6);color:#fff;font-size:17px;padding:0;cursor:pointer;flex:none}
+#msb{flex:1;overflow:auto;padding:12px;max-width:560px;width:100%;margin:0 auto}
+.mrow{display:flex;gap:10px;align-items:center;padding:10px;border:1px solid #3a0a0f;border-radius:10px;margin:8px 0;background:rgba(40,6,10,.5);cursor:pointer;text-align:left}
+.mrow b{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mrow small{opacity:.65;display:block;font-weight:400;overflow:hidden;text-overflow:ellipsis}
+.dotb{min-width:20px;padding:1px 6px;border-radius:10px;background:#ffd400;color:#1a0508;font:800 12px system-ui,sans-serif;text-align:center}
+.av{display:flex;align-items:center;justify-content:center;border-radius:50%;background:#7a1620;color:#fff;font-weight:700;flex:none}
+.ml{display:flex;flex-direction:column;gap:6px}
+.bub{max-width:85%;align-self:flex-start;padding:7px 11px;border-radius:12px;background:rgba(255,255,255,.1);text-align:left;word-break:break-word;font-size:15px}
+.bub.me{align-self:flex-end;background:rgba(193,18,31,.45)}
+.bub small{display:block;opacity:.55;font-size:11px;margin-top:2px}
+.mi{display:flex;gap:8px;padding:8px 12px calc(env(safe-area-inset-bottom,0px) + 10px);max-width:560px;width:100%;margin:0 auto}
+#ms input,#sc input{flex:1;width:auto;min-width:0;padding:11px 12px;letter-spacing:0;text-align:left;font:500 15px system-ui,sans-serif}
+.mi button{border:0;border-radius:10px;background:#c1121f;color:#fff;font-size:18px;padding:0 16px;cursor:pointer}
+/* JB scroll */
+#scf{position:absolute;top:0;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none;background:#000}
+#scf::-webkit-scrollbar{display:none}
+#sct{position:absolute;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:calc(env(safe-area-inset-top,0px) + 8px) 10px 22px;background:linear-gradient(rgba(0,0,0,.8),transparent);pointer-events:none}
+#sct>*{pointer-events:auto}
+#sct b{font:700 18px 'Cinzel Decorative',Cinzel,serif;letter-spacing:2px;color:#ff3b3b;text-shadow:0 0 10px #c1121f}
+#sct .up{border:1px solid #ff3b3b;background:linear-gradient(#a50f1a,#4a0509);color:#fff;border-radius:19px;padding:0 14px;height:38px;font:700 13px system-ui,sans-serif;cursor:pointer}
+.vi{position:relative;height:100%;scroll-snap-align:start;scroll-snap-stop:always;background:#000;overflow:hidden}
+.vi video{width:100%;height:100%;object-fit:contain;display:block;background:#000}
+.vp{position:absolute;inset:0;margin:auto;width:70px;height:70px;border-radius:50%;background:rgba(0,0,0,.55);display:none;place-items:center;font-size:30px;pointer-events:none}
+.vr{position:absolute;right:8px;bottom:calc(env(safe-area-inset-bottom,0px) + 90px);display:flex;flex-direction:column;gap:12px;align-items:center;z-index:2}
+.vr button{width:48px;border:0;background:rgba(0,0,0,.45);color:#fff;border-radius:24px;padding:8px 0 5px;font-size:22px;line-height:1;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px}
+.vr button b{font:700 11px system-ui,sans-serif}
+.vr button.on{color:#ff3b5c;background:rgba(193,18,31,.35)}
+.vm{position:absolute;left:0;right:70px;bottom:0;padding:40px 14px calc(env(safe-area-inset-bottom,0px) + 22px);background:linear-gradient(transparent,rgba(0,0,0,.8));text-align:left;pointer-events:none}
+.vm b{font-size:15px}.vm p{margin:4px 0 0;font-size:14px;word-break:break-word}
+.vm .hid{color:#ffd400;font-size:12px}
+#sce{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:30px;color:#ddd}
+#scx{position:absolute;inset:0;z-index:5;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,.55)}
+.sh{width:100%;max-width:480px;max-height:80%;overflow:auto;background:#12040a;border:1px solid #5a0a0f;border-radius:16px 16px 0 0;padding:14px 14px calc(env(safe-area-inset-bottom,0px) + 14px);text-align:left}
+.shh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.shh b{font:700 16px Cinzel,serif;letter-spacing:1px;color:#ff6b6b}
+.shh button{border:0;background:none;color:#fff;font-size:20px;cursor:pointer}
+.cm{padding:8px 0;border-top:1px solid rgba(255,255,255,.08);font-size:14px;word-break:break-word}
+.cm span{opacity:.5;font-size:11px;margin-left:6px}.cm i{font-style:normal;cursor:pointer;margin-left:8px;opacity:.8}
+.sh .gb{margin:6px 0}
+.sh input[type=file]{width:100%;font-size:14px;padding:10px;margin-bottom:8px}
+.pb{height:8px;background:#2a0a0e;border-radius:4px;overflow:hidden;margin:8px 0;display:none}.pb i{display:block;height:100%;width:0;background:#ff3b3b}
 </style></head><body>
 <div id="bg"></div><canvas id="em"></canvas><div id="vig"></div>
 
@@ -148,7 +210,12 @@ input:focus{border-color:#ff3b3b}
 <button id="go" type="button">OTEVŘÍT PORTÁL</button>
 <p id="msg"></p>
 </div></div>
-<div id="game"><button id="x" aria-label="Odhlásit">✕</button><button id="adm" aria-label="Admin">⚙</button></div><div id="ap"></div><div id="kv"></div><button id="kvx" type="button">← Zpět do hry</button><div id="mt"><div class="sp">🛠</div><h2>MAINTENANCE BREAK</h2><p id="mtp"></p></div><div id="mb">🛠 ÚDRŽBA ZAPNUTÁ – hráči bez admina jsou zablokovaní</div>
+<div id="game"><button id="x" aria-label="Odhlásit">✕</button><button id="adm" aria-label="Admin">⚙</button><button id="hb" aria-label="Hlavní stránka">🏠</button></div><div id="hub"><h1>Vítej <span id="hn"></span> zpět ve světě online JB zábavy</h1>
+<button class="hbtn p" id="hplay">🎮 Chci hrát!<small>Jízda na Chodov, minihry, turnaje</small></button>
+<button class="hbtn" id="hscroll">📜 JB scroll<small>Videa od hráčů · scrolluj, lajkuj, komentuj</small></button>
+<button class="hbtn" id="hmsg">✉️ Zprávy<small>Veřejný chat a soukromé zprávy</small><i id="hmb"></i></button>
+<p id="hst" class="fm"></p>
+<button id="hx" aria-label="Odhlásit">✕</button><button id="hadm" aria-label="Admin">⚙</button></div><div id="sc"></div><div id="ms"></div><div id="ap"></div><div id="kv"></div><button id="kvx" type="button">← Zpět do hry</button><div id="mt"><div class="sp">🛠</div><h2>MAINTENANCE BREAK</h2><p id="mtp"></p></div><div id="mb">🛠 ÚDRŽBA ZAPNUTÁ – hráči bez admina jsou zablokovaní</div>
 <script>
 const SB='https://gwkhtvgnwewtdmxiufoe.supabase.co',KEY='sb_publishable_9R7PdfrUK3ivnLgzDXYqiQ_71oaITPl',DOM='@chodov-hra.app';
 const $=i=>document.getElementById(i),esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
@@ -164,13 +231,12 @@ const pre=(d,a,st)=>'<script id="accpre">window.ACC_ADMIN='+(a?1:0)+';window.ACC
 function fail(t){const m=$('msg');m.style.color='#ff6b6b';m.textContent=t||'Brána zůstává zavřená…';const p=$('portal');p.classList.remove('shake');void p.offsetWidth;p.classList.add('shake');busy=false}
 async function enter(){
  const uid=ses.user.id;
- const [pr,pg,cf,gm,st]=await Promise.all([api('/rest/v1/profiles?id=eq.'+uid+'&select=username,is_admin'),api('/rest/v1/progress?user_id=eq.'+uid+'&select=data'),api('/rest/v1/config?select=key,value'),fetch('game.html').then(r=>{if(!r.ok)throw 0;return r.text()}),rpc('get_state',{}).catch(()=>null)]);
+ const pr=await api('/rest/v1/profiles?id=eq.'+uid+'&select=username,is_admin');
  me={id:uid,name:pr[0].username,admin:!!pr[0].is_admin};
  {const mr=await mtGet();mtStart();if(mr&&mr.on&&!me.admin){$('portal').style.display='none';mtBlock(mr);return}if(mr&&mr.on)$('mb').style.display='block'}
- let html=gm;for(const c of cf||[])if(c.key=='credata'||c.key=='devdata')html=setBlock(html,c.key,c.value);
- html=html.replace('<head>','<head>'+pre((pg&&pg[0]&&pg[0].data)||{},me.admin,st));
- $('portal').classList.add('open');
- setTimeout(()=>{$('portal').style.display='none';const f=document.createElement('iframe');f.srcdoc=html;$('game').appendChild(f);$('game').style.display='block';$('adm').style.display=me.admin?'block':'none';if(me.admin)api('/rest/v1/bug_reports?select=id&status=is.null&limit=1').catch(()=>api('/rest/v1/bug_reports?select=id&limit=1')).then(r=>$('adm').classList.toggle('dot',!!(r&&r.length)),()=>{})},850)}
+ $('portal').classList.add('open');startPing();
+ setTimeout(()=>{$('portal').style.display='none';hubShow()},850)}
+
 async function login(){const u=$('user').value.trim().toLowerCase(),p=$('code').value;if(busy||!u||!p)return;busy=true;const m=$('msg');m.style.color='#ff9a9a';m.textContent='Probouzím portál…';
  try{await auth({email:u+DOM,password:p},'password')}catch(e){return fail()}
  try{await enter()}catch(e){fail('Hru se nepodařilo načíst.')}}
@@ -215,6 +281,14 @@ async function onApi(d){const a=d.arg||{},M=me.id,min={headers:{Prefer:'return=m
  if(d.op=='evdel'){if(!me.admin)throw 0;return rpc('event_delete',{p_id:(+a.id)|0})}
  if(d.op=='evjoin')return rpc('event_join',{p_id:(+a.id)|0});
  if(d.op=='flappy')return rpc('earn_flappy',{p_levels:Math.max(0,Math.min(200,(+a.n)|0))});
+ if(d.op=='vfeed')return rpc('video_feed',{p_before:a.before?+a.before:null,p_limit:8});
+ if(d.op=='vlike')return rpc('video_like',{p_id:+a.id});
+ if(d.op=='vcomments')return rpc('video_comments',{p_id:+a.id});
+ if(d.op=='vcomment')return rpc('video_comment',{p_id:+a.id,p_body:String(a.body||'').slice(0,200)});
+ if(d.op=='vdel')return rpc('video_delete',{p_id:+a.id});
+ if(d.op=='cdel')return rpc('comment_delete',{p_id:+a.id});
+ if(d.op=='vreg')return rpc('video_register',{p_path:String(a.path||'').slice(0,120),p_caption:String(a.caption||'').slice(0,150),p_dur:+a.dur||0});
+ if(d.op=='vrep')return rpc('video_report',{p_video:a.video?+a.video:null,p_comment:a.comment?+a.comment:null,p_reason:String(a.reason||'').slice(0,40)});
  if(d.op=='jirka'){const ms=(Array.isArray(a.messages)?a.messages:[]).slice(-10).map(m=>({role:m.role=='assistant'?'assistant':'user',content:String(m.content||'').slice(0,400)}));const go=()=>fetch(SB+'/functions/v1/jirka-chat',{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+ses.access_token,'Content-Type':'application/json'},body:JSON.stringify({messages:ms})});let r=await go();if(r.status==401){await refresh();r=await go()}const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||('err '+r.status));return j}
  if(d.op=='ocet')return rpc('buy_ocet',{});
  if(d.op=='pack')return rpc('buy_pack',{b:['revive','spd','long'].includes(a.b)?a.b:'x'});
@@ -248,7 +322,7 @@ $('kvx').onclick=closeKv;
 // ---- maintenance
 let mtOn=0,mtI=0;const MTDEF='Maintenance break – fixujeme bugy nebo nasazujeme novou verzi. Prosím počkej.';
 const mtGet=()=>rpc('get_maintenance',{}).catch(()=>null);
-function mtBlock(r){mtOn=1;closeKv();$('mtp').textContent=(r&&r.msg)||MTDEF;$('mt').style.display='flex';$('adm').style.display='none';$('mb').style.display='none'}
+function mtBlock(r){mtOn=1;closeKv();try{scClose();msClose()}catch(e){}$('hub').style.display='none';$('mtp').textContent=(r&&r.msg)||MTDEF;$('mt').style.display='flex';$('adm').style.display='none';$('mb').style.display='none'}
 async function mtCheck(){if(!ses||!me)return;const r=await mtGet();if(!r)return;
  if(r.on&&!me.admin){if(!mtOn){try{await flush()}catch(e){}const f=document.querySelector('#game iframe');if(f)f.remove();$('game').style.display='none'}mtBlock(r)}
  else if(mtOn){location.reload()}
@@ -260,7 +334,7 @@ async function mtPanel(msg){ap.style.display='block';ap.innerHTML='<h2>Admin</h2
 async function mtSet(on){const m=$('mm');try{await rpc('set_maintenance',{p_on:on,p_msg:m?m.value.trim().slice(0,200):''});await mtCheck();mtPanel(on?'Údržba zapnuta ✔':'Údržba ukončena ✔')}catch(e){mtPanel('Nepovedlo se (jsi admin? běžel SQL 09?)')}}
 // ---- admin panel
 const ap=$('ap'),DN=['easy','medium','hard','demon'],NM={easy:'Easy',medium:'Medium',hard:'Hard',demon:'Démon'};
-const tabs=t=>'<div class="tb"><button class="gb'+(t=='lb'?'':' s')+'" data-t="lb">🏆 Žebříček</button><button class="gb'+(t=='ac'?'':' s')+'" data-t="ac">👥 Účty</button><button class="gb'+(t=='bg'?'':' s')+'" data-t="bg">💡 Podněty</button><button class="gb'+(t=='mt'?'':' s')+'" data-t="mt">🛠 Údržba</button><button class="gb'+(t=='sk'?'':' s')+'" data-t="sk">🎭 Skiny</button></div>';
+const tabs=t=>'<div class="tb"><button class="gb'+(t=='lb'?'':' s')+'" data-t="lb">🏆 Žebříček</button><button class="gb'+(t=='ac'?'':' s')+'" data-t="ac">👥 Účty</button><button class="gb'+(t=='bg'?'':' s')+'" data-t="bg">💡 Podněty</button><button class="gb'+(t=='mt'?'':' s')+'" data-t="mt">🛠 Údržba</button><button class="gb'+(t=='sk'?'':' s')+'" data-t="sk">🎭 Skiny</button><button class="gb'+(t=='rp'?'':' s')+'" data-t="rp">🚩 Nahlášené</button></div>';
 let BR=[],BF='all',REP=null;
 const BK=b=>/^\[BUG\]/i.test(b)?'bug':/^\[NÁVRH SKINU\]/i.test(b)?'skin':'zmena',BKN={bug:'🐞 Bugy',zmena:'💡 Změny',skin:'🎭 Skiny'},bS=b=>String(b).replace(/^\[[^\]]+\]\s*/,''),
  BST={accepted:['✅ zavedeme','#3ddc6b'],rejected:['❌ nezavedeme','#ff8a8a'],answered:['💬 odpovězeno','#4cc9f0']};
@@ -309,6 +383,135 @@ ap.onclick=e=>{const d=e.target.dataset;if(!d)return;
  if(d.cl)ap.style.display='none';else if(d.t)d.t=='lb'?lb():d.t=='bg'?bugs():d.t=='mt'?mtPanel():d.t=='sk'?skAdm():ac();else if(d.bf){BF=d.bf;REP=null;bugsR()}else if(d.rp){REP=REP==+d.rp?null:+d.rp;bugsR()}else if(d.rs)sendReply(+d.ri,d.rs);else if(d.bp)rpc('set_report_priority',{rid:+d.bp,pr:+d.pv}).then(bugs,()=>{});else if(d.mt!=null)mtSet(d.mt=='1');else if(d.bd)api('/rest/v1/bug_reports?id=eq.'+(+d.bd),{method:'DELETE',headers:{Prefer:'return=minimal'}}).then(bugs,()=>{});else if(d.add)form(null);else if(d.ls)ac();else if(d.sv!=null)save(d.sv===''?null:+d.sv);
  else if(d.e!=null&&d.e!=='')form(+d.e);
  else if(d.d!=null&&d.d!==''){if(delI==+d.d)del(+d.d);else{delI=+d.d;e.target.textContent='Opravdu?'}}}
+// ===== UPDATE 4.0: hub, zprávy, JB scroll =====
+const XA=(op,arg)=>onApi({op,arg:arg||{}});
+const avOK=a=>typeof a=='string'&&/^data:image\/jpeg;base64,/.test(a)&&a.length<70000;
+const avh=(a,n,s)=>avOK(a)?'<img src="'+a+'" style="width:'+s+'px;height:'+s+'px;border-radius:50%;object-fit:cover;flex:none">':'<span class="av" style="width:'+s+'px;height:'+s+'px;font-size:'+Math.round(s*.5)+'px">'+esc((n||'?')[0].toUpperCase())+'</span>';
+const tmf=t=>{try{return new Date(t).toLocaleTimeString('cs-CZ',{hour:'2-digit',minute:'2-digit'})}catch(e){return''}};
+let pingI=0,playB=false;
+function startPing(){clearInterval(pingI);const f=()=>{if(!document.hidden&&ses)rpc('ping',{}).catch(()=>{})};f();pingI=setInterval(f,45000)}
+function hubShow(){document.body.classList.add('hubon');$('hn').textContent=me.name;$('hub').style.display='flex';$('hadm').style.display=me.admin?'block':'none';$('hst').textContent='';hubBadges()}
+async function admDot(){let on=false;try{let r;try{r=await api('/rest/v1/bug_reports?select=id&status=is.null&limit=1')}catch(e){r=await api('/rest/v1/bug_reports?select=id&limit=1')}on=!!(r&&r.length)}catch(e){}
+ try{const n=await rpc('reports_pending',{});if(n>0)on=true}catch(e){}
+ $('adm').classList.toggle('dot',on);$('hadm').classList.toggle('dot',on)}
+async function hubBadges(){try{const d=await XA('dmlist');const n=(d.threads||[]).reduce((s,t)=>s+t.unread,0),b=$('hmb');b.textContent=n;b.style.display=n?'block':'none'}catch(e){}
+ if(me.admin)admDot()}
+async function play(){if(playB)return;playB=true;const b=$('hplay');b.classList.add('ld');
+ try{const uid=me.id;const mr=await mtGet();if(mr&&mr.on&&!me.admin){mtBlock(mr);return}
+  const [pg,cf,gm,st]=await Promise.all([api('/rest/v1/progress?user_id=eq.'+uid+'&select=data'),api('/rest/v1/config?select=key,value'),fetch('game.html').then(r=>{if(!r.ok)throw 0;return r.text()}),rpc('get_state',{}).catch(()=>null)]);
+  let html=gm;for(const c of cf||[])if(c.key=='credata'||c.key=='devdata')html=setBlock(html,c.key,c.value);
+  html=html.replace('<head>','<head>'+pre((pg&&pg[0]&&pg[0].data)||{},me.admin,st));
+  $('hub').style.display='none';
+  const old=document.querySelector('#game iframe');if(old)old.remove();
+  const f=document.createElement('iframe');f.srcdoc=html;$('game').appendChild(f);$('game').style.display='block';$('adm').style.display=me.admin?'block':'none'}
+ catch(e){$('hst').textContent='Hru se nepodařilo načíst. Zkus to znovu.'}
+ finally{playB=false;b.classList.remove('ld')}}
+$('hb').addEventListener('click',async()=>{try{await flush()}catch(e){}const f=document.querySelector('#game iframe');if(f)f.remove();closeKv();$('game').style.display='none';hubShow()});
+$('hplay').onclick=play;$('hscroll').onclick=()=>scOpen();$('hmsg').onclick=()=>msHome();
+$('hx').onclick=()=>$('x').click();$('hadm').onclick=()=>lb();
+
+// ---- Zprávy
+let MST=0,MTH=[],MAVA={},MSIG='',MC=null,MODE='dm',MUS=[];
+function msShell(title,back,send){clearInterval(MST);MST=0;MSIG='';const m=$('ms');
+ m.innerHTML='<div class="mbar"><button class="rb" id="msbk">←</button><b>'+title+'</b></div><div id="msb"></div>'+(send?'<div class="mi"><input id="msi" maxlength="300" placeholder="Napiš zprávu…" autocomplete="off"><button id="mssd">➤</button></div><p id="msm" class="fm" style="margin:0 0 8px;text-align:center"></p>':'');
+ m.style.display='flex';$('msbk').onclick=back;if(send){$('mssd').onclick=send;$('msi').addEventListener('keydown',e=>{if(e.key=='Enter')send()})}}
+function msClose(){clearInterval(MST);MST=0;$('ms').style.display='none';$('ms').innerHTML='';if(me)hubBadges()}
+async function msHome(){MODE='dm';msShell('✉️ Zprávy',msClose);const b=$('msb');b.innerHTML='<p class="fm">Načítám…</p>';
+ try{const [d,pl]=await Promise.all([XA('dmlist'),XA('players').catch(()=>[])]);(pl||[]).forEach(p=>MAVA[p.username]=p.avatar);MTH=d.threads||[];if(!$('msb'))return;
+  $('msb').innerHTML='<div class="mrow" onclick="msChat()"><span style="font-size:26px">💬</span><b>Veřejný chat<small>Píšou tu všichni hráči</small></b></div><button class="gb" onclick="msNew()">＋ Nová zpráva</button>'+
+   (MTH.length?MTH.map((t,i)=>'<div class="mrow" onclick="msThread('+i+')">'+avh(MAVA[t.u],t.u,40)+'<b>'+esc(t.u)+'<small>'+(t.mine?'Ty: ':'')+esc(t.b)+'</small></b>'+(t.unread?'<span class="dotb">'+t.unread+'</span>':'')+'</div>').join(''):'<p class="nt" style="text-align:center">Zatím žádné soukromé zprávy.</p>')}
+ catch(e){if($('msb'))$('msb').innerHTML='<p class="fm">Načtení se nepovedlo.</p>'}}
+function msPaint(r,f){const b=$('msb');if(!b)return;const sig=r.length+':'+(r.length?r[r.length-1].id:0);if(sig==MSIG)return;MSIG=sig;const near=!b.dataset.s||b.scrollHeight-b.scrollTop-b.clientHeight<90;b.dataset.s=1;b.innerHTML='<div class="ml">'+r.map(f).join('')+'</div>';if(near)b.scrollTop=b.scrollHeight}
+function msThread(i){const t=MTH[i];if(t)msThreadU(t.uid,t.u)}
+function msThreadU(uid,name){MODE='dm';MC=uid;msShell(esc(name),msHome,msSend);msPoll();MST=setInterval(msPoll,4000)}
+async function msPoll(){try{const r=await XA('dm',{with:MC});msPaint(r,m=>'<div class="bub'+(m.mine?' me':'')+'">'+esc(m.b)+'<small>'+tmf(m.t)+'</small></div>')}catch(e){}}
+function msChat(){MODE='chat';msShell('💬 Veřejný chat',msHome,msSend);msPollC();MST=setInterval(msPollC,4000)}
+async function msPollC(){try{const r=await XA('chat');msPaint(r,m=>'<div class="bub'+(m.u==me.name?' me':'')+'"><b style="color:#ffd400;font-size:12px">'+esc(m.u)+'</b>'+(me.admin?' <i style="cursor:pointer;font-style:normal" onclick="msDel('+(+m.id)+')">🗑</i>':'')+'<br>'+esc(m.b)+'<small>'+tmf(m.t)+'</small></div>')}catch(e){}}
+function msDel(id){XA('chatdel',{id}).then(()=>{MSIG='';msPollC()},()=>{})}
+function msSend(){const i=$('msi');if(!i)return;const v=i.value.trim();if(!v)return;i.value='';
+ (MODE=='chat'?XA('send',{body:v}):XA('dmsend',{to:MC,body:v})).then(()=>{MSIG='';MODE=='chat'?msPollC():msPoll()},()=>{const m=$('msm');if(m)m.textContent='Zprávu se nepodařilo odeslat (jsi umlčen/á?).'})}
+async function msNew(){msShell('Nová zpráva',msHome);const b=$('msb');b.innerHTML='<p class="fm">Načítám…</p>';
+ try{const l=await XA('lb');MUS=(l||[]).filter(u=>u.id!=me.id);if(!$('msb'))return;$('msb').innerHTML=MUS.length?MUS.map((u,i)=>'<div class="mrow" onclick="msThreadU(MUS['+i+'].id,MUS['+i+'].username)">'+avh(MAVA[u.username],u.username,36)+'<b>'+esc(u.username)+'</b></div>').join(''):'<p class="nt">Nikdo další tu zatím není.</p>'}
+ catch(e){if($('msb'))$('msb').innerHTML='<p class="fm">Načtení se nepovedlo.</p>'}}
+
+// ---- JB scroll
+let SCL=0,SCEnd=false,SCB=false,SCM=false,SCO=null,SCC=0;
+const vurl=p=>SB+'/storage/v1/object/public/jbscroll/'+String(p).split('/').map(encodeURIComponent).join('/');
+const VERR=m=>({muted:'Máš umlčený účet.',limit_day:'Dnes už jsi nahrál/a 5 videí. Zkus to zítra.',too_long:'Video je delší než 60 s.',no_file:'Soubor se nenahrál celý, zkus to znovu.',bad_path:'Neplatný soubor.',rate:'Zpomal, komentuješ moc rychle.',not_found:'Video už neexistuje.',empty:'Napiš komentář.'})[m]||'Něco se nepovedlo (běžel SQL 16-jb-scroll.sql?).';
+const emsg=e=>String((e&&e.message)||'');
+async function sfetch(path,opt){const go=()=>fetch(SB+path,{...opt,headers:{apikey:KEY,Authorization:'Bearer '+ses.access_token,...(opt.headers||{})}});let r=await go();if(r.status==401){await refresh();r=await go()}return r}
+const stDel=p=>sfetch('/storage/v1/object/jbscroll/'+String(p).split('/').map(encodeURIComponent).join('/'),{method:'DELETE'}).catch(()=>{});
+function scOpen(){const s=$('sc');s.innerHTML='<div id="scf"></div><div id="sct"><button class="rb" onclick="scClose()">←</button><b>JB scroll</b><button class="up" onclick="scUp()">⬆ Nahrát</button></div><div id="scx" onclick="if(event.target==this)scShut()"></div>';s.style.display='flex';
+ SCL=0;SCEnd=false;SCB=false;scObs();scFeedClick();scMore(true)}
+function scClose(){const s=$('sc');for(const v of s.querySelectorAll('video')){try{v.pause();v.removeAttribute('src');v.load()}catch(e){}}if(SCO){SCO.disconnect();SCO=null}s.style.display='none';s.innerHTML='';if(me)hubBadges()}
+function scObs(){if(SCO)SCO.disconnect();SCO=new IntersectionObserver(es=>{for(const e of es){const v=e.target.querySelector('video');if(!v)continue;if(e.isIntersecting&&e.intersectionRatio>=.6)scPlay(v);else v.pause()}},{root:$('scf'),threshold:[0,.6,1]})}
+function scPlay(v){v.muted=SCM;const it=v.closest('.vi');it.querySelector('.vp').style.display='none';const p=v.play();if(p&&p.catch)p.catch(()=>{SCM=true;scSndUi();v.muted=true;v.play().catch(()=>{})});
+ const nx=it.nextElementSibling;if(nx){const nv=nx.querySelector('video');if(nv&&nv.preload!='auto')nv.preload='auto'}
+ const all=[...$('scf').querySelectorAll('.vi')];if(all.indexOf(it)>=all.length-3)scMore()}
+function scFeedClick(){$('scf').addEventListener('click',e=>{const it=e.target.closest('.vi');if(!it||e.target.closest('.vr'))return;const v=it.querySelector('video');if(v.paused){v.play().catch(()=>{});it.querySelector('.vp').style.display='none'}else{v.pause();it.querySelector('.vp').style.display='grid'}})}
+const scItem=v=>'<section class="vi" data-id="'+(+v.id)+'"><video src="'+esc(vurl(v.path))+'" loop playsinline webkit-playsinline preload="metadata"></video><div class="vp">▶</div><div class="vr"><button class="lk'+(v.liked?' on':'')+'" onclick="scLike('+(+v.id)+',this)">❤<b>'+(+v.likes)+'</b></button><button onclick="scCom('+(+v.id)+')">💬<b id="cc'+(+v.id)+'">'+(+v.comments)+'</b></button><button class="snd" onclick="scSnd()">'+(SCM?'🔇':'🔊')+'</button><button onclick="scRep('+(+v.id)+')">🚩</button>'+((v.mine||me.admin)?'<button onclick="scDel('+(+v.id)+')">🗑</button>':'')+'</div><div class="vm"><b>'+esc(v.user)+'</b>'+(v.hidden?' <span class="hid">skryto – nahlášeno</span>':'')+'<p>'+esc(v.caption||'')+'</p></div></section>';
+async function scMore(first){if(SCB||SCEnd||!$('scf'))return;SCB=true;
+ try{const r=await XA('vfeed',{before:SCL||null});const l=Array.isArray(r)?r:[];if(l.length<8)SCEnd=true;const f=$('scf');if(!f)return;
+  if(l.length){SCL=l[l.length-1].id;const e=$('sce');if(e)e.remove();const t=document.createElement('div');t.innerHTML=l.map(scItem).join('');while(t.firstChild){f.appendChild(t.firstChild);SCO.observe(f.lastElementChild)}}
+  else if(first&&!f.children.length)f.innerHTML='<div id="sce"><div style="font-size:42px">📜</div><b>Zatím tu nejsou žádná videa.</b><span>Buď první a nahraj to své!</span></div>'}
+ catch(e){if(first&&$('scf')&&!$('scf').children.length)$('scf').innerHTML='<div id="sce"><b>Načtení se nepovedlo.</b><span>Běžel SQL 16-jb-scroll.sql?</span><button class="gb" onclick="scOpen()">↻ Zkusit znovu</button></div>';SCEnd=false}
+ finally{SCB=false}}
+function scSndUi(){document.querySelectorAll('#sc .snd').forEach(b=>b.textContent=SCM?'🔇':'🔊')}
+function scSnd(){SCM=!SCM;document.querySelectorAll('#sc video').forEach(v=>v.muted=SCM);scSndUi()}
+function scLike(id,b){XA('vlike',{id}).then(r=>{b.classList.toggle('on',!!r.liked);b.querySelector('b').textContent=r.n},()=>{})}
+function scSheet(h){const x=$('scx');if(!x)return;x.innerHTML='<div class="sh">'+h+'</div>';x.style.display='flex'}
+function scShut(){const x=$('scx');if(x){x.style.display='none';x.innerHTML=''}}
+// komentáře
+async function scCom(id){SCC=id;scSheet('<div class="shh"><b>💬 Komentáře</b><button onclick="scShut()">✕</button></div><div id="scl"><p class="nt">Načítám…</p></div><div class="mi" style="padding:8px 0 0;max-width:none"><input id="sci" maxlength="200" placeholder="Přidej komentář…" autocomplete="off"><button onclick="scSend()">➤</button></div><p id="scm" class="fm" style="margin:6px 0 0"></p>');
+ $('sci').addEventListener('keydown',e=>{if(e.key=='Enter')scSend()});
+ try{scPaintC(await XA('vcomments',{id}))}catch(e){if($('scl'))$('scl').innerHTML='<p class="fm">Načtení se nepovedlo.</p>'}}
+const scCm=c=>'<div class="cm" data-c="'+(+c.id)+'"><b>'+esc(c.user)+'</b><span>'+tmf(c.created_at)+'</span><i onclick="scRepC('+(+c.id)+')">🚩</i>'+((c.mine||me.admin)?'<i onclick="scDelC('+(+c.id)+')">🗑</i>':'')+'<div>'+esc(c.body)+'</div></div>';
+function scPaintC(r){const l=$('scl');if(!l)return;l.innerHTML=(r&&r.length)?r.map(scCm).join(''):'<p class="nt">Zatím žádné komentáře. Napiš první!</p>';const c=$('cc'+SCC);if(c)c.textContent=(r||[]).length;l.scrollTop=l.scrollHeight}
+async function scSend(){const i=$('sci');if(!i)return;const v=i.value.trim();if(!v)return;i.value='';const m=$('scm');if(m)m.textContent='';
+ try{await XA('vcomment',{id:SCC,body:v});scPaintC(await XA('vcomments',{id:SCC}))}catch(e){if($('scm'))$('scm').textContent=VERR(emsg(e))}}
+function scDelC(id){if(!confirm('Smazat komentář?'))return;XA('cdel',{id}).then(async()=>{try{scPaintC(await XA('vcomments',{id:SCC}))}catch(e){}},()=>{})}
+// nahlášení
+const RSN=['Nevhodný obsah','Šikana nebo urážky','Spam','Něco jiného'];
+function scRepUi(v,c){scSheet('<div class="shh"><b>🚩 Nahlásit '+(c?'komentář':'video')+'</b><button onclick="scShut()">✕</button></div><p class="nt">Proč to nahlašuješ? Admini se na to podívají.</p>'+RSN.map(r=>'<button class="gb s" data-r="'+esc(r)+'" onclick="scRepGo('+(+v||0)+','+(+c||0)+',this.dataset.r)">'+esc(r)+'</button>').join('')+'<p id="scm" class="fm" style="text-align:center"></p>')}
+const scRep=id=>scRepUi(id,0),scRepC=id=>scRepUi(0,id);
+function scRepGo(v,c,r){XA('vrep',{video:v||null,comment:c||null,reason:r}).then(()=>{const m=$('scm');if(m){m.style.color='#9fe6a8';m.textContent='Díky, nahlášení dorazilo adminům. 👍'}setTimeout(()=>{scShut();if(SCC&&c)scCom(SCC)},1100)},e=>{const m=$('scm');if(m)m.textContent=VERR(emsg(e))})}
+// mazání
+function scDel(id){if(!confirm('Smazat toto video?'))return;XA('vdel',{id}).then(p=>{if(p)stDel(p);const it=document.querySelector('#scf .vi[data-id="'+id+'"]');if(it){const v=it.querySelector('video');try{v.pause()}catch(e){}if(SCO)SCO.unobserve(it);it.remove()}},e=>alert(VERR(emsg(e))))}
+// nahrávání
+const VEXT={'video/mp4':'mp4','video/webm':'webm','video/quicktime':'mov'},VMIME={mp4:'video/mp4',webm:'video/webm',mov:'video/quicktime'};
+function scUp(){scSheet('<div class="shh"><b>⬆ Nahrát video</b><button onclick="scShut()">✕</button></div><p class="nt">Max 60 s a 25 MB (mp4, mov, webm). Nahrávej jen věci vhodné pro všechny, ostatní hráči je můžou nahlásit.</p><input type="file" id="scfile" accept="video/*"><input id="scap" maxlength="150" placeholder="Popisek (nepovinný)" autocomplete="off" style="width:100%;margin-bottom:8px"><div class="pb" id="scpb"><i></i></div><button class="gb" id="scgo" onclick="scUpGo()">Nahrát</button><p id="scm" class="fm" style="text-align:center"></p>')}
+function vidDur(f){return new Promise((res,rej)=>{const u=URL.createObjectURL(f),v=document.createElement('video');const done=(ok,x)=>{clearTimeout(t);URL.revokeObjectURL(u);ok?res(x):rej(x)};const t=setTimeout(()=>done(false,'timeout'),8000);v.preload='metadata';v.onloadedmetadata=()=>done(true,v.duration);v.onerror=()=>done(false,'err');v.src=u})}
+function xhrUp(path,f,mime,prog){return new Promise((res,rej)=>{const x=new XMLHttpRequest();x.open('POST',SB+'/storage/v1/object/jbscroll/'+path.split('/').map(encodeURIComponent).join('/'));x.setRequestHeader('apikey',KEY);x.setRequestHeader('Authorization','Bearer '+ses.access_token);x.setRequestHeader('Content-Type',mime);x.setRequestHeader('x-upsert','false');x.setRequestHeader('cache-control','max-age=3600');
+ x.upload.onprogress=e=>{if(e.lengthComputable)prog(Math.round(e.loaded/e.total*100))};x.onload=()=>{if(x.status>=200&&x.status<300)res();else{let m='';try{m=JSON.parse(x.responseText).message||''}catch(e){}rej(new Error(m||('HTTP '+x.status)))}};x.onerror=()=>rej(new Error('síť'));x.send(f)})}
+async function scUpGo(){const f=$('scfile').files[0],m=$('scm'),go=$('scgo');if(!f){m.textContent='Nejdřív vyber video.';return}
+ let ext=VEXT[f.type]||(String(f.name).toLowerCase().match(/\.(mp4|mov|webm)$/)||[])[1];if(!ext){m.textContent='Podporované formáty: mp4, mov, webm.';return}
+ if(f.size>25*1024*1024){m.textContent='Video má víc než 25 MB. Natoč kratší nebo v nižší kvalitě.';return}
+ go.disabled=true;m.style.color='#ffb3b3';m.textContent='Kontroluju video…';
+ let dur;try{dur=await vidDur(f)}catch(e){m.style.color='#ff6b6b';m.textContent='Video se nepodařilo přečíst. Zkus mp4.';go.disabled=false;return}
+ if(!(dur>0)||dur>60.5){m.style.color='#ff6b6b';m.textContent=dur>60.5?'Video je delší než 60 s.':'Video se nepodařilo přečíst.';go.disabled=false;return}
+ const path=me.id+'/'+Date.now().toString(36)+Math.random().toString(36).slice(2,8)+'.'+ext;
+ try{await refresh()}catch(e){}
+ $('scpb').style.display='block';m.textContent='Nahrávám…';
+ try{await xhrUp(path,f,VMIME[ext],p=>{const b=$('scpb');if(b)b.firstChild.style.width=p+'%'})}catch(e){m.style.color='#ff6b6b';m.textContent='Nahrání se nepovedlo ('+emsg(e)+').';go.disabled=false;return}
+ try{await XA('vreg',{path,caption:($('scap').value||'').trim(),dur})}catch(e){stDel(path);m.style.color='#ff6b6b';m.textContent=VERR(emsg(e));go.disabled=false;return}
+ scShut();const f2=$('scf');if(f2){f2.innerHTML='';f2.scrollTop=0}SCL=0;SCEnd=false;scMore(true)}
+
+// ---- Admin: nahlášená videa a komentáře
+let RPL=[];
+async function rpPanel(msg){ap.style.display='block';ap.innerHTML='<h2>Admin</h2>'+tabs('rp')+'<p class="nt">Načítám…</p>';
+ try{RPL=await rpc('reports_list',{})||[];rpR(msg)}catch(e){ap.innerHTML='<h2>Admin</h2>'+tabs('rp')+'<p class="fm">Načtení se nepovedlo (je spuštěný soubor 16-jb-scroll.sql?).</p><button class="gb s" data-cl="1">Zavřít</button>'}
+ admDot()}
+function rpR(msg){ap.innerHTML='<h2>Admin</h2>'+tabs('rp')+'<p class="fm" style="color:#9fe6a8">'+(msg||'')+'</p>'+(RPL.length?RPL.map((x,i)=>'<div class="ac" style="display:block"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><b style="flex:1;min-width:90px">'+(x.kind=='video'?'🎬 Video':'💬 Komentář')+' · '+esc(x.user)+'</b><span style="color:#ffd400">🚩 ×'+(+x.n)+'</span>'+(x.hidden?'<span style="color:#ff8a8a">skryto</span>':'')+'</div><div style="font-size:12px;opacity:.75;margin-top:4px">Důvody: '+esc((x.reasons||[]).filter(Boolean).join(', ')||'–')+'</div>'+
+  (x.kind=='video'?'<video controls playsinline preload="metadata" src="'+esc(vurl(x.path))+'" style="width:100%;max-height:260px;margin-top:8px;background:#000;border-radius:8px"></video><div style="font-size:13px;margin-top:4px;word-break:break-word">'+esc(x.caption||'')+'</div>':'<div style="margin-top:8px;font-size:14px;word-break:break-word">„'+esc(x.body)+'“</div>')+
+  '<div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap"><button data-rpx="'+i+'">🗑 Smazat</button><button data-rpd="'+i+'">'+(x.hidden?'♻ Obnovit':'✔ Zamítnout')+'</button><button data-rpm="'+i+'">🔇 Umlčet uživatele</button></div></div>').join(''):'<p class="nt">Žádná nahlášení 🎉</p>')+'<button class="gb s" data-cl="1">Zavřít</button>'}
+ap.addEventListener('click',async e=>{const d=e.target.dataset;if(!d)return;
+ try{
+  if(d.t=='rp'){e.stopImmediatePropagation();rpPanel()}
+  else if(d.rpx!=null){const x=RPL[+d.rpx];if(!x||!confirm('Opravdu smazat?'))return;if(x.kind=='video'){const p=await rpc('video_delete',{p_id:+x.id});if(p)stDel(p)}else await rpc('comment_delete',{p_id:+x.id});rpPanel('Smazáno ✔')}
+  else if(d.rpd!=null){const x=RPL[+d.rpd];if(!x)return;await rpc('report_dismiss',{p_kind:x.kind,p_id:+x.id});rpPanel(x.hidden?'Video je zase vidět ✔':'Nahlášení zamítnuto ✔')}
+  else if(d.rpm!=null){const x=RPL[+d.rpm];if(!x||!confirm('Umlčet uživatele '+x.user+'? Nebude moct psát ani nahrávat.'))return;await XA('mute',{id:x.uid,muted:true});rpR('Uživatel '+x.user+' je umlčený ✔')}
+ }catch(err){rpR('Akce se nepovedla.')}},true);
+
 $('adm').addEventListener('click',lb);
 $('go').addEventListener('click',login);
 for(const i of['user','code'])$(i).addEventListener('keydown',e=>{if(e.key=='Enter')login()});
