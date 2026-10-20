@@ -319,6 +319,30 @@ body.angel .jbt button,body.angel .jr,body.angel .mrow{border-color:#e8c872}
 #hol span{padding:3px 9px;border-radius:12px;font-size:11px;background:rgba(30,5,8,.72);border:1px solid #5a0a0f}
 body.angel #hi1,body.angel #hi2{color:#4a3800;opacity:1}
 body.angel #hol span{background:rgba(24,44,96,.66);border-color:#e8c872;color:#fff}
+
+/* ===== UPDATE 4.4: emoji, reakce, hlasovky, recenze ===== */
+.mi .ib{background:rgba(255,255,255,.12);padding:0 11px;font-size:18px}
+.mi input{min-width:0}
+.bub,.cm{-webkit-touch-callout:none}
+.rx{font-style:normal;cursor:pointer;opacity:.5;margin-left:8px;font-size:13px}
+.rx:hover{opacity:1}
+.rxc{display:flex;flex-wrap:wrap;gap:4px;margin-top:3px}
+.rxc:empty{display:none}
+.rxp{border:1px solid rgba(255,255,255,.2);background:rgba(0,0,0,.35);color:#fff;border-radius:12px;padding:1px 8px;font-size:13px;cursor:pointer}
+.rxp.on{background:rgba(193,18,31,.6);border-color:#ff3b3b}
+#rxb{position:fixed;z-index:30;display:flex;gap:2px;padding:6px 8px;border-radius:24px;background:#241014;border:1px solid #5a0a0f;box-shadow:0 6px 24px rgba(0,0,0,.6)}
+#rxb.big{flex-wrap:wrap;width:min(92vw,300px);border-radius:16px}
+#rxb button{background:none;border:0;font-size:24px;cursor:pointer;padding:2px 4px;color:#fff}
+#emp{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(env(safe-area-inset-bottom,0px) + 72px);z-index:30;width:min(94vw,380px);max-height:38vh;overflow:auto;display:grid;grid-template-columns:repeat(8,1fr);gap:2px;padding:8px;border-radius:14px;background:#241014;border:1px solid #5a0a0f;box-shadow:0 6px 24px rgba(0,0,0,.6)}
+#emp button{font-size:22px;background:none;border:0;cursor:pointer;padding:4px}
+.vcm audio{width:230px;max-width:100%;height:38px;display:block}
+.stars{display:flex;justify-content:center;gap:2px;margin:4px 0}
+.stars button{background:none;border:0;color:#ffd400;font-size:32px;cursor:pointer;padding:0 4px;line-height:1}
+.jrl{max-height:36vh;overflow:auto}
+.ntl{display:flex;align-items:center;justify-content:flex-start;gap:6px;padding:6px 2px;font-size:15px;text-align:left}
+.pfb .ntl input{all:revert;margin:0 6px 0 0;width:20px;height:20px}
+body.angel #rxb,body.angel #emp{background:#10204a;border-color:#e8c872}
+body.angel .hnh{color:#8a6a00}
 </style></head><body>
 <div id="bg"></div><canvas id="em"></canvas><div id="vig"></div>
 
@@ -459,7 +483,13 @@ async function onApi(d){const a=d.arg||{},M=me.id,min={headers:{Prefer:'return=m
  if(d.op=='evdel'){if(!me.admin)throw 0;return rpc('event_delete',{p_id:(+a.id)|0})}
  if(d.op=='evjoin')return rpc('event_join',{p_id:(+a.id)|0});
  if(d.op=='flappy')return rpc('earn_flappy',{p_levels:Math.max(0,Math.min(200,(+a.n)|0))});
- if(d.op=='vfeed')return rpc('video_feed',{p_before:a.before?+a.before:null,p_limit:8});
+ if(d.op=='vfeed'){try{return await rpc('video_feed2',{p_exclude:(Array.isArray(a.ex)?a.ex:[]).map(Number).filter(Boolean).slice(0,400),p_limit:8})}catch(e){return rpc('video_feed',{p_before:a.before?+a.before:null,p_limit:8})}}
+ if(d.op=='vseen')return rpc('video_seen',{p_id:+a.id});
+ if(d.op=='react')return rpc('react_set',{p_kind:String(a.kind||''),p_ref:+a.id,p_emoji:String(a.emoji||'').slice(0,12)});
+ if(d.op=='rget')return rpc('react_get',{p_kind:String(a.kind||''),p_ids:(Array.isArray(a.ids)?a.ids:[]).map(Number).filter(Boolean).slice(0,200)});
+ if(d.op=='rvlist')return rpc('review_list',{p_disc:+a.id||0});
+ if(d.op=='rvsave')return rpc('review_save',{p_disc:+a.id||0,p_rating:(+a.rating)|0,p_body:String(a.body||'').slice(0,300)});
+ if(d.op=='rvdel')return rpc('review_delete',{p_id:+a.id});
  if(d.op=='vlike')return rpc('video_like',{p_id:+a.id});
  if(d.op=='vcomments')return rpc('video_comments',{p_id:+a.id});
  if(d.op=='vcomment')return rpc('video_comment',{p_id:+a.id,p_body:String(a.body||'').slice(0,200)});
@@ -595,10 +625,10 @@ $('hx').onclick=()=>$('x').click();$('hadm').onclick=()=>lb();
 
 // ---- Zprávy
 let MST=0,MTH=[],MAVA={},MSIG='',MC=null,MODE='dm',MUS=[];
-function msShell(title,back,send){clearInterval(MST);MST=0;MSIG='';const m=$('ms');
- m.innerHTML='<div class="mbar"><button class="rb" id="msbk">←</button><b>'+title+'</b></div><div id="msb"></div>'+(send?'<div class="mi"><input id="msi" maxlength="300" placeholder="Napiš zprávu…" autocomplete="off"><button id="mssd">➤</button></div><p id="msm" class="fm" style="margin:0 0 8px;text-align:center"></p>':'');
- m.style.display='flex';$('msbk').onclick=back;if(send){$('mssd').onclick=send;$('msi').addEventListener('keydown',e=>{if(e.key=='Enter')send()})}}
-function msClose(){clearInterval(MST);MST=0;$('ms').style.display='none';$('ms').innerHTML='';if(me)hubBadges()}
+function msShell(title,back,send){if(VCR)vcStop(false);clearInterval(MST);MST=0;MSIG='';const m=$('ms');
+ m.innerHTML='<div class="mbar"><button class="rb" id="msbk">←</button><b>'+title+'</b></div><div id="msb"></div>'+(send?'<div class="mi"><button id="msem" class="ib" type="button" aria-label="Emoji">😊</button><input id="msi" maxlength="300" placeholder="Napiš zprávu…" autocomplete="off"><button id="msxc" class="ib" type="button" style="display:none" aria-label="Zrušit">✕</button><button id="msmc" class="ib" type="button" aria-label="Hlasová zpráva">🎤</button><button id="mssd">➤</button></div><p id="msm" class="fm" style="margin:0 0 8px;text-align:center"></p>':'');
+ m.style.display='flex';$('msbk').onclick=back;if(send){$('mssd').onclick=send;$('msi').addEventListener('keydown',e=>{if(e.key=='Enter')send()});$('msem').onclick=e=>emPick('msi',e);$('msmc').onclick=vcRec;$('msxc').onclick=()=>vcStop(false)}}
+function msClose(){if(VCR)vcStop(false);clearInterval(MST);MST=0;$('ms').style.display='none';$('ms').innerHTML='';if(me)hubBadges()}
 async function msHome(){MODE='dm';msShell('✉️ Zprávy',msClose);const b=$('msb');b.innerHTML='<p class="fm">Načítám…</p>';
  try{const [d,pl]=await Promise.all([XA('dmlist'),XA('players').catch(()=>[])]);(pl||[]).forEach(p=>MAVA[p.username]=p.avatar);MTH=d.threads||[];if(!$('msb'))return;
   $('msb').innerHTML='<div class="mrow" onclick="msChat()"><span style="font-size:26px">💬</span><b>Veřejný chat<small>Píšou tu všichni hráči</small></b></div><button class="gb" onclick="msNew()">＋ Nová zpráva</button>'+
@@ -607,9 +637,9 @@ async function msHome(){MODE='dm';msShell('✉️ Zprávy',msClose);const b=$('m
 function msPaint(r,f){const b=$('msb');if(!b)return;const sig=r.length+':'+(r.length?r[r.length-1].id:0);if(sig==MSIG)return;MSIG=sig;const near=!b.dataset.s||b.scrollHeight-b.scrollTop-b.clientHeight<90;b.dataset.s=1;b.innerHTML='<div class="ml">'+r.map(f).join('')+'</div>';if(near)b.scrollTop=b.scrollHeight}
 function msThread(i){const t=MTH[i];if(t)msThreadU(t.uid,t.u)}
 function msThreadU(uid,name){MODE='dm';MC=uid;msShell(esc(name),msHome,msSend);msPoll();MST=setInterval(msPoll,4000)}
-async function msPoll(){try{const r=await XA('dm',{with:MC});msPaint(r,m=>'<div class="bub'+(m.mine?' me':'')+'">'+esc(m.b)+'<small>'+tmf(m.t)+'</small></div>')}catch(e){}}
+async function msPoll(){try{const r=await XA('dm',{with:MC});msPaint(r,msBubD);rxFill('dm',r.map(m=>m.id))}catch(e){}}
 function msChat(){MODE='chat';msShell('💬 Veřejný chat',msHome,msSend);msPollC();MST=setInterval(msPollC,4000)}
-async function msPollC(){try{const r=await XA('chat');msPaint(r,m=>'<div class="bub'+(m.u==me.name?' me':'')+'"><b style="color:#ffd400;font-size:12px">'+esc(m.u)+'</b>'+(me.admin?' <i style="cursor:pointer;font-style:normal" onclick="msDel('+(+m.id)+')">🗑</i>':'')+'<br>'+jbChatB(m.b)+'<small>'+tmf(m.t)+'</small></div>')}catch(e){}}
+async function msPollC(){try{const r=await XA('chat');msPaint(r,msBubC);rxFill('chat',r.map(m=>m.id))}catch(e){}}
 function msDel(id){XA('chatdel',{id}).then(()=>{MSIG='';msPollC()},()=>{})}
 function msSend(){const i=$('msi');if(!i)return;const v=i.value.trim();if(!v)return;i.value='';
  (MODE=='chat'?XA('send',{body:v}):XA('dmsend',{to:MC,body:v})).then(()=>{MSIG='';MODE=='chat'?msPollC():msPoll()},()=>{const m=$('msm');if(m)m.textContent='Zprávu se nepodařilo odeslat (jsi umlčen/á?).'})}
@@ -625,16 +655,16 @@ const emsg=e=>String((e&&e.message)||'');
 async function sfetch(path,opt){const go=()=>fetch(SB+path,{...opt,headers:{apikey:KEY,Authorization:'Bearer '+ses.access_token,...(opt.headers||{})}});let r=await go();if(r.status==401){await refresh();r=await go()}return r}
 const stDel=p=>sfetch('/storage/v1/object/jbscroll/'+String(p).split('/').map(encodeURIComponent).join('/'),{method:'DELETE'}).catch(()=>{});
 function scOpen(){const s=$('sc');s.innerHTML='<div id="scf"></div><div id="sct"><button class="rb" onclick="scClose()">←</button><b>JB scroll</b><button class="up" onclick="scUp()">⬆ Nahrát</button></div><div id="scx" onclick="if(event.target==this)scShut()"></div>';s.style.display='flex';
- SCL=0;SCEnd=false;SCB=false;scObs();scFeedClick();scMore(true)}
+ SCL=0;SCX=[];SCEnd=false;SCB=false;scObs();scFeedClick();scMore(true)}
 function scClose(){const s=$('sc');for(const v of s.querySelectorAll('video')){try{v.pause();v.removeAttribute('src');v.load()}catch(e){}}if(SCO){SCO.disconnect();SCO=null}s.style.display='none';s.innerHTML='';if(me)hubBadges()}
 function scObs(){if(SCO)SCO.disconnect();SCO=new IntersectionObserver(es=>{for(const e of es){const v=e.target.querySelector('video');if(!v)continue;if(e.isIntersecting&&e.intersectionRatio>=.6)scPlay(v);else v.pause()}},{root:$('scf'),threshold:[0,.6,1]})}
-function scPlay(v){v.muted=SCM;const it=v.closest('.vi');it.querySelector('.vp').style.display='none';const p=v.play();if(p&&p.catch)p.catch(()=>{SCM=true;scSndUi();v.muted=true;v.play().catch(()=>{})});
+function scPlay(v){v.muted=SCM;const it=v.closest('.vi');{const sid=+it.dataset.id;if(sid&&!SCS.has(sid)){clearTimeout(SCT);SCT=setTimeout(()=>{if(!v.paused&&!SCS.has(sid)){SCS.add(sid);XA('vseen',{id:sid}).catch(()=>{})}},1500)}}it.querySelector('.vp').style.display='none';const p=v.play();if(p&&p.catch)p.catch(()=>{SCM=true;scSndUi();v.muted=true;v.play().catch(()=>{})});
  const nx=it.nextElementSibling;if(nx){const nv=nx.querySelector('video');if(nv&&nv.preload!='auto')nv.preload='auto'}
  const all=[...$('scf').querySelectorAll('.vi')];if(all.indexOf(it)>=all.length-3)scMore()}
 function scFeedClick(){$('scf').addEventListener('click',e=>{const it=e.target.closest('.vi');if(!it||e.target.closest('.vr'))return;const v=it.querySelector('video');if(v.paused){v.play().catch(()=>{});it.querySelector('.vp').style.display='none'}else{v.pause();it.querySelector('.vp').style.display='grid'}})}
 const scItem=v=>'<section class="vi" data-id="'+(+v.id)+'"><video src="'+esc(vurl(v.path))+'" loop playsinline webkit-playsinline preload="metadata"></video><div class="vp">▶</div><div class="vr"><button class="lk'+(v.liked?' on':'')+'" onclick="scLike('+(+v.id)+',this)">❤<b>'+(+v.likes)+'</b></button><button onclick="scCom('+(+v.id)+')">💬<b id="cc'+(+v.id)+'">'+(+v.comments)+'</b></button><button class="snd" onclick="scSnd()">'+(SCM?'🔇':'🔊')+'</button><button onclick="scRep('+(+v.id)+')">🚩</button>'+((v.mine||me.admin)?'<button onclick="scDel('+(+v.id)+')">🗑</button>':'')+'</div><div class="vm"><b>'+esc(v.user)+'</b>'+(v.hidden?' <span class="hid">skryto – nahlášeno</span>':'')+'<p>'+esc(v.caption||'')+'</p></div></section>';
 async function scMore(first){if(SCB||SCEnd||!$('scf'))return;SCB=true;
- try{const r=await XA('vfeed',{before:SCL||null});const l=Array.isArray(r)?r:[];if(l.length<8)SCEnd=true;const f=$('scf');if(!f)return;
+ try{const r=await XA('vfeed',{before:SCL||null,ex:SCX});const l=Array.isArray(r)?r:[];l.forEach(v=>SCX.push(+v.id));if(l.length<8)SCEnd=true;const f=$('scf');if(!f)return;
   if(l.length){SCL=l[l.length-1].id;const e=$('sce');if(e)e.remove();const t=document.createElement('div');t.innerHTML=l.map(scItem).join('');while(t.firstChild){f.appendChild(t.firstChild);SCO.observe(f.lastElementChild)}}
   else if(first&&!f.children.length)f.innerHTML='<div id="sce"><div style="font-size:42px">📜</div><b>Zatím tu nejsou žádná videa.</b><span>Buď první a nahraj to své!</span></div>'}
  catch(e){if(first&&$('scf')&&!$('scf').children.length)$('scf').innerHTML='<div id="sce"><b>Načtení se nepovedlo.</b><span>Běžel SQL 16-jb-scroll.sql?</span><button class="gb" onclick="scOpen()">↻ Zkusit znovu</button></div>';SCEnd=false}
@@ -645,11 +675,11 @@ function scLike(id,b){XA('vlike',{id}).then(r=>{b.classList.toggle('on',!!r.like
 function scSheet(h){const x=$('scx');if(!x)return;x.innerHTML='<div class="sh">'+h+'</div>';x.style.display='flex'}
 function scShut(){const x=$('scx');if(x){x.style.display='none';x.innerHTML=''}}
 // komentáře
-async function scCom(id){SCC=id;scSheet('<div class="shh"><b>💬 Komentáře</b><button onclick="scShut()">✕</button></div><div id="scl"><p class="nt">Načítám…</p></div><div class="mi" style="padding:8px 0 0;max-width:none"><input id="sci" maxlength="200" placeholder="Přidej komentář…" autocomplete="off"><button onclick="scSend()">➤</button></div><p id="scm" class="fm" style="margin:6px 0 0"></p>');
+async function scCom(id){SCC=id;scSheet('<div class="shh"><b>💬 Komentáře</b><button onclick="scShut()">✕</button></div><div id="scl"><p class="nt">Načítám…</p></div><div class="mi" style="padding:8px 0 0;max-width:none"><button class="ib" type="button" onclick="emPick(\'sci\',event)">😊</button><input id="sci" maxlength="200" placeholder="Přidej komentář…" autocomplete="off"><button onclick="scSend()">➤</button></div><p id="scm" class="fm" style="margin:6px 0 0"></p>');
  $('sci').addEventListener('keydown',e=>{if(e.key=='Enter')scSend()});
  try{scPaintC(await XA('vcomments',{id}))}catch(e){if($('scl'))$('scl').innerHTML='<p class="fm">Načtení se nepovedlo.</p>'}}
-const scCm=c=>'<div class="cm" data-c="'+(+c.id)+'"><b>'+esc(c.user)+'</b><span>'+tmf(c.created_at)+'</span><i onclick="scRepC('+(+c.id)+')">🚩</i>'+((c.mine||me.admin)?'<i onclick="scDelC('+(+c.id)+')">🗑</i>':'')+'<div>'+esc(c.body)+'</div></div>';
-function scPaintC(r){const l=$('scl');if(!l)return;l.innerHTML=(r&&r.length)?r.map(scCm).join(''):'<p class="nt">Zatím žádné komentáře. Napiš první!</p>';const c=$('cc'+SCC);if(c)c.textContent=(r||[]).length;l.scrollTop=l.scrollHeight}
+const scCm=c=>'<div class="cm" data-k="comment" data-i="'+(+c.id)+'" data-c="'+(+c.id)+'"><b>'+esc(c.user)+'</b><span>'+tmf(c.created_at)+'</span><i onclick="scRepC('+(+c.id)+')">🚩</i><i class="rx" onclick="rxBar(\'comment\','+(+c.id)+',this,event)">☺</i>'+((c.mine||me.admin)?'<i onclick="scDelC('+(+c.id)+')">🗑</i>':'')+'<div>'+esc(c.body)+'</div><div class="rxc" data-k="comment" data-i="'+(+c.id)+'"></div></div>';
+function scPaintC(r){const l=$('scl');if(!l)return;l.innerHTML=(r&&r.length)?r.map(scCm).join(''):'<p class="nt">Zatím žádné komentáře. Napiš první!</p>';const c=$('cc'+SCC);if(c)c.textContent=(r||[]).length;l.scrollTop=l.scrollHeight;rxFill('comment',(r||[]).map(x=>x.id))}
 async function scSend(){const i=$('sci');if(!i)return;const v=i.value.trim();if(!v)return;i.value='';const m=$('scm');if(m)m.textContent='';
  try{await XA('vcomment',{id:SCC,body:v});scPaintC(await XA('vcomments',{id:SCC}))}catch(e){if($('scm'))$('scm').textContent=VERR(emsg(e))}}
 function scDelC(id){if(!confirm('Smazat komentář?'))return;XA('cdel',{id}).then(async()=>{try{scPaintC(await XA('vcomments',{id:SCC}))}catch(e){}},()=>{})}
@@ -697,7 +727,7 @@ ap.addEventListener('click',async e=>{const d=e.target.dataset;if(!d)return;
 
 // ===== JBfy =====
 const OSTC='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><radialGradient id="g" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="#ff7a1a"/><stop offset=".55" stop-color="#c1121f"/><stop offset="1" stop-color="#2a0306"/></radialGradient></defs><rect width="200" height="200" fill="url(#g)"/><path d="M100 18c10 26 38 38 38 70 0 24-17 40-38 40s-38-16-38-40c0-14 6-22 12-32 2 12 8 18 14 18-6-24 2-44 12-56z" fill="#ffd400" opacity=".92"/><circle cx="100" cy="124" r="30" fill="none" stroke="#1a0508" stroke-width="7"/><circle cx="100" cy="124" r="5" fill="#1a0508"/><path d="M100 94v60M70 124h60M79 103l42 42M121 103l-42 42" stroke="#1a0508" stroke-width="3"/><text x="100" y="184" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="22" fill="#ffd400">OST</text></svg>');
-const JBD=[{k:'ost1',def:1,title:'Přes cestu',artist:'Original Soundtrack',user:'JB',audio:'pres-cestu.mp3',cover:OSTC,dur:74}];
+const JBD=[{k:'ost1',def:1,title:'Přes cestu',artist:'Original Soundtrack',user:'JB',audio:'pres-cestu.mp3',cover:OSTC,dur:197}];
 const jbA=new Audio();jbA.preload='auto';
 let JBMSG='',JBL=JBD.slice(),JBP=[],JBC=null,JBI=0,JBTMP=false,JBV='all',JBVOL=.6,JBMUT=0,JBDUCK=1,JBPAUSED=false,JBHELD=false,JBGM=false,JBERR=0,JBREADY=false;
 const jbPub=(b,p)=>SB+'/storage/v1/object/public/'+b+'/'+String(p).split('/').map(encodeURIComponent).join('/');
@@ -718,7 +748,7 @@ function jbStart(){// načtení uložených věcí po přihlášení
  document.addEventListener('pointerdown',kick,{capture:true,once:true});document.addEventListener('keydown',kick,{capture:true,once:true})}
 async function jbLoad(){let l=[],ok=true,dok=true;try{l=await XA('dlist')||[]}catch(e){ok=false}
  try{const r=await fetch(JBD[0].audio,{method:'HEAD',cache:'no-store'});dok=r.ok}catch(e){dok=false}
- JBL=(dok?JBD:[]).concat(l.map(d=>({k:'d'+d.id,id:d.id,title:d.title,artist:d.artist||'',user:d.user,audio:d.audio,cover:d.cover,dur:d.dur,hidden:d.hidden,mine:d.mine})));
+ JBL=(dok?JBD:[]).concat(l.map(d=>({k:'d'+d.id,id:d.id,title:d.title,artist:d.artist||'',user:d.user,audio:d.audio,cover:d.cover,dur:d.dur,hidden:d.hidden,mine:d.mine,ravg:d.ravg,rn:d.rn})));
  if(ok){const n=JBP.length;JBP=JBP.filter(k=>jbGet(k));if(JBP.length!=n)jbSavePl()}
  jbPlsLoad().then(()=>{if(JBV=='pls'&&document.getElementById('jbb'))jbR()})}
 function jbSet(k,idx,tmp){const d=jbGet(k);if(!d)return;JBC=k;JBTMP=!!tmp;if(idx!=null)JBI=idx;JBPAUSED=false;jbA.src=jbUrl(d);jbA.loop=false;jbApply();
@@ -754,7 +784,7 @@ function jbTab(v){JBV=v;jbR()}
 function jbR(soft){const b=document.getElementById('jbb');if(!b)return;
  document.getElementById('jbt1').classList.toggle('on',JBV=='all');const t2=document.getElementById('jbt2');t2.classList.toggle('on',JBV=='pl');t2.textContent='📻 Playlist ('+JBP.length+')';const t3=document.getElementById('jbt3');if(t3)t3.classList.toggle('on',JBV=='pls');
  const keep=b.scrollTop;const pl=k=>JBC==k&&!jbA.paused;
- if(JBV=='all'){b.innerHTML=(JBL.length?'<div class="jbg">'+JBL.map(d=>'<div class="jc"><div class="jcd" onclick="jbPlay(\''+d.k+'\')">'+jbDisc(d,pl(d.k))+'<span class="pp">'+(pl(d.k)?'⏸':'▶')+'</span></div><b>'+esc(d.title)+(d.hidden?' <span style="color:#ffd400;font-size:11px">skryto</span>':'')+'</b><small>'+esc(d.artist||d.user)+'</small><div class="jcb"><button class="'+(JBP.includes(d.k)?'on':'')+'" onclick="jbTogP(\''+d.k+'\')">'+(JBP.includes(d.k)?'✓ V playlistu':'＋ Playlist')+'</button>'+(d.def?'':'<button onclick="jbRep(\''+d.k+'\')">🚩</button>')+((!d.def&&(d.mine||me.admin))?'<button onclick="jbDel(\''+d.k+'\')">🗑</button>':'')+'</div></div>').join('')+'</div>':'<p class="nt" style="text-align:center">Zatím tu nejsou žádné disky.</p>')}
+ if(JBV=='all'){b.innerHTML=(JBL.length?'<div class="jbg">'+JBL.map(d=>'<div class="jc"><div class="jcd" onclick="jbPlay(\''+d.k+'\')">'+jbDisc(d,pl(d.k))+'<span class="pp">'+(pl(d.k)?'⏸':'▶')+'</span></div><b>'+esc(d.title)+(d.hidden?' <span style="color:#ffd400;font-size:11px">skryto</span>':'')+'</b><small>'+esc(d.artist||d.user)+'</small><div class="jcb"><button class="'+(JBP.includes(d.k)?'on':'')+'" onclick="jbTogP(\''+d.k+'\')">'+(JBP.includes(d.k)?'✓ V playlistu':'＋ Playlist')+'</button><button onclick="jbRev(\''+d.k+'\')">⭐'+(d.rn?' '+d.ravg:'')+'</button>'+(d.def?'':'<button onclick="jbRep(\''+d.k+'\')">🚩</button>')+((!d.def&&(d.mine||me.admin))?'<button onclick="jbDel(\''+d.k+'\')">🗑</button>':'')+'</div></div>').join('')+'</div>':'<p class="nt" style="text-align:center">Zatím tu nejsou žádné disky.</p>')}
  else if(JBV=='pls'){b.innerHTML=jbPlsHtml()}
  else{b.innerHTML=(JBP.length?'<div class="jbq"><button class="gb s" onclick="jbPlNew()">💾 Uložit playlist</button><button class="gb s" onclick="jbPlShare(0)">📤 Sdílet do chatu</button></div>':'')+'<p class="nt">Playlist se přehrává pořád dokola. Poslední disk navazuje na první.</p>'+(JBP.length?JBP.map((k,i)=>{const d=jbGet(k);return d?'<div class="jr">'+jbDisc(d,pl(k))+'<div class="ti" onclick="jbPlay(\''+k+'\')"><b>'+esc(d.title)+'</b><small>'+esc(d.artist||d.user)+'</small></div><button onclick="jbMv('+i+',-1)">▲</button><button onclick="jbMv('+i+',1)">▼</button><button onclick="jbTogP(\''+k+'\')">✕</button></div>':''}).join(''):'<p class="nt" style="text-align:center">Playlist je prázdný. V záložce Disky přidej disky tlačítkem „＋ Playlist“.</p>')}
  b.scrollTop=keep;
@@ -838,7 +868,7 @@ async function hvLoad(){const box=$('hsv');if(!box||(HVL&&Date.now()-HVL<12e4))r
   box.querySelectorAll('.hvi').forEach(s=>HVO.observe(s))}
  catch(e){HVL=0;box.innerHTML='<div class="nt" style="padding:14px;text-align:center">Videa se nepodařilo načíst.</div>'}}
 function hubMsgPaint(){const c=$('hmc');if(!c)return;
- c.innerHTML='<div class="hmt" onclick="event.stopPropagation();msChat()">💬 GLOBÁLNÍ CHAT</div><div class="hmb" onclick="event.stopPropagation();msChat()">'+(HCH.length?HCH.map(m=>'<p><b>'+esc(m.u)+'</b> '+esc(String(m.b).replace(JBTAG,'🎵 playlist'))+'</p>').join(''):'<p class="nt">Zatím ticho…</p>')+'</div><div class="hmt">✉️ SOUKROMÉ ZPRÁVY</div><div class="hmb">'+(HDM.length?HDM.slice(0,4).map(t=>'<p><b>'+esc(t.u)+'</b>'+(t.unread?' <span class="dotb">'+(+t.unread)+'</span>':'')+' '+(t.mine?'Ty: ':'')+esc(t.b)+'</p>').join(''):'<p class="nt">Žádné soukromé zprávy.</p>')+'</div>'}
+ c.innerHTML='<div class="hmt" onclick="event.stopPropagation();msChat()">💬 GLOBÁLNÍ CHAT</div><div class="hmb" onclick="event.stopPropagation();msChat()">'+(HCH.length?HCH.map(m=>'<p><b>'+esc(m.u)+'</b> '+esc(ntPrev(m.b))+'</p>').join(''):'<p class="nt">Zatím ticho…</p>')+'</div><div class="hmt">✉️ SOUKROMÉ ZPRÁVY</div><div class="hmb">'+(HDM.length?HDM.slice(0,4).map(t=>'<p><b>'+esc(t.u)+'</b>'+(t.unread?' <span class="dotb">'+(+t.unread)+'</span>':'')+' '+(t.mine?'Ty: ':'')+esc(t.b)+'</p>').join(''):'<p class="nt">Žádné soukromé zprávy.</p>')+'</div>'}
 async function hubMsgRefresh(){hubOnl();const u=me&&me.id;try{const c=await XA('chat');if(me&&me.id==u)HCH=c.slice(-4)}catch(e){}
  try{const d=await XA('dmlist');if(me&&me.id==u){HDM=d.threads||[];const n=HDM.reduce((s,t)=>s+t.unread,0),b=$('hmb');b.textContent=n;b.style.display=n?'block':'none'}}catch(e){}
  hubMsgPaint()}
@@ -847,8 +877,8 @@ function hvTick(){const hubOn=$('hub').style.display=='flex',cov=!hubOn||$('sc')
  else if(!cov&&HVCOV){HVCOV=false;hvPlay(HVCUR)}
  if(!cov&&Date.now()-HWI>15000){HWI=Date.now();hubMsgRefresh()}}
 function hubWidgets(){if(!$('hsi')||!me)return;
- if(HUID!=me.id){HUID=me.id;HDM=[];HCH=[];HJH=[];HVL=0;HAVL=0;HAV='';hubMsgPaint()}
- hsMode(HSMOD);hubNews();hvLoad();hubJb();hubProfile();hubInfo();HWI=Date.now();hubMsgRefresh();if(!HWT)HWT=setInterval(hvTick,800)}
+ if(HUID!=me.id){HUID=me.id;HDM=[];HCH=[];HJH=[];HVL=0;HAVL=0;HAV='';NTS=0;NTU=0;NTC=0;hubMsgPaint()}
+ hsMode(HSMOD);hubNews();hvLoad();hubJb();hubProfile();hubInfo();ntStart();HWI=Date.now();hubMsgRefresh();if(!HWT)HWT=setInterval(hvTick,800)}
 $('hsf').onsubmit=hsGo;$('hsw').onclick=()=>hsMode('web');$('hsa').onclick=()=>hsMode('ai');$('hsnd').onclick=e=>hvSound(!HVS,e);
 // ===== UPDATE 4.2: téma nebe/peklo, profil, playlisty =====
 let HAV='',HAVL=0,JBS=[],JBIMP=null;
@@ -861,9 +891,10 @@ function hubPfPaint(){const a=$('hpa');if(!a||!me)return;a.innerHTML=avh(HAV,me.
 async function hubProfile(){if(!me)return;hubPfPaint();if(HAVL)return;HAVL=1;try{const pl=await XA('players');const p=(pl||[]).find(x=>x.username==me.name);HAV=(p&&p.avatar)||''}catch(e){HAVL=0}hubPfPaint()}
 const pfMsg=(t,ok)=>{const m=$('pfm');if(m){m.style.color=ok?'#9fe6a8':'#ff9a9a';m.textContent=t}};
 function pfOpen(){const m=$('pf');m.innerHTML='<div class="pfw"><div class="mbar"><button class="rb" onclick="pfClose()">←</button><b>👤 Můj profil</b></div><div class="pfb"><div class="pfa" id="pfav">'+avh(HAV,me.name,84)+'</div><div class="pfr"><button class="gb s" onclick="$(\'pff\').click()">📷 Nahrát ikonku</button><button class="gb s" onclick="pfAvDel()">Odebrat</button></div><input type="file" id="pff" accept="image/*" hidden>'+
+ '<h3>Upozornění na zprávy</h3><label class="ntl"><input type="checkbox" id="ntdm"> ✉️ Soukromé zprávy</label><label class="ntl"><input type="checkbox" id="ntch"> 💬 Globální chat</label><p class="nt" style="margin:4px 0 0;font-size:12px;opacity:.7">Upozornění chodí, dokud máš hru otevřenou v prohlížeči (klidně na pozadí). Prohlížeč se tě zeptá na povolení.</p>'+
  '<h3>Změnit jméno</h3><input id="pfn" maxlength="20" placeholder="Nové jméno (a–z, 0–9, _ . -)" autocomplete="off"><input id="pfc1" type="password" placeholder="Aktuální heslo" autocomplete="current-password"><button class="gb" onclick="pfRen()">Uložit jméno</button>'+
  '<h3>Změnit heslo</h3><input id="pfp" type="password" placeholder="Nové heslo (aspoň 6 znaků)" autocomplete="new-password"><input id="pfp2" type="password" placeholder="Nové heslo znovu" autocomplete="new-password"><input id="pfc2" type="password" placeholder="Aktuální heslo" autocomplete="current-password"><button class="gb" onclick="pfPass()">Uložit heslo</button><p id="pfm" class="fm" style="text-align:center"></p></div></div>';
- m.style.display='flex';$('pff').onchange=e=>pfAv(e.target.files[0])}
+ m.style.display='flex';$('pff').onchange=e=>pfAv(e.target.files[0]);$('ntdm').checked=ntOn('dm');$('ntch').checked=ntOn('ch');$('ntdm').onchange=e=>ntToggle('dm',e.target.checked,e.target);$('ntch').onchange=e=>ntToggle('ch',e.target.checked,e.target)}
 function pfClose(){const m=$('pf');m.style.display='none';m.innerHTML='';hubPfPaint()}
 function pfAv(f){if(!f)return;pfMsg('Zpracovávám…',1);const r=new FileReader();r.onerror=()=>pfMsg('Obrázek se nepodařilo načíst.');r.onload=()=>{const im=new Image();im.onerror=()=>pfMsg('Tohle není obrázek.');im.onload=async()=>{
  const s=Math.min(im.width,im.height),c=document.createElement('canvas');c.width=c.height=128;const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,128,128);x.drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,128,128);
@@ -911,6 +942,86 @@ let HONL=[],HOLO=false;
 function hubOnlPaint(){const n=$('hon');if(!n)return;n.textContent=HONL.length||'–';const o=$('hol');o.style.display=HOLO?'flex':'none';o.innerHTML=HOLO?HONL.map(u=>'<span>'+esc(u)+'</span>').join(''):'';$('hi2').setAttribute('aria-expanded',HOLO)}
 async function hubOnl(){try{const l=await XA('ping');const s=new Set((Array.isArray(l)?l:[]).map(String));if(me)s.add(me.name);HONL=[...s].sort((a,b)=>a.localeCompare(b,'cs'))}catch(e){}hubOnlPaint()}
 $('hi2').onclick=()=>{HOLO=!HOLO;hubOnlPaint()};
+// ===== UPDATE 4.4: emoji, reakce, hlasovky, recenze, upozornění =====
+let SCX=[],SCS=new Set(),SCT=0,RXT=0,RXO=0,VCR=null,JBRV={k:null,id:0,rating:0},NTI=0,NTS=0,NTU=0,NTC=0;
+try{if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
+const VCRX=/\[voice:([0-9a-f-]{36}\/[a-z0-9]{6,24}\.(?:webm|mp4|ogg|m4a))\|(\d{1,3})\]/;
+// --- emoji klávesnice
+const EMJ='😀 😁 😂 🤣 😊 😍 😘 😎 🥳 🤩 😅 😉 😋 😜 🤔 🤨 😐 😴 😮 😲 😢 😭 😡 🤬 😱 🥶 🥵 🤯 🤗 🙄 😇 🤝 👍 👎 👏 🙌 🙏 💪 👀 🔥 💯 🎉 🎶 🎮 🏆 💀 👻 ❤️ 🧡 💛 💚 💙 💜 🖤 💔 ⭐ ✨ 🍕 🍺 ☕'.split(' ');
+function emPick(id,ev){if(ev)ev.stopPropagation();const o=$('emp');if(o){o.remove();return}const i=$(id);if(!i)return;const p=document.createElement('div');p.id='emp';p.innerHTML=EMJ.map(e=>'<button type="button">'+e+'</button>').join('');document.body.appendChild(p);
+ p.onclick=e=>{const b=e.target.closest('button');if(!b)return;e.stopPropagation();const s=i.selectionStart==null?i.value.length:i.selectionStart,t=i.selectionEnd==null?s:i.selectionEnd,ch=b.textContent;if(i.maxLength>0&&i.value.length-(t-s)+ch.length>i.maxLength)return;i.value=i.value.slice(0,s)+ch+i.value.slice(t);const q=s+ch.length;i.focus();try{i.setSelectionRange(q,q)}catch(er){}}}
+document.addEventListener('click',e=>{if(!e.target.closest('#emp')){const o=$('emp');if(o)o.remove()}});
+// --- reakce (jako na WhatsAppu)
+const RXQ=['👍','❤️','😂','😮','😢','🙏'];
+const RXALL=['👍','❤️','😂','😮','😢','🙏','🔥','🎉','👎','😡','🤔','💀','😍','🥳','😎','🤣','👏','💯','😭','🙌','😅','🤝'];
+const rxBtn=(k,id)=>'<i class="rx" onclick="rxBar(\''+k+'\','+(+id)+',this,event)" title="Reagovat">☺</i>';
+const rxChips=(k,id,l)=>(l||[]).map(x=>'<button type="button" class="rxp'+(x.mine?' on':'')+'" data-e="'+esc(x.emoji)+'" onclick="rxSet(\''+k+'\','+(+id)+',this.dataset.e)">'+esc(x.emoji)+' '+(+x.n)+'</button>').join('');
+async function rxFill(k,ids){ids=(ids||[]).filter(Boolean);if(!ids.length)return;let r;try{r=await XA('rget',{kind:k,ids})}catch(e){return}
+ const m={};(r||[]).forEach(x=>m[x.id]=x.e);document.querySelectorAll('.rxc[data-k="'+k+'"]').forEach(el=>{const h=rxChips(k,el.dataset.i,m[el.dataset.i]);if(el.innerHTML!=h)el.innerHTML=h})}
+function rxRefresh(){const g={};document.querySelectorAll('.rxc').forEach(el=>{(g[el.dataset.k]=g[el.dataset.k]||[]).push(+el.dataset.i)});for(const k in g)rxFill(k,g[k])}
+function rxClose(){const b=$('rxb');if(b)b.remove()}
+async function rxSet(k,id,emoji){rxClose();try{await XA('react',{kind:k,id,emoji});rxRefresh()}catch(e){const m=$('msm')||$('scm');if(m){m.style.color='#ff9a9a';m.textContent=/muted/i.test(emsg(e))?'Máš umlčený účet.':'Reakce zatím nejsou zapnuté (spusť SQL 19-komunita.sql).'}}}
+function rxBar(k,id,el,ev){rxClose();RXO=Date.now();if(ev&&ev.stopPropagation)ev.stopPropagation();const r=el.getBoundingClientRect(),b=document.createElement('div');b.id='rxb';
+ b.innerHTML=RXQ.map(e=>'<button type="button" data-e="'+e+'">'+e+'</button>').join('')+'<button type="button" data-more="1">＋</button>';document.body.appendChild(b);
+ const w=b.offsetWidth;b.style.left=Math.max(6,Math.min(innerWidth-w-6,r.left+r.width/2-w/2))+'px';b.style.top=Math.max(6,r.top-54)+'px';
+ b.onclick=e=>{const t=e.target.closest('button');if(!t)return;e.stopPropagation();if(t.dataset.more){b.innerHTML=RXALL.map(x=>'<button type="button" data-e="'+x+'">'+x+'</button>').join('');b.classList.add('big');return}rxSet(k,id,t.dataset.e)}}
+document.addEventListener('click',e=>{if(Date.now()-RXO<600)return;if(!e.target.closest('#rxb'))rxClose()});
+document.addEventListener('pointerdown',e=>{const b=e.target.closest('.bub[data-k],.cm[data-k]');if(!b||e.target.closest('button,a,audio,.rx,.rxp,i'))return;clearTimeout(RXT);RXT=setTimeout(()=>rxBar(b.dataset.k,+b.dataset.i,b,e),450)},{passive:true});
+['pointerup','pointermove','pointercancel'].forEach(ev=>document.addEventListener(ev,()=>clearTimeout(RXT),{passive:true}));
+document.addEventListener('dblclick',e=>{const b=e.target.closest('.bub[data-k],.cm[data-k]');if(b&&!e.target.closest('button,a,audio,i'))rxBar(b.dataset.k,+b.dataset.i,b,e)});
+// --- vykreslení zpráv (text, playlist, hlasovka)
+function msBody(b){b=String(b);const m=VCRX.exec(b);if(m){return '<div class="vcm"><audio controls preload="none" src="'+esc(SB+'/storage/v1/object/public/voice/'+m[1])+'"></audio><small style="margin:0">🎤 '+(+m[2])+' s</small></div>'}return jbChatB(b)}
+const msBubD=m=>'<div class="bub'+(m.mine?' me':'')+'" data-k="dm" data-i="'+(+m.id)+'">'+msBody(m.b)+'<small>'+tmf(m.t)+rxBtn('dm',m.id)+'</small><div class="rxc" data-k="dm" data-i="'+(+m.id)+'"></div></div>';
+const msBubC=m=>'<div class="bub'+(m.u==me.name?' me':'')+'" data-k="chat" data-i="'+(+m.id)+'"><b style="color:#ffd400;font-size:12px">'+esc(m.u)+'</b>'+(me.admin?' <i style="cursor:pointer;font-style:normal" onclick="msDel('+(+m.id)+')">🗑</i>':'')+'<br>'+msBody(m.b)+'<small>'+tmf(m.t)+rxBtn('chat',m.id)+'</small><div class="rxc" data-k="chat" data-i="'+(+m.id)+'"></div></div>';
+// --- hlasové zprávy
+const vcFmt=s=>Math.floor(s/60)+':'+String(s%60).padStart(2,'0');
+function vcMsg(h,ok){const m=$('msm');if(m){m.style.color=ok?'#fff':'#ff9a9a';m.textContent=h}}
+function vcUi(){const on=!!VCR,mc=$('msmc'),xc=$('msxc');if(mc)mc.textContent=on?'⏹':'🎤';if(xc)xc.style.display=on?'':'none';if(on)vcMsg('🔴 Nahrávám '+vcFmt(Math.floor((Date.now()-VCR.t0)/1000))+' · ⏹ odešle, ✕ zruší',1)}
+async function vcRec(){if(VCR)return vcStop(true);
+ if(!navigator.mediaDevices||!window.MediaRecorder){vcMsg('Tenhle prohlížeč neumí nahrávat zvuk.');return}
+ let st;try{st=await navigator.mediaDevices.getUserMedia({audio:true})}catch(e){vcMsg('Mikrofon není povolený.');return}
+ const mt=['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg;codecs=opus'].find(x=>MediaRecorder.isTypeSupported(x))||'';
+ let rec;try{rec=new MediaRecorder(st,mt?{mimeType:mt}:{})}catch(e){st.getTracks().forEach(x=>x.stop());vcMsg('Nahrávání se nepodařilo spustit.');return}
+ const ch=[];rec.ondataavailable=e=>{if(e.data&&e.data.size)ch.push(e.data)};
+ VCR={rec,st,ch,t0:Date.now(),send:false,mt:(rec.mimeType||mt||'audio/webm').split(';')[0],mode:MODE,to:MC};rec.onstop=vcDone;
+ rec.start();vcUi();VCR.tm=setInterval(()=>{if(!VCR)return;vcUi();if(Date.now()-VCR.t0>=60000)vcStop(true)},250)}
+function vcStop(send){if(!VCR)return;VCR.send=!!send;try{if(VCR.rec.state!='inactive')VCR.rec.stop();else vcDone()}catch(e){vcDone()}}
+async function vcDone(){const v=VCR;if(!v)return;VCR=null;clearInterval(v.tm);try{v.st.getTracks().forEach(x=>x.stop())}catch(e){}vcUi();
+ const sec=Math.round((Date.now()-v.t0)/1000);if(!v.send){vcMsg('');return}
+ if(sec<1||!v.ch.length){vcMsg('Hlasovka je moc krátká.');return}
+ vcMsg('Odesílám hlasovku…',1);
+ try{const blob=new Blob(v.ch,{type:v.mt}),ext=v.mt.includes('mp4')?'mp4':v.mt.includes('ogg')?'ogg':'webm';
+  const rnd=Array.from(crypto.getRandomValues(new Uint8Array(8))).map(x=>x.toString(16).padStart(2,'0')).join(''),path=me.id+'/'+rnd+'.'+ext;
+  const r=await sfetch('/storage/v1/object/voice/'+path,{method:'POST',headers:{'Content-Type':blob.type,'x-upsert':'false'},body:blob});if(!r.ok)throw new Error('upload '+r.status);
+  const body='🎤 Hlasová zpráva [voice:'+path+'|'+Math.min(60,sec)+']';
+  await (v.mode=='chat'?XA('send',{body}):XA('dmsend',{to:v.to,body}));
+  vcMsg('');if($('msb')){MSIG='';MODE=='chat'?msPollC():msPoll()}}
+ catch(e){vcMsg('Hlasovku se nepodařilo odeslat (běžel SQL 19-komunita.sql? nejsi umlčen/á?).')}}
+// --- recenze disků
+const RVERR=m=>({muted:'Máš umlčený účet.',own:'Vlastní disk hodnotit nemůžeš.',rate:'Zpomal, píšeš moc rychle.',bad_rating:'Vyber počet hvězdiček.',not_found:'Disk už neexistuje.'})[m]||'Uložení se nepovedlo (běžel SQL 19-komunita.sql?).';
+async function jbRev(k){const d=jbGet(k);if(!d)return;const id=d.def?0:+d.id;JBRV={k,id,rating:0};
+ jbSheet('<div class="shh"><b>⭐ '+esc(d.title)+'</b><button onclick="jbShut()">✕</button></div><div id="jrv"><p class="nt">Načítám…</p></div>');
+ try{const r=await XA('rvlist',{id});if(d.def){d.ravg=r.avg;d.rn=r.n}if(!$('jrv'))return;JBRV.rating=r.my?r.my.rating:0;jbRevPaint(r,d)}catch(e){if($('jrv'))$('jrv').innerHTML='<p class="fm">Recenze zatím nejsou zapnuté (spusť SQL 19-komunita.sql).</p>'}}
+function jbRevPaint(r,d){const el=$('jrv');if(!el)return;const own=!d.def&&d.mine;
+ el.innerHTML='<p class="nt" style="text-align:center;font-size:15px">'+(r.n?'⭐ <b>'+r.avg+'</b> / 5 · '+r.n+' '+(r.n==1?'recenze':r.n<5?'recenze':'recenzí'):'Zatím žádná recenze')+'</p>'+
+ (own?'<p class="nt" style="text-align:center">Vlastní disk hodnotit nemůžeš.</p>':'<div class="stars" id="jst">'+[1,2,3,4,5].map(i=>'<button type="button" onclick="jbRevStar('+i+')">'+(i<=JBRV.rating?'★':'☆')+'</button>').join('')+'</div><div class="mi" style="padding:6px 0;max-width:none"><button class="ib" type="button" onclick="emPick(\'jrt\',event)">😊</button><input id="jrt" maxlength="300" placeholder="Napiš recenzi (nepovinné)…" autocomplete="off" value="'+esc(r.my?r.my.body:'')+'"><button onclick="jbRevSave()">➤</button></div><p id="jrm" class="fm" style="text-align:center;margin:0"></p>')+
+ '<div class="jrl">'+(r.items||[]).map(x=>'<div class="cm"><b>'+esc(x.user)+'</b> <span style="opacity:1;color:#ffd400">'+'★'.repeat(x.rating)+'☆'.repeat(5-x.rating)+'</span><span>'+tmf(x.created_at)+'</span>'+((x.mine||me.admin)?'<i onclick="jbRevDel('+(+x.id)+')">🗑</i>':'')+(x.body?'<div>'+esc(x.body)+'</div>':'')+'</div>').join('')+'</div>'}
+function jbRevStar(i){JBRV.rating=i;document.querySelectorAll('#jst button').forEach((b,j)=>b.textContent=j<i?'★':'☆')}
+async function jbRevSave(){const m=$('jrm');if(!JBRV.rating){if(m){m.style.color='#ff9a9a';m.textContent=RVERR('bad_rating')}return}
+ try{await XA('rvsave',{id:JBRV.id,rating:JBRV.rating,body:($('jrt')||{}).value||''});await jbLoad();if(document.getElementById('jbb'))jbR(true);jbRev(JBRV.k)}catch(e){if(m){m.style.color='#ff9a9a';m.textContent=RVERR(emsg(e))}}}
+async function jbRevDel(id){try{await XA('rvdel',{id});await jbLoad();if(document.getElementById('jbb'))jbR(true);jbRev(JBRV.k)}catch(e){}}
+// --- upozornění na zprávy (dokud je hra otevřená)
+const ntOn=k=>{try{return localStorage.getItem('jb_nt_'+k)=='1'}catch(e){return false}};
+function ntPrev(b){b=String(b);if(VCRX.test(b))return '🎤 Hlasová zpráva';return b.replace(JBTAG,'🎵 playlist').slice(0,90)}
+async function ntToggle(k,on,el){if(on){if(!('Notification' in window)){pfMsg('Tenhle prohlížeč upozornění nepodporuje.');el.checked=false;return}let pm=Notification.permission;if(pm!='granted')pm=await Notification.requestPermission();if(pm!='granted'){pfMsg('Upozornění nejsou v prohlížeči povolená.');el.checked=false;return}}
+ try{localStorage.setItem('jb_nt_'+k,on?'1':'0')}catch(e){}ntStart();pfMsg(on?'Upozornění zapnuté.':'Upozornění vypnuté.',1)}
+function ntStart(){const on=ntOn('dm')||ntOn('ch');if(!on){if(NTI){clearInterval(NTI);NTI=0}return}if(NTI||!('Notification' in window)||Notification.permission!='granted')return;NTS=0;ntTick();NTI=setInterval(ntTick,30000)}
+async function ntShow(tag,title,body){if(!(document.hidden||!document.hasFocus()))return;if(Notification.permission!='granted')return;
+ try{const reg=navigator.serviceWorker&&await navigator.serviceWorker.getRegistration();if(reg)await reg.showNotification(title,{body,tag:'jb-'+tag,renotify:true});else new Notification(title,{body,tag:'jb-'+tag})}catch(e){try{new Notification(title,{body,tag:'jb-'+tag})}catch(er){}}}
+async function ntTick(){if(!ses||!me)return;
+ if(ntOn('dm')){try{const d=await XA('dmlist'),th=d.threads||[],un=th.reduce((s,t)=>s+t.unread,0);if(NTS&&un>NTU){const t=th.filter(x=>x.unread).sort((a,b)=>new Date(b.t)-new Date(a.t))[0];ntShow('dm','✉️ '+(t?t.u:'Nová zpráva'),t?ntPrev(t.b):'Máš novou zprávu')}NTU=un}catch(e){}}
+ if(ntOn('ch')){try{const r=await XA('chat'),mx=r.length?r[r.length-1].id:0;if(NTS&&NTC&&mx>NTC){const n=r.filter(m=>m.id>NTC&&m.u!=me.name);if(n.length){const l=n[n.length-1];ntShow('ch','💬 '+l.u,ntPrev(l.b))}}NTC=mx}catch(e){}}
+ NTS=1}
 $('hjbb').onclick=()=>jbOpen(false);
 
 $('adm').addEventListener('click',lb);
