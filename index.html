@@ -343,6 +343,25 @@ body.angel #hol span{background:rgba(24,44,96,.66);border-color:#e8c872;color:#f
 .pfb .ntl input{all:revert;margin:0 6px 0 0;width:20px;height:20px}
 body.angel #rxb,body.angel #emp{background:#10204a;border-color:#e8c872}
 body.angel .hnh{color:#8a6a00}
+/* ===== UPDATE 4.5: hlasové hovory ===== */
+#cl{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 8px);z-index:60;width:min(94vw,460px);display:none;align-items:center;gap:8px;padding:10px 12px;border-radius:14px;background:rgba(30,5,8,.96);border:1px solid #c1121f;box-shadow:0 6px 24px rgba(0,0,0,.6);color:#fff;font:14px system-ui,-apple-system,"Segoe UI",sans-serif}
+#cl.ring{border-color:#ffd400;animation:clp 1s ease-in-out infinite alternate}
+#cl.live{border-color:#3fbf5a}
+@keyframes clp{to{box-shadow:0 0 22px rgba(255,212,0,.8)}}
+#cl .clt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#cl button{border:0;border-radius:10px;padding:9px 12px;font:700 13px system-ui,sans-serif;color:#fff;cursor:pointer}
+#cl .cly{background:#2e9e48}#cl .cln{background:#a50f1a}#cl .clm{background:rgba(255,255,255,.16);font-size:16px;padding:7px 11px}#cl .clm.on{background:#a50f1a}
+#hcl{cursor:default}
+#hcl .clb{padding:0 10px 10px;font-size:13px}
+#hcl .cls{padding:8px 10px;border-radius:9px;background:rgba(0,0,0,.35)}
+#hcl .nt{margin:2px 0;opacity:.65;font-size:12.5px}
+#hcl .clr{display:flex;flex-direction:column;gap:6px;max-height:190px;overflow-y:auto}
+#hcl .clu{display:flex;align-items:center;gap:10px;padding:5px 8px;border-radius:9px;background:rgba(0,0,0,.35)}
+#hcl .clu span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#hcl .clu button{width:36px;height:34px;border-radius:50%;border:1px solid #3fbf5a;background:rgba(46,158,72,.35);color:#fff;font-size:15px;padding:0;cursor:pointer}
+#hcl .clq{border:1px solid #5a0a0f;border-radius:10px;background:rgba(0,0,0,.4);color:#fff;font:600 11px system-ui,sans-serif;padding:4px 8px;cursor:pointer}
+#hcl .clq.on{border-color:#ffd400;color:#ffd400}
+body.angel #hcl .cls,body.angel #hcl .clu{background:rgba(255,255,255,.12)}
 </style></head><body>
 <div id="bg"></div><canvas id="em"></canvas><div id="vig"></div>
 
@@ -411,6 +430,7 @@ body.angel .hnh{color:#8a6a00}
 <div class="hnh">🌍 Co se děje ve světě</div><div id="hnw"><span class="nt">Načítám zprávy…</span></div>
 <button class="hbtn p" id="hplay">🎮 Chci hrát!<small>Jízda na Chodov, minihry, turnaje</small></button>
 <div class="hrow2"><div id="hjbb" class="wg" role="button" tabindex="0"><div id="hjd"></div><div class="hjt"><small>🎵 JBfy</small><b id="hjn">JBfy</b><span id="hjb">Hudba od hráčů · vlastní disky a playlist</span><div class="hjc"><button type="button" onclick="hubJc('p',event)" aria-label="Předchozí">⏮</button><button type="button" id="hjp" onclick="hubJc('t',event)" aria-label="Přehrát/pauza">▶</button><button type="button" onclick="hubJc('n',event)" aria-label="Další">⏭</button></div></div></div><div id="hpf" class="wg" role="button" tabindex="0"><div id="hpa"></div><b id="hpn"></b><small>✏️ Upravit profil</small></div></div>
+<div id="hcl" class="wg"></div>
 <div class="hrow"><div id="hscroll" class="wg tall" role="button" tabindex="0"><div class="wgh"><b>📜 JB scroll</b><button type="button" id="hsnd" class="snb" aria-label="Zvuk">🔇</button></div><div id="hsv"><div class="nt" style="padding:14px;text-align:center">Načítám videa…</div></div></div>
 <div id="hmsg" class="wg tall" role="button" tabindex="0"><div class="wgh"><b>✉️ Zprávy</b><i id="hmb"></i></div><div id="hmc"></div></div></div>
 <p id="hst" class="fm"></p></div>
@@ -521,7 +541,7 @@ addEventListener('message',e=>{const f=document.querySelector('#game iframe'),k=
  else if(d.t=='api')onApi(d).then(x=>e.source.postMessage({id:d.id,ok:1,data:x},'*'),(er)=>e.source.postMessage({id:d.id,ok:0,m:String((er&&er.message)||'')},'*'))
  else if(d.t=='pub')pubCfg(d.h).then(()=>e.source.postMessage({id:d.id,ok:1},'*'),()=>e.source.postMessage({id:d.id,ok:0},'*'))});
 addEventListener('visibilitychange',()=>{if(document.hidden)flush()});
-$('x').addEventListener('click',async()=>{try{await flush()}catch(e){}ses=null;store();location.reload()});
+$('x').addEventListener('click',async()=>{try{await flush()}catch(e){}if(CL)clEnd('',1);ses=null;store();location.reload()});
 
 
 // ---- Kavadle (overlay nad hrou, stejné přihlášení)
@@ -636,7 +656,7 @@ async function msHome(){MODE='dm';msShell('✉️ Zprávy',msClose);const b=$('m
  catch(e){if($('msb'))$('msb').innerHTML='<p class="fm">Načtení se nepovedlo.</p>'}}
 function msPaint(r,f){const b=$('msb');if(!b)return;const sig=r.length+':'+(r.length?r[r.length-1].id:0);if(sig==MSIG)return;MSIG=sig;const near=!b.dataset.s||b.scrollHeight-b.scrollTop-b.clientHeight<90;b.dataset.s=1;b.innerHTML='<div class="ml">'+r.map(f).join('')+'</div>';if(near)b.scrollTop=b.scrollHeight}
 function msThread(i){const t=MTH[i];if(t)msThreadU(t.uid,t.u)}
-function msThreadU(uid,name){MODE='dm';MC=uid;msShell(esc(name),msHome,msSend);msPoll();MST=setInterval(msPoll,4000)}
+function msThreadU(uid,name){MODE='dm';MC=uid;msShell(esc(name),msHome,msSend);{const bar=document.querySelector('#ms .mbar');if(bar){const cb=document.createElement('button');cb.className='rb';cb.type='button';cb.textContent='📞';cb.title='Zavolat';cb.setAttribute('aria-label','Zavolat');cb.onclick=()=>clDial(uid,name);bar.appendChild(cb)}}msPoll();MST=setInterval(msPoll,4000)}
 async function msPoll(){try{const r=await XA('dm',{with:MC});msPaint(r,msBubD);rxFill('dm',r.map(m=>m.id))}catch(e){}}
 function msChat(){MODE='chat';msShell('💬 Veřejný chat',msHome,msSend);msPollC();MST=setInterval(msPollC,4000)}
 async function msPollC(){try{const r=await XA('chat');msPaint(r,msBubC);rxFill('chat',r.map(m=>m.id))}catch(e){}}
@@ -877,8 +897,8 @@ function hvTick(){const hubOn=$('hub').style.display=='flex',cov=!hubOn||$('sc')
  else if(!cov&&HVCOV){HVCOV=false;hvPlay(HVCUR)}
  if(!cov&&Date.now()-HWI>15000){HWI=Date.now();hubMsgRefresh()}}
 function hubWidgets(){if(!$('hsi')||!me)return;
- if(HUID!=me.id){HUID=me.id;HDM=[];HCH=[];HJH=[];HVL=0;HAVL=0;HAV='';NTS=0;NTU=0;NTC=0;hubMsgPaint()}
- hsMode(HSMOD);hubNews();hvLoad();hubJb();hubProfile();hubInfo();ntStart();HWI=Date.now();hubMsgRefresh();if(!HWT)HWT=setInterval(hvTick,800)}
+ if(HUID!=me.id){HUID=me.id;if(CL)clEnd('',1);CLA=0;CLUT=0;CLU={};HDM=[];HCH=[];HJH=[];HVL=0;HAVL=0;HAV='';NTS=0;NTU=0;NTC=0;hubMsgPaint()}
+ hsMode(HSMOD);clInit();clPaint();hubNews();hvLoad();hubJb();hubProfile();hubInfo();ntStart();HWI=Date.now();hubMsgRefresh();if(!HWT)HWT=setInterval(hvTick,800)}
 $('hsf').onsubmit=hsGo;$('hsw').onclick=()=>hsMode('web');$('hsa').onclick=()=>hsMode('ai');$('hsnd').onclick=e=>hvSound(!HVS,e);
 // ===== UPDATE 4.2: téma nebe/peklo, profil, playlisty =====
 let HAV='',HAVL=0,JBS=[],JBIMP=null;
@@ -939,7 +959,7 @@ function hubInfo(){const el=$('hi1');if(!el)return;
  draw(w);if(w)return;
  fetch('https://api.open-meteo.com/v1/forecast?latitude=50.0755&longitude=14.4378&current=temperature_2m,weather_code&timezone=Europe%2FPrague').then(r=>r.json()).then(j=>{const c=j&&j.current;if(!c||c.temperature_2m==null)return;const m=WMO(+c.weather_code);w=[m[0],m[1],Math.round(+c.temperature_2m)];try{sessionStorage.setItem('hwx',JSON.stringify({t:Date.now(),w}))}catch(e){}draw(w)}).catch(()=>{})}
 let HONL=[],HOLO=false;
-function hubOnlPaint(){const n=$('hon');if(!n)return;n.textContent=HONL.length||'–';const o=$('hol');o.style.display=HOLO?'flex':'none';o.innerHTML=HOLO?HONL.map(u=>'<span>'+esc(u)+'</span>').join(''):'';$('hi2').setAttribute('aria-expanded',HOLO)}
+function hubOnlPaint(){clPaint();const n=$('hon');if(!n)return;n.textContent=HONL.length||'–';const o=$('hol');o.style.display=HOLO?'flex':'none';o.innerHTML=HOLO?HONL.map(u=>'<span>'+esc(u)+'</span>').join(''):'';$('hi2').setAttribute('aria-expanded',HOLO)}
 async function hubOnl(){try{const l=await XA('ping');const s=new Set((Array.isArray(l)?l:[]).map(String));if(me)s.add(me.name);HONL=[...s].sort((a,b)=>a.localeCompare(b,'cs'))}catch(e){}hubOnlPaint()}
 $('hi2').onclick=()=>{HOLO=!HOLO;hubOnlPaint()};
 // ===== UPDATE 4.4: emoji, reakce, hlasovky, recenze, upozornění =====
@@ -1040,4 +1060,95 @@ function tick(){g.clearRect(0,0,w,h);g.globalCompositeOperation='lighter';
   const t=Math.max(0,p.y/h);g.fillStyle=`rgba(255,${Math.floor(60+90*(1-t))},20,${p.a*(.4+.6*t)})`;g.beginPath();g.arc(p.x,p.y,p.r,0,7);g.fill()}
  if(!reduce)requestAnimationFrame(tick)}
 tick();
+// ===== UPDATE 4.5: hlasové hovory mezi hráči (WebRTC, zdarma) =====
+// Zvuk jde přímo mezi hráči. Supabase (tabulka call_sig) jen předává signály. STUN/TURN servery jdou změnit tady:
+const CALL_ICE=[{urls:['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302']},{urls:['turn:openrelay.metered.ca:80','turn:openrelay.metered.ca:443','turn:openrelay.metered.ca:443?transport=tcp'],username:'openrelayproject',credential:'openrelayproject'}];
+let CL=null,CLA=0,CLT=0,CLB=0,CLI=0,CLR=[],CLU={},CLUT=0,CLUB=0,CLJ=0,CLRT=0,CLAC=null,CLMSG='';
+const clDnd=()=>{try{return localStorage.getItem('jb_dnd')=='1'}catch(e){return false}};
+const clRid=()=>Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-6);
+const clSend=(to,kind,call,data)=>rpc('call_send',{p_to:to,p_kind:kind,p_call:call,p_data:data==null?null:data}).catch(()=>{});
+const clMS=s=>{s=Math.max(0,s|0);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+function clToast(t){CLMSG=t;clUi();clPaint();setTimeout(()=>{if(CLMSG==t){CLMSG='';clUi();clPaint()}},4000)}
+// --- vyzvánění (jednoduchý pípavý tón)
+function clBeep(){try{if(!CLAC)CLAC=new(window.AudioContext||window.webkitAudioContext)();const c=CLAC;if(c.state=='suspended')c.resume();const t=c.currentTime;
+ for(const [f,o] of [[880,0],[660,.28]]){const os=c.createOscillator(),g=c.createGain();os.frequency.value=f;os.type='sine';g.gain.setValueAtTime(0,t+o);g.gain.linearRampToValueAtTime(.18,t+o+.03);g.gain.linearRampToValueAtTime(0,t+o+.24);os.connect(g);g.connect(c.destination);os.start(t+o);os.stop(t+o+.26)}}catch(e){}}
+function clRing(on){clearInterval(CLRT);CLRT=0;if(on){clBeep();try{navigator.vibrate&&navigator.vibrate([300,150,300])}catch(e){}CLRT=setInterval(()=>{clBeep();try{navigator.vibrate&&navigator.vibrate([300,150,300])}catch(e){}},2200)}}
+// --- polling signálů
+async function clPoll(){if(!me||!ses||CLB)return;CLB=1;try{const r=await rpc('call_poll',{p_after:CLA});for(const s of Array.isArray(r)?r:[]){CLA=Math.max(CLA,+s.id||0);try{await clSig(s)}catch(e){}}}catch(e){}finally{CLB=0}}
+function clLoop(){clearTimeout(CLT);CLT=setTimeout(async()=>{await clPoll();clLoop()},CL?900:3000)}
+function clInit(){if(!CLT)clLoop()}
+async function clSig(s){const d=s.data||{};
+ if(s.kind=='ring'){if(s.age>35)return;
+  if(CL){if(CL.id!=s.call)clSend(s.from,'busy',s.call);return}
+  if(clDnd()){clSend(s.from,'decline',s.call);return}
+  CL={id:s.call,peer:s.from,name:s.name||'?',role:'in',st:'ring',t:Date.now(),ice:[]};clRing(true);clUi();clTickStart();clPaint();return}
+ if(!CL||s.call!=CL.id||s.from!=CL.peer)return;
+ if(s.kind=='accept'&&CL.role=='out'&&CL.st=='ring'){CL.st='conn';clRing(false);clUi();await clStart()}
+ else if(s.kind=='offer'&&CL.role=='in'){await clOffer(d)}
+ else if(s.kind=='answer'&&CL.pc&&CL.role=='out'){await CL.pc.setRemoteDescription(d);await clFlush()}
+ else if(s.kind=='ice'){if(CL.pc&&CL.pc.remoteDescription){try{await CL.pc.addIceCandidate(d)}catch(e){}}else CL.ice.push(d)}
+ else if(s.kind=='decline')clEnd(CL.name+' hovor odmítl/a.',0)
+ else if(s.kind=='busy')clEnd(CL.name+' právě telefonuje.',0)
+ else if(s.kind=='end')clEnd('Hovor skončil.',0)}
+async function clFlush(){if(!CL||!CL.pc)return;const q=CL.ice;CL.ice=[];for(const c of q){try{await CL.pc.addIceCandidate(c)}catch(e){}}}
+// --- mikrofon + spojení
+async function clMic(){if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia||!window.RTCPeerConnection){clToast('Tenhle prohlížeč hovory nepodporuje.');return null}
+ try{return await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true,autoGainControl:true},video:false})}
+ catch(e){clToast('Bez povolení mikrofonu to nejde. Povol ho v prohlížeči.');return null}}
+function clPc(){const pc=new RTCPeerConnection({iceServers:CALL_ICE});CL.pc=pc;
+ CL.stream.getTracks().forEach(t=>pc.addTrack(t,CL.stream));
+ pc.onicecandidate=e=>{if(e.candidate&&CL)clSend(CL.peer,'ice',CL.id,e.candidate.toJSON())};
+ pc.ontrack=e=>{let a=$('cla');if(!a){a=document.createElement('audio');a.id='cla';a.autoplay=true;a.setAttribute('playsinline','');document.body.appendChild(a)}a.srcObject=e.streams[0]||new MediaStream([e.track]);a.play().catch(()=>{})};
+ pc.onconnectionstatechange=()=>{if(!CL||CL.pc!==pc)return;const s=pc.connectionState;
+  if(s=='connected'){if(CL.st!='live'){CL.st='live';CL.t0=Date.now();if(JBC&&!jbA.paused){jbA.pause();CLJ=1}clUi();clPaint()}}
+  else if(s=='failed')clEnd('Spojení se nepovedlo (síť hráče hovory blokuje).',1);
+  else if(s=='disconnected'){const k=CL;setTimeout(()=>{if(CL===k&&k.pc===pc&&pc.connectionState!='connected')clEnd('Spojení se přerušilo.',1)},7000)}};
+ return pc}
+async function clStart(){try{const pc=clPc(),o=await pc.createOffer();await pc.setLocalDescription(o);clSend(CL.peer,'offer',CL.id,{type:o.type,sdp:o.sdp})}catch(e){clEnd('Hovor se nepodařilo navázat.',1)}}
+async function clOffer(d){try{const pc=clPc();await pc.setRemoteDescription(d);await clFlush();const a=await pc.createAnswer();await pc.setLocalDescription(a);clSend(CL.peer,'answer',CL.id,{type:a.type,sdp:a.sdp})}catch(e){clEnd('Hovor se nepodařilo navázat.',1)}}
+// --- akce uživatele
+async function clDial(id,name){if(!me||!id||id==me.id)return;if(CL){clToast('Už telefonuješ.');return}
+ const st=await clMic();if(!st)return;if(CL){st.getTracks().forEach(t=>t.stop());return}
+ CL={id:clRid(),peer:id,name:name||'?',role:'out',st:'ring',t:Date.now(),ice:[],stream:st};clUi();clTickStart();clPaint();
+ try{await rpc('call_send',{p_to:id,p_kind:'ring',p_call:CL.id,p_data:null})}catch(e){const m=String((e&&e.message)||'');clEnd(/rate/.test(m)?'Voláš moc rychle, chvilku počkej.':/muted/.test(m)?'Máš umlčený účet.':'Volání se nepovedlo.',0)}}
+async function clAccept(){if(!CL||CL.role!='in'||CL.st!='ring')return;const k=CL;const st=await clMic();if(!st){if(CL===k)clDecline();return}
+ if(CL!==k){st.getTracks().forEach(t=>t.stop());return}CL.stream=st;CL.st='conn';clRing(false);clUi();clSend(CL.peer,'accept',CL.id)}
+function clDecline(){if(!CL)return;clSend(CL.peer,'decline',CL.id);clEnd('',0)}
+function clHang(){if(!CL)return;if(CL.role=='in'&&CL.st=='ring')return clDecline();clEnd('Hovor skončil.',1)}
+function clMute(){if(!CL||!CL.stream)return;CL.muted=!CL.muted;CL.stream.getAudioTracks().forEach(t=>t.enabled=!CL.muted);clUi()}
+function clEnd(msg,notify){const k=CL;if(!k)return;if(notify!==0)clSend(k.peer,'end',k.id);
+ clRing(false);CL=null;try{k.pc&&k.pc.close()}catch(e){}try{k.stream&&k.stream.getTracks().forEach(t=>t.stop())}catch(e){}
+ const a=$('cla');if(a){a.srcObject=null;a.remove()}
+ if(CLJ){CLJ=0;try{jbA.play().catch(()=>{})}catch(e){}}
+ clearInterval(CLI);CLI=0;if(msg)clToast(msg);else{clUi();clPaint()}}
+function clTickStart(){if(CLI)return;CLI=setInterval(()=>{if(!CL){clearInterval(CLI);CLI=0;return}
+ if(CL.st=='ring'&&Date.now()-CL.t>40000){if(CL.role=='out')clEnd('Nikdo to nezvedá.',1);else clEnd('Zmeškaný hovor od '+CL.name+'.',0);return}
+ if(CL.st=='conn'&&Date.now()-CL.t>70000){clEnd('Hovor se nepodařilo navázat.',1);return}
+ clUi();if(CL&&CL.st=='live')clPaint(1)},1000)}
+// --- ovládací lišta (nad hrou i hubem)
+function clUi(){let b=$('cl');if(!b){b=document.createElement('div');b.id='cl';document.body.appendChild(b)}
+ if(!CL){b.style.display=CLMSG?'flex':'none';b.className='';const h=CLMSG?'<span class="clt"></span>':'';if(b.dataset.h!=h){b.dataset.h=h;b.innerHTML=h}const t=b.querySelector('.clt');if(t)t.textContent=CLMSG;return}
+ b.style.display='flex';let h,lab,cls='';
+ if(CL.role=='in'&&CL.st=='ring'){cls='ring';lab='📞 <b>'+esc(CL.name)+'</b> ti volá…';h='<span class="clt"></span><button class="cly" onclick="clAccept()">Přijmout</button><button class="cln" onclick="clDecline()">Odmítnout</button>'}
+ else if(CL.st=='ring'){lab='📞 Volám <b>'+esc(CL.name)+'</b>…';h='<span class="clt"></span><button class="cln" onclick="clHang()">Zrušit</button>'}
+ else if(CL.st=='conn'){lab='⏳ Spojuju s <b>'+esc(CL.name)+'</b>…';h='<span class="clt"></span><button class="cln" onclick="clHang()">Zavěsit</button>'}
+ else{cls='live';lab='🟢 <b>'+esc(CL.name)+'</b> · '+clMS((Date.now()-CL.t0)/1000);h='<span class="clt"></span><button class="clm'+(CL.muted?' on':'')+'" onclick="clMute()" aria-label="Ztlumit mikrofon">'+(CL.muted?'🔇':'🎤')+'</button><button class="cln" onclick="clHang()">Zavěsit</button>'}
+ b.className=cls;if(b.dataset.h!=h){b.dataset.h=h;b.innerHTML=h}
+ const t=b.querySelector('.clt');if(t&&t.innerHTML!=lab)t.innerHTML=lab}
+// --- widget v hubu: kdo je online, klepni na 📞
+async function clUsers(){if(CLUB||Date.now()-CLUT<120000||!me||!ses)return;CLUB=1;
+ try{const [l,pl]=await Promise.all([XA('lb'),XA('players').catch(()=>[])]);const m={};(l||[]).forEach(u=>{if(u&&u.id&&u.username)m[u.username]=u.id});CLU=m;(pl||[]).forEach(p=>{if(p&&p.username)MAVA[p.username]=p.avatar});CLUT=Date.now()}catch(e){}finally{CLUB=0}
+ clPaint()}
+function clDndToggle(){try{localStorage.setItem('jb_dnd',clDnd()?'0':'1')}catch(e){}clPaint()}
+function clDialI(i){const u=CLR[i];if(u)clDial(u.id,u.name)}
+function clPaint(tickOnly){const w=$('hcl');if(!w)return;
+ if(!CLUT)clUsers();
+ const dnd=clDnd();let h='<div class="wgh"><b>📞 Volání</b><button type="button" class="clq'+(dnd?' on':'')+'" onclick="clDndToggle()" title="Nerušit: hovory se automaticky odmítnou">'+(dnd?'🔕 Nerušit':'🔔 Nerušit')+'</button></div><div class="clb">';
+ if(CL){const s=CL.st=='live'?'🟢 Hovoříš s <b>'+esc(CL.name)+'</b> · '+clMS((Date.now()-CL.t0)/1000):CL.role=='in'?'📞 Volá ti <b>'+esc(CL.name)+'</b>…':CL.st=='ring'?'📞 Volám <b>'+esc(CL.name)+'</b>…':'⏳ Spojuju s <b>'+esc(CL.name)+'</b>…';
+  if(tickOnly){const e=w.querySelector('.cls');if(e){e.innerHTML=s;return}}
+  h+='<div class="cls">'+s+'</div>'}
+ else{CLR=HONL.filter(n=>me&&n!=me.name&&CLU[n]).map(n=>({id:CLU[n],name:n}));
+  h+=CLMSG?'<div class="cls">'+esc(CLMSG)+'</div>':'';
+  h+=CLR.length?'<div class="clr">'+CLR.map((u,i)=>'<div class="clu">'+avh(MAVA[u.name],u.name,28)+'<span>'+esc(u.name)+'</span><button type="button" onclick="clDialI('+i+')" aria-label="Zavolat '+esc(u.name)+'">📞</button></div>').join('')+'</div>':'<p class="nt">Nikdo jiný teď není online. Zavolat jde i ze soukromé zprávy.</p>'}
+ w.innerHTML=h+'</div>'}
 </script></body></html>
