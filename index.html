@@ -355,13 +355,56 @@ body.angel .hnh{color:#8a6a00}
 #hcl .clb{padding:0 10px 10px;font-size:13px}
 #hcl .cls{padding:8px 10px;border-radius:9px;background:rgba(0,0,0,.35)}
 #hcl .nt{margin:2px 0;opacity:.65;font-size:12.5px}
-#hcl .clr{display:flex;flex-direction:column;gap:6px;max-height:190px;overflow-y:auto}
+#hcl .clr{display:flex;flex-direction:column;gap:6px;max-height:150px;overflow-y:auto}
 #hcl .clu{display:flex;align-items:center;gap:10px;padding:5px 8px;border-radius:9px;background:rgba(0,0,0,.35)}
 #hcl .clu span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 #hcl .clu button{width:36px;height:34px;border-radius:50%;border:1px solid #3fbf5a;background:rgba(46,158,72,.35);color:#fff;font-size:15px;padding:0;cursor:pointer}
 #hcl .clq{border:1px solid #5a0a0f;border-radius:10px;background:rgba(0,0,0,.4);color:#fff;font:600 11px system-ui,sans-serif;padding:4px 8px;cursor:pointer}
 #hcl .clq.on{border-color:#ffd400;color:#ffd400}
 body.angel #hcl .cls,body.angel #hcl .clu{background:rgba(255,255,255,.12)}
+/* ===== UPDATE 4.6: JBseznamka ===== */
+#dt{position:fixed;inset:0;z-index:8;display:none;flex-direction:column;background:rgba(5,2,4,.98);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#fff;text-align:left}
+#dt .szt{display:flex;gap:6px;max-width:560px;width:100%;margin:0 auto;padding:8px 12px}
+#dt .szt button{flex:1;padding:8px 4px;border-radius:10px;border:1px solid #5a0a0f;background:rgba(0,0,0,.4);color:#fff;font:600 13px system-ui,sans-serif;cursor:pointer}
+#dt .szt button.on{background:linear-gradient(#a50f1a,#4a0509);border-color:#ff3b3b}
+#szb{flex:1;min-height:0;overflow-y:auto;max-width:560px;width:100%;margin:0 auto;padding:6px 12px calc(env(safe-area-inset-bottom,0px) + 16px)}
+.szdeck{position:relative;height:min(64vh,520px);margin:4px auto 0;max-width:380px}
+.szc{position:absolute;inset:0;border-radius:20px;overflow:hidden;border:3px solid var(--c,#c1121f);background:#1a0508;box-shadow:0 8px 28px rgba(0,0,0,.6),0 0 22px color-mix(in srgb,var(--c,#c1121f) 45%,transparent);touch-action:pan-y;user-select:none;-webkit-user-select:none;transition:transform .25s,opacity .25s}
+.szc.nx{transform:scale(.94) translateY(10px);opacity:.7;pointer-events:none}
+.szc .szp{position:absolute;inset:0;background-size:cover;background-position:center;display:grid;place-items:center;font-size:110px;color:rgba(255,255,255,.25)}
+.szc .szg{position:absolute;left:0;right:0;bottom:0;padding:60px 14px 14px;background:linear-gradient(transparent,rgba(0,0,0,.92) 55%)}
+.szc .szg b{font-size:22px}.szc .szg p{margin:6px 0 0;font-size:13.5px;line-height:1.35;opacity:.92;word-break:break-word}
+.szpct{position:absolute;top:12px;right:12px;padding:6px 11px;border-radius:16px;background:rgba(0,0,0,.65);border:2px solid var(--c,#c1121f);font:800 15px system-ui,sans-serif}
+.szch{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0 0}
+.szch span{padding:3px 8px;border-radius:12px;background:rgba(255,255,255,.14);font-size:12px}
+.szch span.on{background:var(--c,#c1121f);color:#fff;font-weight:700}
+.szc .szl,.szc .szr{position:absolute;top:22px;padding:4px 12px;border:3px solid;border-radius:8px;font:800 24px system-ui,sans-serif;opacity:0;transform:rotate(-12deg);pointer-events:none}
+.szc .szl{left:16px;color:#ff5a5a;border-color:#ff5a5a}.szc .szr{right:16px;color:#5af07a;border-color:#5af07a;transform:rotate(12deg)}
+.szc.nk .szl,.szc.lk .szr{opacity:1}
+.szbt{display:flex;justify-content:center;align-items:center;gap:22px;margin:14px 0 4px}
+.szbt button{width:62px;height:62px;border-radius:50%;border:2px solid;background:rgba(0,0,0,.55);font-size:26px;cursor:pointer;padding:0;color:#fff}
+.szbt .no{border-color:#ff5a5a}.szbt .ye{border-color:#5af07a}.szbt .rp{width:38px;height:38px;font-size:15px;border-color:#5a0a0f}
+.szempty{text-align:center;padding:40px 14px;opacity:.85}
+.szm{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:12px;background:rgba(30,5,8,.8);border:1px solid #5a0a0f;margin:8px 0}
+.szm .szmi{flex:1;min-width:0}.szm .szmi b{display:block}.szm .szmi small{opacity:.7;font-size:12px}
+.szm button{border:1px solid #c1121f;background:rgba(0,0,0,.5);color:#fff;border-radius:10px;padding:8px 10px;font-size:14px;cursor:pointer}
+.szmu{color:#ffd400;font-weight:700}
+.szf label{display:block;margin:12px 0 4px;font:700 12px Cinzel,Georgia,serif;letter-spacing:1px;color:#ff6b6b}
+.szf select,.szf textarea{width:100%;padding:10px;border-radius:10px;border:1px solid #5a0a0f;background:rgba(0,0,0,.55);color:#fff;font:15px system-ui,sans-serif;letter-spacing:0;text-align:left;box-shadow:none}
+.szf textarea{resize:none;height:70px}
+.szchips{display:flex;flex-wrap:wrap;gap:6px}
+.szchips button{padding:6px 10px;border-radius:14px;border:1px solid #5a0a0f;background:rgba(0,0,0,.4);color:#fff;font:13px system-ui,sans-serif;cursor:pointer}
+.szchips button.on{background:linear-gradient(#a50f1a,#4a0509);border-color:#ff3b3b}
+.szsw{display:flex;flex-wrap:wrap;gap:8px}
+.szsw button{width:34px;height:34px;border-radius:50%;border:3px solid transparent;cursor:pointer;padding:0}
+.szsw button.on{border-color:#fff;box-shadow:0 0 10px #fff}
+.szpv{width:120px;height:160px;border-radius:14px;background:#1a0508 center/cover;border:2px solid #5a0a0f;display:grid;place-items:center;font-size:48px;color:rgba(255,255,255,.3);flex:none}
+.szad{display:flex;gap:8px;align-items:flex-start;margin:14px 0;font-size:13px;line-height:1.35}
+.szad input{width:auto;margin-top:3px;box-shadow:none}
+.szw{padding:0 10px 10px;font-size:13px;line-height:1.4}
+.szw .szn{font-size:20px;font-weight:800;color:#ff9ac1}
+.szw .szbtn{display:inline-block;margin-top:6px;padding:6px 10px;border-radius:10px;background:linear-gradient(#a50f1a,#4a0509);border:1px solid #ff3b3b;font-weight:700;font-size:12px}
+#hdt{min-height:150px}#hcl{min-height:150px}
 </style></head><body>
 <div id="bg"></div><canvas id="em"></canvas><div id="vig"></div>
 
@@ -430,11 +473,11 @@ body.angel #hcl .cls,body.angel #hcl .clu{background:rgba(255,255,255,.12)}
 <div class="hnh">🌍 Co se děje ve světě</div><div id="hnw"><span class="nt">Načítám zprávy…</span></div>
 <button class="hbtn p" id="hplay">🎮 Chci hrát!<small>Jízda na Chodov, minihry, turnaje</small></button>
 <div class="hrow2"><div id="hjbb" class="wg" role="button" tabindex="0"><div id="hjd"></div><div class="hjt"><small>🎵 JBfy</small><b id="hjn">JBfy</b><span id="hjb">Hudba od hráčů · vlastní disky a playlist</span><div class="hjc"><button type="button" onclick="hubJc('p',event)" aria-label="Předchozí">⏮</button><button type="button" id="hjp" onclick="hubJc('t',event)" aria-label="Přehrát/pauza">▶</button><button type="button" onclick="hubJc('n',event)" aria-label="Další">⏭</button></div></div></div><div id="hpf" class="wg" role="button" tabindex="0"><div id="hpa"></div><b id="hpn"></b><small>✏️ Upravit profil</small></div></div>
-<div id="hcl" class="wg"></div>
+<div class="hrow"><div id="hcl" class="wg"></div><div id="hdt" class="wg" role="button" tabindex="0"></div></div>
 <div class="hrow"><div id="hscroll" class="wg tall" role="button" tabindex="0"><div class="wgh"><b>📜 JB scroll</b><button type="button" id="hsnd" class="snb" aria-label="Zvuk">🔇</button></div><div id="hsv"><div class="nt" style="padding:14px;text-align:center">Načítám videa…</div></div></div>
 <div id="hmsg" class="wg tall" role="button" tabindex="0"><div class="wgh"><b>✉️ Zprávy</b><i id="hmb"></i></div><div id="hmc"></div></div></div>
 <p id="hst" class="fm"></p></div>
-<button id="hx" aria-label="Odhlásit">✕</button><button id="hadm" aria-label="Admin">⚙</button></div><div id="sc"></div><div id="ms"></div><div id="jb"></div><div id="pf"></div><div id="ap"></div><div id="kv"></div><button id="kvx" type="button">← Zpět do hry</button><div id="mt"><div class="sp">🛠</div><h2>MAINTENANCE BREAK</h2><p id="mtp"></p></div><div id="mb">🛠 ÚDRŽBA ZAPNUTÁ – hráči bez admina jsou zablokovaní</div>
+<button id="hx" aria-label="Odhlásit">✕</button><button id="hadm" aria-label="Admin">⚙</button></div><div id="sc"></div><div id="ms"></div><div id="jb"></div><div id="pf"></div><div id="dt"></div><div id="ap"></div><div id="kv"></div><button id="kvx" type="button">← Zpět do hry</button><div id="mt"><div class="sp">🛠</div><h2>MAINTENANCE BREAK</h2><p id="mtp"></p></div><div id="mb">🛠 ÚDRŽBA ZAPNUTÁ – hráči bez admina jsou zablokovaní</div>
 <script>
 const SB='https://gwkhtvgnwewtdmxiufoe.supabase.co',KEY='sb_publishable_9R7PdfrUK3ivnLgzDXYqiQ_71oaITPl',DOM='@chodov-hra.app';
 const $=i=>document.getElementById(i),esc=s=>String(s).replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
@@ -533,6 +576,14 @@ async function onApi(d){const a=d.arg||{},M=me.id,min={headers:{Prefer:'return=m
  if(d.op=='mp_sync')return rpc('mp_sync',{p_x:a.x==null?null:+a.x,p_prog:a.prog==null?null:+a.prog,p_crash:a.crash==null?null:(+a.crash)|0,p_skin:a.skin==null?null:String(a.skin).slice(0,40)});
  if(d.op=='mp_finish')return rpc('mp_finish',{});
  if(d.op=='mp_back')return rpc('mp_back',{});
+ if(d.op=='szget')return rpc('dating_get',{});
+ if(d.op=='szsave')return rpc('dating_save',{p_gender:String(a.gender||''),p_orient:String(a.orient||''),p_seeking:String(a.seeking||''),p_interests:(Array.isArray(a.interests)?a.interests:[]).map(x=>String(x).slice(0,30)).slice(0,8),p_color:String(a.color||''),p_bio:String(a.bio||'').slice(0,140),p_photo:String(a.photo||'').slice(0,130000),p_adult:!!a.adult});
+ if(d.op=='szhide')return rpc('dating_hide',{p_hide:!!a.hide});
+ if(d.op=='szfeed')return rpc('dating_feed',{p_exclude:(Array.isArray(a.ex)?a.ex:[]).map(String).filter(x=>/^[0-9a-f-]{36}$/.test(x)).slice(0,200),p_limit:8});
+ if(d.op=='szswipe')return rpc('dating_swipe',{p_to:String(a.to||''),p_like:!!a.like});
+ if(d.op=='szmatches')return rpc('dating_matches',{});
+ if(d.op=='szun')return rpc('dating_unmatch',{p_to:String(a.to||'')});
+ if(d.op=='szrep')return rpc('dating_report',{p_to:String(a.to||''),p_reason:String(a.reason||'').slice(0,40)});
  throw 0}
 addEventListener('message',e=>{const f=document.querySelector('#game iframe'),k=document.querySelector('#kv iframe'),d=e.data;if(!d||!f||(e.source!==f.contentWindow&&!(k&&e.source===k.contentWindow)))return;
  if(d.t=='kv'){if(e.source===f.contentWindow)openKv();return}
@@ -892,13 +943,13 @@ function hubMsgPaint(){const c=$('hmc');if(!c)return;
 async function hubMsgRefresh(){hubOnl();const u=me&&me.id;try{const c=await XA('chat');if(me&&me.id==u)HCH=c.slice(-4)}catch(e){}
  try{const d=await XA('dmlist');if(me&&me.id==u){HDM=d.threads||[];const n=HDM.reduce((s,t)=>s+t.unread,0),b=$('hmb');b.textContent=n;b.style.display=n?'block':'none'}}catch(e){}
  hubMsgPaint()}
-function hvTick(){const hubOn=$('hub').style.display=='flex',cov=!hubOn||$('sc').style.display=='flex'||$('ms').style.display=='flex'||$('jb').style.display=='flex'||$('pf').style.display=='flex';
+function hvTick(){const hubOn=$('hub').style.display=='flex',cov=!hubOn||$('sc').style.display=='flex'||$('ms').style.display=='flex'||$('jb').style.display=='flex'||$('pf').style.display=='flex'||$('dt').style.display=='flex';
  if(cov&&!HVCOV){HVCOV=true;document.querySelectorAll('#hsv video').forEach(v=>v.pause());if(HVS)hvSound(false)}
  else if(!cov&&HVCOV){HVCOV=false;hvPlay(HVCUR)}
  if(!cov&&Date.now()-HWI>15000){HWI=Date.now();hubMsgRefresh()}}
 function hubWidgets(){if(!$('hsi')||!me)return;
- if(HUID!=me.id){HUID=me.id;if(CL)clEnd('',1);CLA=0;CLUT=0;CLU={};HDM=[];HCH=[];HJH=[];HVL=0;HAVL=0;HAV='';NTS=0;NTU=0;NTC=0;hubMsgPaint()}
- hsMode(HSMOD);clInit();clPaint();hubNews();hvLoad();hubJb();hubProfile();hubInfo();ntStart();HWI=Date.now();hubMsgRefresh();if(!HWT)HWT=setInterval(hvTick,800)}
+ if(HUID!=me.id){HUID=me.id;SZW=null;SZP=undefined;if(CL)clEnd('',1);CLA=0;CLUT=0;CLU={};HDM=[];HCH=[];HJH=[];HVL=0;HAVL=0;HAV='';NTS=0;NTU=0;NTC=0;hubMsgPaint()}
+ hsMode(HSMOD);clInit();clPaint();szWidget();szLoadW();hubNews();hvLoad();hubJb();hubProfile();hubInfo();ntStart();HWI=Date.now();hubMsgRefresh();if(!HWT)HWT=setInterval(hvTick,800)}
 $('hsf').onsubmit=hsGo;$('hsw').onclick=()=>hsMode('web');$('hsa').onclick=()=>hsMode('ai');$('hsnd').onclick=e=>hvSound(!HVS,e);
 // ===== UPDATE 4.2: téma nebe/peklo, profil, playlisty =====
 let HAV='',HAVL=0,JBS=[],JBIMP=null;
@@ -1143,12 +1194,99 @@ function clDndToggle(){try{localStorage.setItem('jb_dnd',clDnd()?'0':'1')}catch(
 function clDialI(i){const u=CLR[i];if(u)clDial(u.id,u.name)}
 function clPaint(tickOnly){const w=$('hcl');if(!w)return;
  if(!CLUT)clUsers();
- const dnd=clDnd();let h='<div class="wgh"><b>📞 Volání</b><button type="button" class="clq'+(dnd?' on':'')+'" onclick="clDndToggle()" title="Nerušit: hovory se automaticky odmítnou">'+(dnd?'🔕 Nerušit':'🔔 Nerušit')+'</button></div><div class="clb">';
+ const dnd=clDnd();let h='<div class="wgh"><b>📞 Volání</b><button type="button" class="clq'+(dnd?' on':'')+'" onclick="clDndToggle()" title="Nerušit: hovory se automaticky odmítnou">'+(dnd?'🔕':'🔔')+'</button></div><div class="clb">';
  if(CL){const s=CL.st=='live'?'🟢 Hovoříš s <b>'+esc(CL.name)+'</b> · '+clMS((Date.now()-CL.t0)/1000):CL.role=='in'?'📞 Volá ti <b>'+esc(CL.name)+'</b>…':CL.st=='ring'?'📞 Volám <b>'+esc(CL.name)+'</b>…':'⏳ Spojuju s <b>'+esc(CL.name)+'</b>…';
   if(tickOnly){const e=w.querySelector('.cls');if(e){e.innerHTML=s;return}}
   h+='<div class="cls">'+s+'</div>'}
  else{CLR=HONL.filter(n=>me&&n!=me.name&&CLU[n]).map(n=>({id:CLU[n],name:n}));
   h+=CLE?'<div class="cls" style="color:#ff9a9a">⚠ Hovory na serveru nefungují: '+esc(CLE.slice(0,90))+' (zkontroluj 20-hovory.sql)</div>':'';h+=CLMSG?'<div class="cls">'+esc(CLMSG)+'</div>':'';
-  h+=CLR.length?'<div class="clr">'+CLR.map((u,i)=>'<div class="clu">'+avh(MAVA[u.name],u.name,28)+'<span>'+esc(u.name)+'</span><button type="button" onclick="clDialI('+i+')" aria-label="Zavolat '+esc(u.name)+'">📞</button></div>').join('')+'</div>':'<p class="nt">Nikdo jiný teď není online. Zavolat jde i ze soukromé zprávy.</p>'}
+  h+=CLR.length?'<div class="clr">'+CLR.map((u,i)=>'<div class="clu">'+avh(MAVA[u.name],u.name,28)+'<span>'+esc(u.name)+'</span><button type="button" onclick="clDialI('+i+')" aria-label="Zavolat '+esc(u.name)+'">📞</button></div>').join('')+'</div>':'<p class="nt">Nikdo jiný teď není online.</p>'}
  w.innerHTML=h+'</div>'}
+// ===== UPDATE 4.6: JBseznamka =====
+const SZI=['Jízda na Chodov','Kavadle','JBfy hudba','JB scroll','Multiplayer závody','Sbírání skinů','Kebab z Kavalírky','Octový Jirka','Dršťková polévka','Tramvaje a metro','Pivo','Káva','Procházky','Filmy a seriály','Hudba','Cestování','Sport','Vaření','Zvířata','Čtení','Noční řeči','Memy','Programování','Gaming'];
+const SZC={cervena:['Červená','#e63946'],oranzova:['Oranžová','#fb8500'],zluta:['Žlutá','#ffd400'],zelena:['Zelená','#2e9e48'],tyrkys:['Tyrkysová','#1fb5ad'],modra:['Modrá','#2f6fed'],fialova:['Fialová','#8e44ad'],ruzova:['Růžová','#ff6fa5'],cerna:['Černá','#3a3a3a'],bila:['Bílá','#f1f1f1']};
+const SZG={m:'Muž',f:'Žena',x:'Nebinární / jiné'},SZS={m:'Muže',f:'Ženy',all:'Všechny'},SZO={hetero:'Heterosexuál/ka',homo:'Homosexuál/ka',bi:'Bisexuál/ka',pan:'Pansexuál/ka',ace:'Asexuál/ka',nechci:'Neuvádím'};
+let SZP=undefined,SZQ=[],SZSEEN=new Set(),SZB=0,SZEND=false,SZTAB='find',SZPH='',SZIN=[],SZCOL='cervena',SZAV=0,SZW=null;
+const szImg=u=>(typeof u=='string'&&u.length<150000&&/^data:image\/jpeg;base64,[A-Za-z0-9+\/=]+$/.test(u))?u:'';
+const szCol=k=>(SZC[k]||SZC.cervena)[1];
+const szPic=(c)=>szImg(c.photo)||szImg(MAVA[c.name])||'';
+const SZERR=m=>({adult:'Musíš potvrdit, že ti je 18 a víc.',incomplete:'Vyber pohlaví a koho hledáš.',few_interests:'Vyber aspoň jeden zájem.',bad_photo:'Fotka se nepodařila zpracovat.',reported:'Tvůj profil byl nahlášen a zůstává skrytý.',rate:'Zpomal, swipuješ moc rychle.',no_profile:'Nejdřív vyplň profil.'})[m]||'Něco se nepovedlo. Zkus to znovu.';
+function szLoadAv(){if(SZAV)return;SZAV=1;XA('players').then(pl=>{(pl||[]).forEach(p=>{if(p&&p.username)MAVA[p.username]=p.avatar});if(SZTAB=='find'&&$('dt').style.display=='flex')szDeck();else if(SZTAB=='match'&&$('dt').style.display=='flex')szMatches()}).catch(()=>{SZAV=0})}
+// --- widget v hubu
+async function szLoadW(){if(!me||!ses)return;const u=me.id;try{const p=await XA('szget');let m=null;if(p)m=await XA('szmatches');if(!me||me.id!=u)return;SZW={p,m}}catch(e){SZW={err:1}}szWidget()}
+function szWidget(){const w=$('hdt');if(!w)return;let h='<div class="wgh"><b>💘 JBseznamka</b></div><div class="szw">';
+ if(!SZW)h+='<span class="nt">Načítám…</span>';
+ else if(SZW.err)h+='<span class="nt">Seznamka se nenačetla. Zkontroluj, jestli běžel 21-seznamka.sql.</span>';
+ else if(!SZW.p)h+='Najdi lidi podle zájmů a swipuj. Vyplň krátký profil.<br><span class="szbtn">Vytvořit profil</span>';
+ else{const l=(SZW.m&&SZW.m.list)||[],mu=l.filter(x=>x.mutual).length,lk=(SZW.m&&SZW.m.likedme)||0;
+  h+=(SZW.p.active?'<div class="szn">💘 '+l.length+'</div><div>matchů'+(mu?' · <span class="szmu">'+mu+' vzájemných</span>':'')+'</div>'+(lk?'<div>❤ Líbíš se '+lk+' hráčům</div>':''):'<div>Tvůj profil je skrytý.</div>')+'<span class="szbtn">'+(SZW.p.active?'Objevovat →':'Otevřít →')+'</span>'}
+ w.innerHTML=h+'</div>'}
+// --- overlay
+function szShell(tab){SZTAB=tab;const d=$('dt');
+ d.innerHTML='<div class="mbar"><button class="rb" onclick="szClose()">←</button><b>💘 JBseznamka</b></div><div class="szt"><button data-t="find" class="'+(tab=='find'?'on':'')+'" onclick="szGo(\'find\')">🔥 Objevovat</button><button data-t="match" class="'+(tab=='match'?'on':'')+'" onclick="szGo(\'match\')">💘 Matche</button><button data-t="prof" class="'+(tab=='prof'?'on':'')+'" onclick="szGo(\'prof\')">✏️ Profil</button></div><div id="szb"></div>';d.style.display='flex'}
+async function szOpen(){szShell('find');$('szb').innerHTML='<p class="nt" style="text-align:center">Načítám…</p>';szLoadAv();
+ try{SZP=await XA('szget')}catch(e){$('szb').innerHTML='<p class="nt" style="text-align:center">Seznamka se nenačetla. Spustil jsi 21-seznamka.sql v Supabase?</p>';return}
+ SZQ=[];SZSEEN=new Set();SZEND=false;if(!SZP)szGo('prof');else szGo('find')}
+function szClose(){const d=$('dt');d.style.display='none';d.innerHTML='';SZQ=[];if(me)szLoadW()}
+function szGo(t){if(t!='prof'&&!SZP){t='prof'}szShell(t);if(t=='find')szDeck();else if(t=='match')szMatches();else szForm()}
+// --- objevování + swipe
+async function szMore(){if(SZB||SZEND)return;SZB=1;try{const r=await XA('szfeed',{ex:[...SZSEEN].slice(-200)});const l=Array.isArray(r)?r:[];if(!l.length)SZEND=true;for(const c of l){if(SZSEEN.has(c.id))continue;SZSEEN.add(c.id);SZQ.push(c)}}catch(e){SZEND=true}SZB=0;if(SZTAB=='find'&&$('dt').style.display=='flex')szDeck()}
+function szCard(c,top){const col=szCol(c.color),img=szPic(c),sh=new Set(c.shared||[]);
+ return '<div class="szc'+(top?'':' nx')+'" style="--c:'+col+'"><div class="szp"'+(img?' style="background-image:url('+img+')"':'')+'>'+(img?'':esc((c.name||'?')[0].toUpperCase()))+'</div><div class="szpct">'+(+c.pct)+' %</div><i class="szl">NE</i><i class="szr">JO</i>'+
+  '<div class="szg"><b>'+esc(c.name)+'</b><div class="szch"><span>'+esc(SZG[c.gender]||'')+'</span><span>'+esc(SZO[c.orient]||'')+'</span><span>Hledá: '+esc(SZS[c.seeking]||'')+'</span><span style="background:'+col+';color:'+(c.color=='bila'||c.color=='zluta'?'#000':'#fff')+'">🎨 '+esc((SZC[c.color]||SZC.cervena)[0])+'</span></div>'+
+  '<div class="szch">'+(c.interests||[]).map(i=>'<span'+(sh.has(i)?' class="on"':'')+'>'+esc(i)+'</span>').join('')+'</div>'+(c.bio?'<p>'+esc(c.bio)+'</p>':'')+'</div></div>'}
+function szDeck(){const b=$('szb');if(!b||SZTAB!='find')return;
+ if(!SZP||!SZP.active){b.innerHTML='<div class="szempty">'+(SZP?'Tvůj profil je skrytý, takže nikoho nevidíš.':'')+'<br><button class="gb" onclick="szGo(\'prof\')">Upravit profil</button></div>';return}
+ if(SZQ.length<3)szMore();
+ if(!SZQ.length){b.innerHTML=SZB||!SZEND?'<p class="nt" style="text-align:center">Hledám lidi…</p>':'<div class="szempty"><div style="font-size:46px">🫶</div><p>Teď tu nikdo další není. Zkus to později, nebo si rozšiř zájmy v profilu.</p></div>';return}
+ const c=SZQ[0],n=SZQ[1];
+ b.innerHTML='<div class="szdeck">'+(n?szCard(n,0):'')+szCard(c,1)+'</div><div class="szbt"><button class="no" onclick="szSwipe(false)" aria-label="Odmítnout">✕</button><button class="rp" onclick="szRep()" aria-label="Nahlásit" title="Nahlásit profil">🚩</button><button class="ye" onclick="szSwipe(true)" aria-label="Přijmout">❤</button></div><p class="nt" style="text-align:center;font-size:12px;opacity:.6">Přetáhni kartu doleva (✕) nebo doprava (❤)</p>';
+ szDrag(b.querySelector('.szc:not(.nx)'))}
+function szDrag(el){if(!el)return;let x0=0,dx=0,on=0;
+ el.onpointerdown=e=>{on=1;x0=e.clientX;dx=0;try{el.setPointerCapture(e.pointerId)}catch(er){}el.style.transition='none'};
+ el.onpointermove=e=>{if(!on)return;dx=e.clientX-x0;el.style.transform='translateX('+dx+'px) rotate('+dx/18+'deg)';el.classList.toggle('lk',dx>40);el.classList.toggle('nk',dx<-40)};
+ const end=()=>{if(!on)return;on=0;el.style.transition='';if(dx>90)szSwipe(true);else if(dx<-90)szSwipe(false);else{el.style.transform='';el.classList.remove('lk','nk')}};
+ el.onpointerup=end;el.onpointercancel=end}
+function szSwipe(like){const c=SZQ[0];if(!c||SZTAB!='find')return;const el=document.querySelector('#szb .szc:not(.nx)');
+ if(el){el.style.transition='transform .25s,opacity .25s';el.style.transform='translateX('+(like?560:-560)+'px) rotate('+(like?25:-25)+'deg)';el.style.opacity='0'}
+ SZQ.shift();SZW=SZW;
+ XA('szswipe',{to:c.id,like:!!like}).then(r=>{if(like&&r&&r.mutual)szToast('💘 Vzájemný match s hráčem '+c.name+'! Najdeš ho v Matchích.')},e=>{const m=String(e&&e.message||'');if(/rate/.test(m))szToast(SZERR('rate'))});
+ setTimeout(szDeck,240)}
+function szToast(t){const b=$('szb');if(!b)return;let o=$('szto');if(!o){o=document.createElement('div');o.id='szto';o.style.cssText='position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 64px);z-index:12;max-width:90vw;padding:10px 14px;border-radius:12px;background:#a50f1a;border:1px solid #ff9ac1;color:#fff;font:700 14px system-ui,sans-serif;text-align:center';document.body.appendChild(o)}o.textContent=t;clearTimeout(o._t);o._t=setTimeout(()=>o.remove(),3500)}
+function szRep(){const c=SZQ[0];if(!c||!confirm('Nahlásit profil hráče '+c.name+'? Po třech nahlášeních od různých hráčů se profil sám skryje.'))return;
+ XA('szrep',{to:c.id,reason:'profil'}).catch(()=>{});SZQ.shift();szToast('Nahlášeno, díky.');szDeck()}
+// --- matche
+async function szMatches(){const b=$('szb');b.innerHTML='<p class="nt" style="text-align:center">Načítám…</p>';let r;try{r=await XA('szmatches')}catch(e){if($('szb'))$('szb').innerHTML='<p class="nt" style="text-align:center">Načtení se nepovedlo.</p>';return}
+ SZM=(r&&r.list)||[];if(SZTAB!='match'||!$('szb'))return;
+ $('szb').innerHTML=(r.likedme?'<p class="nt" style="text-align:center">❤ Líbíš se <b>'+(+r.likedme)+'</b> hráčům. Objevuj dál, třeba je potkáš.</p>':'')+
+  (SZM.length?SZM.map((m,i)=>{const img=szPic(m);return '<div class="szm" style="border-color:'+szCol(m.color)+'">'+(img?'<img src="'+img+'" style="width:46px;height:46px;border-radius:50%;object-fit:cover;flex:none">':avh('',m.name,46))+'<div class="szmi"><b>'+esc(m.name)+' · '+(+m.pct)+' %</b><small>'+(m.mutual?'<span class="szmu">💘 Vzájemný match</span>':'Čeká na odpověď')+' · '+esc((m.interests||[]).slice(0,3).join(', '))+'</small></div><button onclick="szMsg('+i+')" aria-label="Napsat zprávu">✉️</button><button onclick="szUn('+i+')" aria-label="Odebrat">✕</button></div>'}).join(''):'<div class="szempty"><div style="font-size:46px">💔</div><p>Zatím žádné matche. Swipni doprava na někoho, kdo se ti líbí.</p></div>')}
+let SZM=[];
+function szMsg(i){const m=SZM[i];if(!m)return;szClose();msThreadU(m.id,m.name)}
+async function szUn(i){const m=SZM[i];if(!m)return;try{await XA('szun',{to:m.id})}catch(e){}szMatches()}
+// --- profil
+function szForm(){const p=SZP||{},b=$('szb');SZIN=(p.interests||[]).slice();SZCOL=p.color||'cervena';SZPH=szImg(p.photo);
+ const sel=(id,o,v,ph)=>'<select id="'+id+'">'+(ph?'<option value="">'+ph+'</option>':'')+Object.keys(o).map(k=>'<option value="'+k+'"'+(k==v?' selected':'')+'>'+esc(o[k])+'</option>').join('')+'</select>';
+ b.innerHTML='<div class="szf"><div style="display:flex;gap:12px;align-items:center;margin-top:8px"><div class="szpv" id="szpv"></div><div><button class="gb s" onclick="$(\'szf\').click()">📷 Nahrát fotku</button><button class="gb s" onclick="szPhDel()">Odebrat</button><p class="nt" style="font-size:12px;opacity:.7;margin:6px 0 0">Bez fotky se použije tvoje profilovka.</p></div></div><input type="file" id="szf" accept="image/*" hidden>'+
+ '<label>Pohlaví</label>'+sel('szg',SZG,p.gender,'Vyber…')+'<label>Orientace</label>'+sel('szo',SZO,p.orient||'nechci')+'<label>Koho chci potkat</label>'+sel('szs',SZS,p.seeking,'Vyber…')+
+ '<label>Zájmy (vyber 1 až 8)</label><div class="szchips" id="szi"></div><label>Oblíbená barva</label><div class="szsw" id="szc"></div>'+
+ '<label>O mně (max 140 znaků)</label><textarea id="szbio" maxlength="140" placeholder="Pár vět o tobě…">'+esc(p.bio||'')+'</textarea>'+
+ '<div class="szad"><input type="checkbox" id="szad"'+(SZP?' checked':'')+'><label for="szad" style="margin:0;font:13px system-ui,sans-serif;letter-spacing:0;color:#fff">Je mi 18 let nebo víc. Profil uvidí ostatní hráči hry a můžou ti psát.</label></div>'+
+ '<button class="gb" onclick="szSave()">'+(SZP?'💾 Uložit profil':'💘 Vytvořit profil')+'</button>'+(SZP?'<button class="gb s" onclick="szHide('+(SZP.active?1:0)+')">'+(SZP.active?'🙈 Skrýt můj profil':'👀 Zase zobrazit profil')+'</button>':'')+'<p id="szm" class="fm" style="text-align:center"></p></div>';
+ $('szf').onchange=e=>szPhoto(e.target.files[0]);szChips();szSw();szPv()}
+function szPv(){const v=$('szpv');if(!v)return;const img=SZPH||szImg(HAV);v.style.backgroundImage=img?'url('+img+')':'';v.textContent=img?'':'💘'}
+function szChips(){const c=$('szi');if(!c)return;c.innerHTML=SZI.map(i=>'<button type="button" class="'+(SZIN.includes(i)?'on':'')+'" data-i="'+esc(i)+'">'+esc(i)+'</button>').join('');c.onclick=e=>{const b=e.target.closest('button');if(!b)return;const i=b.dataset.i,k=SZIN.indexOf(i);if(k>=0)SZIN.splice(k,1);else if(SZIN.length<8)SZIN.push(i);else szMsgF('Maximum je 8 zájmů.');szChips()}}
+function szSw(){const c=$('szc');if(!c)return;c.innerHTML=Object.keys(SZC).map(k=>'<button type="button" class="'+(k==SZCOL?'on':'')+'" data-k="'+k+'" style="background:'+SZC[k][1]+'" title="'+SZC[k][0]+'" aria-label="'+SZC[k][0]+'"></button>').join('');c.onclick=e=>{const b=e.target.closest('button');if(!b)return;SZCOL=b.dataset.k;szSw()}}
+function szMsgF(t,ok){const m=$('szm');if(m){m.style.color=ok?'#9fe6a8':'#ff9a9a';m.textContent=t}}
+function szPhDel(){SZPH='';szPv()}
+function szPhoto(f){if(!f)return;szMsgF('Zpracovávám…',1);const r=new FileReader();r.onerror=()=>szMsgF('Obrázek se nepodařilo načíst.');r.onload=()=>{const im=new Image();im.onerror=()=>szMsgF('Tohle není obrázek.');im.onload=()=>{
+ const W=360,H=480,c=document.createElement('canvas');c.width=W;c.height=H;const x=c.getContext('2d');x.fillStyle='#000';x.fillRect(0,0,W,H);
+ const s=Math.max(W/im.width,H/im.height),w=im.width*s,h=im.height*s;x.drawImage(im,(W-w)/2,(H-h)/2,w,h);
+ let q=.8,d=c.toDataURL('image/jpeg',q);while(d.length>110000&&q>.25){q-=.08;d=c.toDataURL('image/jpeg',q)}
+ if(d.length>125000){szMsgF('Fotka je moc velká.');return}SZPH=d;szPv();szMsgF('Fotka nahrána.',1)};im.src=r.result};r.readAsDataURL(f)}
+async function szSave(){const g=$('szg').value,s=$('szs').value;if(!g||!s)return szMsgF(SZERR('incomplete'));if(!SZIN.length)return szMsgF(SZERR('few_interests'));if(!$('szad').checked)return szMsgF(SZERR('adult'));
+ szMsgF('Ukládám…',1);
+ try{await XA('szsave',{gender:g,orient:$('szo').value,seeking:s,interests:SZIN,color:SZCOL,bio:$('szbio').value.trim(),photo:SZPH,adult:true});SZP=await XA('szget');SZQ=[];SZSEEN=new Set();SZEND=false;szGo('find')}
+ catch(e){szMsgF(SZERR(String((e&&e.message)||'')))}}
+async function szHide(h){try{await XA('szhide',{hide:!!h});SZP=await XA('szget');szGo('prof')}catch(e){szMsgF(SZERR(String((e&&e.message)||'')))}}
+$('hdt').onclick=()=>szOpen();
 </script></body></html>
