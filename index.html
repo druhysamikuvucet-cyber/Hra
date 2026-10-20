@@ -1063,7 +1063,7 @@ tick();
 // ===== UPDATE 4.5: hlasové hovory mezi hráči (WebRTC, zdarma) =====
 // Zvuk jde přímo mezi hráči. Supabase (tabulka call_sig) jen předává signály. STUN/TURN servery jdou změnit tady:
 const CALL_ICE=[{urls:['stun:stun.l.google.com:19302','stun:stun1.l.google.com:19302']},{urls:['turn:openrelay.metered.ca:80','turn:openrelay.metered.ca:443','turn:openrelay.metered.ca:443?transport=tcp'],username:'openrelayproject',credential:'openrelayproject'}];
-let CL=null,CLA=0,CLT=0,CLB=0,CLI=0,CLR=[],CLU={},CLUT=0,CLUB=0,CLJ=0,CLRT=0,CLAC=null,CLMSG='';
+let CLE='',CL=null,CLA=0,CLT=0,CLB=0,CLI=0,CLR=[],CLU={},CLUT=0,CLUB=0,CLJ=0,CLRT=0,CLAC=null,CLMSG='';
 const clDnd=()=>{try{return localStorage.getItem('jb_dnd')=='1'}catch(e){return false}};
 const clRid=()=>Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-6);
 const clSend=(to,kind,call,data)=>rpc('call_send',{p_to:to,p_kind:kind,p_call:call,p_data:data==null?null:data}).catch(()=>{});
@@ -1074,7 +1074,7 @@ function clBeep(){try{if(!CLAC)CLAC=new(window.AudioContext||window.webkitAudioC
  for(const [f,o] of [[880,0],[660,.28]]){const os=c.createOscillator(),g=c.createGain();os.frequency.value=f;os.type='sine';g.gain.setValueAtTime(0,t+o);g.gain.linearRampToValueAtTime(.18,t+o+.03);g.gain.linearRampToValueAtTime(0,t+o+.24);os.connect(g);g.connect(c.destination);os.start(t+o);os.stop(t+o+.26)}}catch(e){}}
 function clRing(on){clearInterval(CLRT);CLRT=0;if(on){clBeep();try{navigator.vibrate&&navigator.vibrate([300,150,300])}catch(e){}CLRT=setInterval(()=>{clBeep();try{navigator.vibrate&&navigator.vibrate([300,150,300])}catch(e){}},2200)}}
 // --- polling signálů
-async function clPoll(){if(!me||!ses||CLB)return;CLB=1;try{const r=await rpc('call_poll',{p_after:CLA});for(const s of Array.isArray(r)?r:[]){CLA=Math.max(CLA,+s.id||0);try{await clSig(s)}catch(e){}}}catch(e){}finally{CLB=0}}
+async function clPoll(){if(!me||!ses||CLB)return;CLB=1;try{const r=await rpc('call_poll',{p_after:CLA});for(const s of Array.isArray(r)?r:[]){CLA=Math.max(CLA,+s.id||0);try{await clSig(s)}catch(e){}}CLE='';}catch(e){CLE=String((e&&(e.message||e.code))||'chyba');clPaint()}finally{CLB=0}}
 function clLoop(){clearTimeout(CLT);CLT=setTimeout(async()=>{await clPoll();clLoop()},CL?900:3000)}
 function clInit(){if(!CLT)clLoop()}
 async function clSig(s){const d=s.data||{};
@@ -1110,7 +1110,7 @@ async function clOffer(d){try{const pc=clPc();await pc.setRemoteDescription(d);a
 async function clDial(id,name){if(!me||!id||id==me.id)return;if(CL){clToast('Už telefonuješ.');return}
  const st=await clMic();if(!st)return;if(CL){st.getTracks().forEach(t=>t.stop());return}
  CL={id:clRid(),peer:id,name:name||'?',role:'out',st:'ring',t:Date.now(),ice:[],stream:st};clUi();clTickStart();clPaint();
- try{await rpc('call_send',{p_to:id,p_kind:'ring',p_call:CL.id,p_data:null})}catch(e){const m=String((e&&e.message)||'');clEnd(/rate/.test(m)?'Voláš moc rychle, chvilku počkej.':/muted/.test(m)?'Máš umlčený účet.':'Volání se nepovedlo.',0)}}
+ try{await rpc('call_send',{p_to:id,p_kind:'ring',p_call:CL.id,p_data:null})}catch(e){const m=String((e&&e.message)||'');clEnd(/rate/.test(m)?'Voláš moc rychle, chvilku počkej.':/muted/.test(m)?'Máš umlčený účet.':/call_send|schema|PGRST|404/i.test(m+JSON.stringify(e||''))?'Hovory nejsou na serveru nastavené (spusť 20-hovory.sql v Supabase).':'Volání se nepovedlo: '+(m||JSON.stringify(e||'')).slice(0,80),0)}}
 async function clAccept(){if(!CL||CL.role!='in'||CL.st!='ring')return;const k=CL;const st=await clMic();if(!st){if(CL===k)clDecline();return}
  if(CL!==k){st.getTracks().forEach(t=>t.stop());return}CL.stream=st;CL.st='conn';clRing(false);clUi();clSend(CL.peer,'accept',CL.id)}
 function clDecline(){if(!CL)return;clSend(CL.peer,'decline',CL.id);clEnd('',0)}
@@ -1148,7 +1148,7 @@ function clPaint(tickOnly){const w=$('hcl');if(!w)return;
   if(tickOnly){const e=w.querySelector('.cls');if(e){e.innerHTML=s;return}}
   h+='<div class="cls">'+s+'</div>'}
  else{CLR=HONL.filter(n=>me&&n!=me.name&&CLU[n]).map(n=>({id:CLU[n],name:n}));
-  h+=CLMSG?'<div class="cls">'+esc(CLMSG)+'</div>':'';
+  h+=CLE?'<div class="cls" style="color:#ff9a9a">⚠ Hovory na serveru nefungují: '+esc(CLE.slice(0,90))+' (zkontroluj 20-hovory.sql)</div>':'';h+=CLMSG?'<div class="cls">'+esc(CLMSG)+'</div>':'';
   h+=CLR.length?'<div class="clr">'+CLR.map((u,i)=>'<div class="clu">'+avh(MAVA[u.name],u.name,28)+'<span>'+esc(u.name)+'</span><button type="button" onclick="clDialI('+i+')" aria-label="Zavolat '+esc(u.name)+'">📞</button></div>').join('')+'</div>':'<p class="nt">Nikdo jiný teď není online. Zavolat jde i ze soukromé zprávy.</p>'}
  w.innerHTML=h+'</div>'}
 </script></body></html>
