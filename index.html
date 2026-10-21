@@ -94,7 +94,7 @@ input:focus{border-color:#ff3b3b}
 #hint{opacity:.85}
 #msg{font-weight:600}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}#portal{transition-duration:.01ms!important}}
-/* ===== UPDATE 4.0: hub, zprávy, JB scroll ===== */
+/* ===== UPDATE 4.0: hub, zprávy, Rico scroll ===== */
 #hub{position:fixed;inset:0;z-index:4;display:none;flex-direction:column;align-items:center;justify-content:center;padding:calc(env(safe-area-inset-top,0px) + 16px) 18px calc(env(safe-area-inset-bottom,0px) + 56px);overflow:auto;text-align:center}
 body.hubon #lucifer{opacity:.38}
 #hub h1{font-size:clamp(20px,5.6vw,32px);line-height:1.45;letter-spacing:2px;margin:0 0 20px;max-width:560px}
@@ -130,7 +130,7 @@ body.hubon #lucifer{opacity:.38}
 .mi{display:flex;gap:8px;padding:8px 12px calc(env(safe-area-inset-bottom,0px) + 10px);max-width:560px;width:100%;margin:0 auto}
 #ms input,#sc input{flex:1;width:auto;min-width:0;padding:11px 12px;letter-spacing:0;text-align:left;font:500 15px system-ui,sans-serif}
 .mi button{border:0;border-radius:10px;background:#c1121f;color:#fff;font-size:18px;padding:0 16px;cursor:pointer}
-/* JB scroll */
+/* Rico scroll */
 #scf{position:absolute;top:0;bottom:0;left:0;right:0;max-width:480px;margin:0 auto;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none;background:#000}
 #scf::-webkit-scrollbar{display:none}
 #sct{position:absolute;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:calc(env(safe-area-inset-top,0px) + 8px) 10px 22px;background:linear-gradient(rgba(0,0,0,.8),transparent);pointer-events:none}
@@ -158,7 +158,7 @@ body.hubon #lucifer{opacity:.38}
 .sh .gb{margin:6px 0}
 .sh input[type=file]{width:100%;font-size:14px;padding:10px;margin-bottom:8px}
 .pb{height:8px;background:#2a0a0e;border-radius:4px;overflow:hidden;margin:8px 0;display:none}.pb i{display:block;height:100%;width:0;background:#ff3b3b}
-/* ===== JBfy ===== */
+/* ===== Ricofy ===== */
 #jb{position:fixed;inset:0;z-index:8;display:none;flex-direction:column;background:rgba(5,2,4,.98);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#fff}
 #jb .jbw{display:flex;flex-direction:column;flex:1;min-height:0;width:100%;max-width:600px;margin:0 auto}
 #jb.gm{background:rgba(0,0,0,.45);justify-content:flex-end}
@@ -362,7 +362,7 @@ body.angel .hnh{color:#8a6a00}
 #hcl .clq{border:1px solid #5a0a0f;border-radius:10px;background:rgba(0,0,0,.4);color:#fff;font:600 11px system-ui,sans-serif;padding:4px 8px;cursor:pointer}
 #hcl .clq.on{border-color:#ffd400;color:#ffd400}
 body.angel #hcl .cls,body.angel #hcl .clu{background:rgba(255,255,255,.12)}
-/* ===== UPDATE 4.6: JBseznamka ===== */
+/* ===== UPDATE 4.6: Ricoseznamka ===== */
 #dt{position:fixed;inset:0;z-index:8;display:none;flex-direction:column;background:rgba(5,2,4,.98);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#fff;text-align:left}
 #dt .szt{display:flex;gap:6px;max-width:560px;width:100%;margin:0 auto;padding:8px 12px}
 #dt .szt button{flex:1;padding:8px 4px;border-radius:10px;border:1px solid #5a0a0f;background:rgba(0,0,0,.4);color:#fff;font:600 13px system-ui,sans-serif;cursor:pointer}
@@ -405,6 +405,24 @@ body.angel #hcl .cls,body.angel #hcl .clu{background:rgba(255,255,255,.12)}
 .szw .szn{font-size:20px;font-weight:800;color:#ff9ac1}
 .szw .szbtn{display:inline-block;margin-top:6px;padding:6px 10px;border-radius:10px;background:linear-gradient(#a50f1a,#4a0509);border:1px solid #ff3b3b;font-weight:700;font-size:12px}
 #hdt{min-height:150px}#hcl{min-height:150px}
+/* ===== UPDATE 4.7: rozložení hubu ===== */
+#hgrid{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:10px}
+.hwi{grid-column:span 5;min-width:0;display:flex;flex-direction:column;position:relative}
+.hwi[data-w=jbfy]{grid-column:span 6}.hwi[data-w=prof]{grid-column:span 4}
+.hwi.half{grid-column:span 5!important}.hwi.full{grid-column:1/-1!important}
+.hwi>.wg{flex:1}.hwi>.hbtn{margin:0}
+.hwi[data-w=news]>.hnh{margin:2px 4px 4px}
+#hle{position:absolute;top:0;left:0;z-index:2;width:36px;height:36px;border-radius:50%;border:1px solid #c1121f;background:rgba(0,0,0,.5);font-size:17px;padding:0;cursor:pointer}
+#hle.on{border-color:#ffd400;background:rgba(255,212,0,.25)}
+#hlb{display:none;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:12px;background:rgba(255,212,0,.12);border:1px dashed #ffd400;font-size:12.5px;line-height:1.35}
+#hlb b{color:#ffd400}#hlb span{flex:1;min-width:150px;opacity:.9}
+#hlb button{border:1px solid #ffd400;background:rgba(0,0,0,.5);color:#fff;border-radius:10px;padding:7px 10px;font:700 12px system-ui,sans-serif;cursor:pointer;margin-left:4px}
+#hgrid.edit .hwi{outline:2px dashed #ffd400;outline-offset:3px;border-radius:14px}
+#hgrid.edit .hwi>*:not(.hctl){pointer-events:none}
+#hgrid.edit .hwi>.hctl{pointer-events:auto}
+.hctl{position:absolute;top:6px;left:6px;right:6px;z-index:5;display:flex;gap:8px;justify-content:center}
+.hctl button{width:44px;height:38px;border-radius:10px;border:1px solid #ffd400;background:rgba(0,0,0,.85);color:#fff;font-size:17px;cursor:pointer;padding:0}
+body.angel #hle{background:rgba(255,255,255,.5);border-color:#e8c872}
 </style></head><body>
 <div id="bg"></div><canvas id="em"></canvas><div id="vig"></div>
 
@@ -466,15 +484,15 @@ body.angel #hcl .cls,body.angel #hcl .clu{background:rgba(255,255,255,.12)}
 <button id="go" type="button">OTEVŘÍT PORTÁL</button>
 <p id="msg"></p>
 </div></div>
-<div id="game"><button id="x" aria-label="Odhlásit">✕</button><button id="adm" aria-label="Admin">⚙</button><button id="hb" aria-label="Hlavní stránka">🏠</button></div><div id="hub"><div id="hw"><button type="button" id="thm" title="Přepnout nebe / peklo">😇</button><h1>Vítej <span id="hn"></span> zpět ve světě online JB zábavy</h1>
-<div id="hsr"><div class="hsm"><button type="button" id="hsw" class="on">🔎 Web</button><button type="button" id="hsa">🤖 Jirka AI</button></div>
+<div id="game"><button id="x" aria-label="Odhlásit">✕</button><button id="adm" aria-label="Admin">⚙</button><button id="hb" aria-label="Hlavní stránka">🏠</button></div><div id="hub"><div id="hw"><button type="button" id="thm" title="Přepnout nebe / peklo">😇</button><h1>Vítej <span id="hn"></span> zpět ve světě online Rico zábavy</h1>
+<div id="hsr"><div class="hsm"><button type="button" id="hsw" class="on">🔎 Web</button><button type="button" id="hsa">🤖 Rico AI</button></div>
 <form id="hsf" autocomplete="off"><input id="hsi" type="text" maxlength="200" placeholder="Hledej na internetu…" enterkeyhint="search"><button type="submit" aria-label="Hledat">→</button></form><div id="hso"></div></div>
 <div id="hinfo"><div id="hi1"></div><div id="hi2" role="button" tabindex="0" aria-expanded="false">🟢 Online: <b id="hon">–</b> ▾</div><div id="hol"></div></div>
 <div class="hnh">🌍 Co se děje ve světě</div><div id="hnw"><span class="nt">Načítám zprávy…</span></div>
 <button class="hbtn p" id="hplay">🎮 Chci hrát!<small>Jízda na Chodov, minihry, turnaje</small></button>
-<div class="hrow2"><div id="hjbb" class="wg" role="button" tabindex="0"><div id="hjd"></div><div class="hjt"><small>🎵 JBfy</small><b id="hjn">JBfy</b><span id="hjb">Hudba od hráčů · vlastní disky a playlist</span><div class="hjc"><button type="button" onclick="hubJc('p',event)" aria-label="Předchozí">⏮</button><button type="button" id="hjp" onclick="hubJc('t',event)" aria-label="Přehrát/pauza">▶</button><button type="button" onclick="hubJc('n',event)" aria-label="Další">⏭</button></div></div></div><div id="hpf" class="wg" role="button" tabindex="0"><div id="hpa"></div><b id="hpn"></b><small>✏️ Upravit profil</small></div></div>
+<div class="hrow2"><div id="hjbb" class="wg" role="button" tabindex="0"><div id="hjd"></div><div class="hjt"><small>🎵 Ricofy</small><b id="hjn">Ricofy</b><span id="hjb">Hudba od hráčů · vlastní disky a playlist</span><div class="hjc"><button type="button" onclick="hubJc('p',event)" aria-label="Předchozí">⏮</button><button type="button" id="hjp" onclick="hubJc('t',event)" aria-label="Přehrát/pauza">▶</button><button type="button" onclick="hubJc('n',event)" aria-label="Další">⏭</button></div></div></div><div id="hpf" class="wg" role="button" tabindex="0"><div id="hpa"></div><b id="hpn"></b><small>✏️ Upravit profil</small></div></div>
 <div class="hrow"><div id="hcl" class="wg"></div><div id="hdt" class="wg" role="button" tabindex="0"></div></div>
-<div class="hrow"><div id="hscroll" class="wg tall" role="button" tabindex="0"><div class="wgh"><b>📜 JB scroll</b><button type="button" id="hsnd" class="snb" aria-label="Zvuk">🔇</button></div><div id="hsv"><div class="nt" style="padding:14px;text-align:center">Načítám videa…</div></div></div>
+<div class="hrow"><div id="hscroll" class="wg tall" role="button" tabindex="0"><div class="wgh"><b>📜 Rico scroll</b><button type="button" id="hsnd" class="snb" aria-label="Zvuk">🔇</button></div><div id="hsv"><div class="nt" style="padding:14px;text-align:center">Načítám videa…</div></div></div>
 <div id="hmsg" class="wg tall" role="button" tabindex="0"><div class="wgh"><b>✉️ Zprávy</b><i id="hmb"></i></div><div id="hmc"></div></div></div>
 <p id="hst" class="fm"></p></div>
 <button id="hx" aria-label="Odhlásit">✕</button><button id="hadm" aria-label="Admin">⚙</button></div><div id="sc"></div><div id="ms"></div><div id="jb"></div><div id="pf"></div><div id="dt"></div><div id="ap"></div><div id="kv"></div><button id="kvx" type="button">← Zpět do hry</button><div id="mt"><div class="sp">🛠</div><h2>MAINTENANCE BREAK</h2><p id="mtp"></p></div><div id="mb">🛠 ÚDRŽBA ZAPNUTÁ – hráči bez admina jsou zablokovaní</div>
@@ -563,6 +581,7 @@ async function onApi(d){const a=d.arg||{},M=me.id,min={headers:{Prefer:'return=m
  if(d.op=='dlist')return rpc('disc_list',{});
  if(d.op=='dreg')return rpc('disc_register',{p_audio:String(a.audio||'').slice(0,120),p_cover:String(a.cover||'').slice(0,120),p_title:String(a.title||'').slice(0,60),p_artist:String(a.artist||'').slice(0,40),p_dur:+a.dur||0});
  if(d.op=='ddel')return rpc('disc_delete',{p_id:+a.id});
+ if(d.op=='dupd'){if(!me.admin)throw 0;return rpc('disc_update',{p_id:+a.id,p_title:String(a.title||'').slice(0,60),p_artist:String(a.artist||'').slice(0,40)})}
  if(d.op=='drep')return rpc('disc_report',{p_id:+a.id,p_reason:String(a.reason||'').slice(0,40)});
  if(d.op=='jirka'){const ms=(Array.isArray(a.messages)?a.messages:[]).slice(-10).map(m=>({role:m.role=='assistant'?'assistant':'user',content:String(m.content||'').slice(0,400)}));const go=()=>fetch(SB+'/functions/v1/jirka-chat',{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+ses.access_token,'Content-Type':'application/json'},body:JSON.stringify({messages:ms})});let r=await go();if(r.status==401){await refresh();r=await go()}const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||('err '+r.status));return j}
  if(d.op=='ocet')return rpc('buy_ocet',{});
@@ -576,6 +595,8 @@ async function onApi(d){const a=d.arg||{},M=me.id,min={headers:{Prefer:'return=m
  if(d.op=='mp_sync')return rpc('mp_sync',{p_x:a.x==null?null:+a.x,p_prog:a.prog==null?null:+a.prog,p_crash:a.crash==null?null:(+a.crash)|0,p_skin:a.skin==null?null:String(a.skin).slice(0,40)});
  if(d.op=='mp_finish')return rpc('mp_finish',{});
  if(d.op=='mp_back')return rpc('mp_back',{});
+ if(d.op=='prefget')return rpc('pref_get',{p_key:String(a.key||'').slice(0,30)});
+ if(d.op=='prefset')return rpc('pref_set',{p_key:String(a.key||'').slice(0,30),p_value:String(a.value||'').slice(0,3000)});
  if(d.op=='szget')return rpc('dating_get',{});
  if(d.op=='szsave')return rpc('dating_save',{p_gender:String(a.gender||''),p_orient:String(a.orient||''),p_seeking:String(a.seeking||''),p_interests:(Array.isArray(a.interests)?a.interests:[]).map(x=>String(x).slice(0,30)).slice(0,8),p_color:String(a.color||''),p_bio:String(a.bio||'').slice(0,140),p_photo:String(a.photo||'').slice(0,130000),p_adult:!!a.adult});
  if(d.op=='szhide')return rpc('dating_hide',{p_hide:!!a.hide});
@@ -667,7 +688,7 @@ ap.onclick=e=>{const d=e.target.dataset;if(!d)return;
  if(d.cl)ap.style.display='none';else if(d.t)d.t=='lb'?lb():d.t=='bg'?bugs():d.t=='mt'?mtPanel():d.t=='sk'?skAdm():ac();else if(d.bf){BF=d.bf;REP=null;bugsR()}else if(d.rp){REP=REP==+d.rp?null:+d.rp;bugsR()}else if(d.rs)sendReply(+d.ri,d.rs);else if(d.bp)rpc('set_report_priority',{rid:+d.bp,pr:+d.pv}).then(bugs,()=>{});else if(d.mt!=null)mtSet(d.mt=='1');else if(d.bd)api('/rest/v1/bug_reports?id=eq.'+(+d.bd),{method:'DELETE',headers:{Prefer:'return=minimal'}}).then(bugs,()=>{});else if(d.add)form(null);else if(d.ls)ac();else if(d.sv!=null)save(d.sv===''?null:+d.sv);
  else if(d.e!=null&&d.e!=='')form(+d.e);
  else if(d.d!=null&&d.d!==''){if(delI==+d.d)del(+d.d);else{delI=+d.d;e.target.textContent='Opravdu?'}}}
-// ===== UPDATE 4.0: hub, zprávy, JB scroll =====
+// ===== UPDATE 4.0: hub, zprávy, Rico scroll =====
 const XA=(op,arg)=>onApi({op,arg:arg||{}});
 const avOK=a=>typeof a=='string'&&/^data:image\/jpeg;base64,/.test(a)&&a.length<70000;
 const avh=(a,n,s)=>avOK(a)?'<img src="'+a+'" style="width:'+s+'px;height:'+s+'px;border-radius:50%;object-fit:cover;flex:none">':'<span class="av" style="width:'+s+'px;height:'+s+'px;font-size:'+Math.round(s*.5)+'px">'+esc((n||'?')[0].toUpperCase())+'</span>';
@@ -718,14 +739,14 @@ async function msNew(){msShell('Nová zpráva',msHome);const b=$('msb');b.innerH
  try{const l=await XA('lb');MUS=(l||[]).filter(u=>u.id!=me.id);if(!$('msb'))return;$('msb').innerHTML=MUS.length?MUS.map((u,i)=>'<div class="mrow" onclick="msThreadU(MUS['+i+'].id,MUS['+i+'].username)">'+avh(MAVA[u.username],u.username,36)+'<b>'+esc(u.username)+'</b></div>').join(''):'<p class="nt">Nikdo další tu zatím není.</p>'}
  catch(e){if($('msb'))$('msb').innerHTML='<p class="fm">Načtení se nepovedlo.</p>'}}
 
-// ---- JB scroll
+// ---- Rico scroll
 let SCL=0,SCEnd=false,SCB=false,SCM=false,SCO=null,SCC=0;
 const vurl=p=>SB+'/storage/v1/object/public/jbscroll/'+String(p).split('/').map(encodeURIComponent).join('/');
 const VERR=m=>({muted:'Máš umlčený účet.',limit_day:'Dnes už jsi nahrál/a 5 videí. Zkus to zítra.',too_long:'Video je delší než 60 s.',no_file:'Soubor se nenahrál celý, zkus to znovu.',bad_path:'Neplatný soubor.',rate:'Zpomal, komentuješ moc rychle.',not_found:'Video už neexistuje.',empty:'Napiš komentář.'})[m]||'Něco se nepovedlo (běžel SQL 16-jb-scroll.sql?).';
 const emsg=e=>String((e&&e.message)||'');
 async function sfetch(path,opt){const go=()=>fetch(SB+path,{...opt,headers:{apikey:KEY,Authorization:'Bearer '+ses.access_token,...(opt.headers||{})}});let r=await go();if(r.status==401){await refresh();r=await go()}return r}
 const stDel=p=>sfetch('/storage/v1/object/jbscroll/'+String(p).split('/').map(encodeURIComponent).join('/'),{method:'DELETE'}).catch(()=>{});
-function scOpen(){const s=$('sc');s.innerHTML='<div id="scf"></div><div id="sct"><button class="rb" onclick="scClose()">←</button><b>JB scroll</b><button class="up" onclick="scUp()">⬆ Nahrát</button></div><div id="scx" onclick="if(event.target==this)scShut()"></div>';s.style.display='flex';
+function scOpen(){const s=$('sc');s.innerHTML='<div id="scf"></div><div id="sct"><button class="rb" onclick="scClose()">←</button><b>Rico scroll</b><button class="up" onclick="scUp()">⬆ Nahrát</button></div><div id="scx" onclick="if(event.target==this)scShut()"></div>';s.style.display='flex';
  SCL=0;SCX=[];SCEnd=false;SCB=false;scObs();scFeedClick();scMore(true)}
 function scClose(){const s=$('sc');for(const v of s.querySelectorAll('video')){try{v.pause();v.removeAttribute('src');v.load()}catch(e){}}if(SCO){SCO.disconnect();SCO=null}s.style.display='none';s.innerHTML='';if(me)hubBadges()}
 function scObs(){if(SCO)SCO.disconnect();SCO=new IntersectionObserver(es=>{for(const e of es){const v=e.target.querySelector('video');if(!v)continue;if(e.isIntersecting&&e.intersectionRatio>=.6)scPlay(v);else v.pause()}},{root:$('scf'),threshold:[0,.6,1]})}
@@ -796,9 +817,9 @@ ap.addEventListener('click',async e=>{const d=e.target.dataset;if(!d)return;
   else if(d.rpm!=null){const x=RPL[+d.rpm];if(!x||!confirm('Umlčet uživatele '+x.user+'? Nebude moct psát ani nahrávat.'))return;await XA('mute',{id:x.uid,muted:true});rpR('Uživatel '+x.user+' je umlčený ✔')}
  }catch(err){rpR('Akce se nepovedla.')}},true);
 
-// ===== JBfy =====
+// ===== Ricofy =====
 const OSTC='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><radialGradient id="g" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="#ff7a1a"/><stop offset=".55" stop-color="#c1121f"/><stop offset="1" stop-color="#2a0306"/></radialGradient></defs><rect width="200" height="200" fill="url(#g)"/><path d="M100 18c10 26 38 38 38 70 0 24-17 40-38 40s-38-16-38-40c0-14 6-22 12-32 2 12 8 18 14 18-6-24 2-44 12-56z" fill="#ffd400" opacity=".92"/><circle cx="100" cy="124" r="30" fill="none" stroke="#1a0508" stroke-width="7"/><circle cx="100" cy="124" r="5" fill="#1a0508"/><path d="M100 94v60M70 124h60M79 103l42 42M121 103l-42 42" stroke="#1a0508" stroke-width="3"/><text x="100" y="184" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="22" fill="#ffd400">OST</text></svg>');
-const JBD=[{k:'ost1',def:1,title:'Přes cestu',artist:'Original Soundtrack',user:'JB',audio:'pres-cestu.mp3',cover:OSTC,dur:197}];
+const JBD=[{k:'ost1',def:1,title:'Přes cestu',artist:'Original Soundtrack',user:'Rico',audio:'pres-cestu.mp3',cover:OSTC,dur:197}];
 const jbA=new Audio();jbA.preload='auto';
 let JBMSG='',JBL=JBD.slice(),JBP=[],JBC=null,JBI=0,JBTMP=false,JBV='all',JBVOL=.6,JBMUT=0,JBDUCK=1,JBPAUSED=false,JBHELD=false,JBGM=false,JBERR=0,JBREADY=false;
 const jbPub=(b,p)=>SB+'/storage/v1/object/public/'+b+'/'+String(p).split('/').map(encodeURIComponent).join('/');
@@ -842,20 +863,20 @@ function jbNotify(){const d=jbGet(JBC),pl=!!d&&!jbA.paused;
  hubJb(d,pl);
  if(document.getElementById('jb').style.display=='flex')jbR(true);
  jbGamePost();
- try{if('mediaSession' in navigator){if(d){navigator.mediaSession.metadata=new MediaMetadata({title:d.title,artist:d.artist||d.user,album:'JBfy',artwork:d.def?[]:[{src:jbCov(d),sizes:'480x480',type:'image/jpeg'}]});navigator.mediaSession.playbackState=pl?'playing':'paused'}
+ try{if('mediaSession' in navigator){if(d){navigator.mediaSession.metadata=new MediaMetadata({title:d.title,artist:d.artist||d.user,album:'Ricofy',artwork:d.def?[]:[{src:jbCov(d),sizes:'480x480',type:'image/jpeg'}]});navigator.mediaSession.playbackState=pl?'playing':'paused'}
   navigator.mediaSession.setActionHandler('play',()=>jbToggle());navigator.mediaSession.setActionHandler('pause',()=>jbToggle());navigator.mediaSession.setActionHandler('nexttrack',jbNext);navigator.mediaSession.setActionHandler('previoustrack',jbPrev)}}catch(e){}}
 function jbFromGame(d){if(d.t=='jbvol')jbVol(d.vol,d.mut,true);else if(d.t=='jbduck'){JBDUCK=+d.k||1;jbApply()}else if(d.t=='jbcmd'){if(d.c=='next')jbNext();else if(d.c=='prev')jbPrev();else jbToggle()}else if(d.t=='jbopen')jbOpen(true);else if(d.t=='jbask')jbNotify()}
 // ---- UI
 const jbDisc=(d,sp)=>'<div class="dk'+(sp?' sp':'')+'"><img src="'+esc(jbCov(d))+'" alt="" loading="lazy"><i></i></div>';
 function jbOpen(gm){JBGM=!!gm;const s=document.getElementById('jb');s.classList.toggle('gm',JBGM);
- s.innerHTML='<div class="jbw"><div class="mbar"><button class="rb" onclick="jbClose()">←</button><b>🎵 JBfy</b><button class="up" style="border:1px solid #ff3b3b;background:linear-gradient(#a50f1a,#4a0509);color:#fff;border-radius:19px;padding:0 14px;height:38px;font:700 13px system-ui,sans-serif;cursor:pointer" onclick="jbUp()">⬆ Nový disk</button></div><div class="jbt"><button id="jbt1" onclick="jbTab(\'all\')">💿 Disky</button><button id="jbt2" onclick="jbTab(\'pl\')">📻 Playlist</button><button id="jbt3" onclick="jbTab(\'pls\')">📚 Moje</button></div><div id="jbb"></div><div id="jbp"></div><div id="jbx" onclick="if(event.target==this)jbShut()"></div></div>';
+ s.innerHTML='<div class="jbw"><div class="mbar"><button class="rb" onclick="jbClose()">←</button><b>🎵 Ricofy</b><button class="up" style="border:1px solid #ff3b3b;background:linear-gradient(#a50f1a,#4a0509);color:#fff;border-radius:19px;padding:0 14px;height:38px;font:700 13px system-ui,sans-serif;cursor:pointer" onclick="jbUp()">⬆ Nový disk</button></div><div class="jbt"><button id="jbt1" onclick="jbTab(\'all\')">💿 Disky</button><button id="jbt2" onclick="jbTab(\'pl\')">📻 Playlist</button><button id="jbt3" onclick="jbTab(\'pls\')">📚 Moje</button></div><div id="jbb"></div><div id="jbp"></div><div id="jbx" onclick="if(event.target==this)jbShut()"></div></div>';
  s.style.display='flex';if(gm)s.onclick=e=>{if(e.target==s)jbClose()};else s.onclick=null;jbR();jbLoad().then(()=>{if(s.style.display=='flex')jbR()})}
 function jbClose(){const s=document.getElementById('jb');s.style.display='none';s.innerHTML=''}
 function jbTab(v){JBV=v;jbR()}
 function jbR(soft){const b=document.getElementById('jbb');if(!b)return;
  document.getElementById('jbt1').classList.toggle('on',JBV=='all');const t2=document.getElementById('jbt2');t2.classList.toggle('on',JBV=='pl');t2.textContent='📻 Playlist ('+JBP.length+')';const t3=document.getElementById('jbt3');if(t3)t3.classList.toggle('on',JBV=='pls');
  const keep=b.scrollTop;const pl=k=>JBC==k&&!jbA.paused;
- if(JBV=='all'){b.innerHTML=(JBL.length?'<div class="jbg">'+JBL.map(d=>'<div class="jc"><div class="jcd" onclick="jbPlay(\''+d.k+'\')">'+jbDisc(d,pl(d.k))+'<span class="pp">'+(pl(d.k)?'⏸':'▶')+'</span></div><b>'+esc(d.title)+(d.hidden?' <span style="color:#ffd400;font-size:11px">skryto</span>':'')+'</b><small>'+esc(d.artist||d.user)+'</small><div class="jcb"><button class="'+(JBP.includes(d.k)?'on':'')+'" onclick="jbTogP(\''+d.k+'\')">'+(JBP.includes(d.k)?'✓ V playlistu':'＋ Playlist')+'</button><button onclick="jbRev(\''+d.k+'\')">⭐'+(d.rn?' '+d.ravg:'')+'</button>'+(d.def?'':'<button onclick="jbRep(\''+d.k+'\')">🚩</button>')+((!d.def&&(d.mine||me.admin))?'<button onclick="jbDel(\''+d.k+'\')">🗑</button>':'')+'</div></div>').join('')+'</div>':'<p class="nt" style="text-align:center">Zatím tu nejsou žádné disky.</p>')}
+ if(JBV=='all'){b.innerHTML=(JBL.length?'<div class="jbg">'+JBL.map(d=>'<div class="jc"><div class="jcd" onclick="jbPlay(\''+d.k+'\')">'+jbDisc(d,pl(d.k))+'<span class="pp">'+(pl(d.k)?'⏸':'▶')+'</span></div><b>'+esc(d.title)+(d.hidden?' <span style="color:#ffd400;font-size:11px">skryto</span>':'')+'</b><small>'+esc(d.artist||d.user)+'</small><div class="jcb"><button class="'+(JBP.includes(d.k)?'on':'')+'" onclick="jbTogP(\''+d.k+'\')">'+(JBP.includes(d.k)?'✓ V playlistu':'＋ Playlist')+'</button><button onclick="jbRev(\''+d.k+'\')">⭐'+(d.rn?' '+d.ravg:'')+'</button>'+(d.def?'':'<button onclick="jbRep(\''+d.k+'\')">🚩</button>')+((!d.def&&me.admin)?'<button onclick="jbEdit(\''+d.k+'\')">✏️</button>':'')+((!d.def&&(d.mine||me.admin))?'<button onclick="jbDel(\''+d.k+'\')">🗑</button>':'')+'</div></div>').join('')+'</div>':'<p class="nt" style="text-align:center">Zatím tu nejsou žádné disky.</p>')}
  else if(JBV=='pls'){b.innerHTML=jbPlsHtml()}
  else{b.innerHTML=(JBP.length?'<div class="jbq"><button class="gb s" onclick="jbPlNew()">💾 Uložit playlist</button><button class="gb s" onclick="jbPlShare(0)">📤 Sdílet do chatu</button></div>':'')+'<p class="nt">Playlist se přehrává pořád dokola. Poslední disk navazuje na první.</p>'+(JBP.length?JBP.map((k,i)=>{const d=jbGet(k);return d?'<div class="jr">'+jbDisc(d,pl(k))+'<div class="ti" onclick="jbPlay(\''+k+'\')"><b>'+esc(d.title)+'</b><small>'+esc(d.artist||d.user)+'</small></div><button onclick="jbMv('+i+',-1)">▲</button><button onclick="jbMv('+i+',1)">▼</button><button onclick="jbTogP(\''+k+'\')">✕</button></div>':''}).join(''):'<p class="nt" style="text-align:center">Playlist je prázdný. V záložce Disky přidej disky tlačítkem „＋ Playlist“.</p>')}
  b.scrollTop=keep;
@@ -870,6 +891,11 @@ function jbRep(k){const d=jbGet(k);if(!d||d.def)return;jbSheet('<div class="shh"
 function jbRepGo(id,r){XA('drep',{id,reason:r}).then(()=>{const m=document.getElementById('jbm');if(m){m.style.color='#9fe6a8';m.textContent='Díky, nahlášení dorazilo adminům. 👍'}setTimeout(jbShut,1100)},e=>{const m=document.getElementById('jbm');if(m)m.textContent=JVERR(emsg(e))})}
 const JVERR=m=>({muted:'Máš umlčený účet.',limit_total:'Už máš 10 disků. Jeden smaž a zkus to znovu.',too_long:'Track je delší než 10 minut.',no_file:'Soubor se nenahrál celý, zkus to znovu.',bad_path:'Neplatný soubor.',bad_title:'Napiš název disku.',not_found:'Disk už neexistuje.',limit_pl:'Máš už 10 uložených playlistů. Jeden smaž.',bad_name:'Napiš název playlistu.',bad_items:'Playlist je prázdný nebo neplatný.'})[m]||'Něco se nepovedlo (běžel SQL 17-jbfy.sql?).';
 const stDelB=(b,p)=>sfetch('/storage/v1/object/'+b+'/'+String(p).split('/').map(encodeURIComponent).join('/'),{method:'DELETE'}).catch(()=>{});
+function jbEdit(k){const d=jbGet(k);if(!d||d.def||!me.admin)return;
+ jbSheet('<div class="shh"><b>✏️ Upravit disk</b><button onclick="jbShut()">✕</button></div><input id="jbet" maxlength="60" placeholder="Název" autocomplete="off" value="'+esc(d.title)+'"><input id="jbea" maxlength="40" placeholder="Interpret" autocomplete="off" value="'+esc(d.artist||'')+'"><button class="gb" onclick="jbEditGo(\''+k+'\')">Uložit</button><p id="jbm" class="fm" style="text-align:center"></p>')}
+async function jbEditGo(k){const d=jbGet(k),m=document.getElementById('jbm'),t=document.getElementById('jbet').value.trim();if(!d)return;if(!t){m.style.color='#ff9a9a';m.textContent='Název nesmí být prázdný.';return}
+ m.style.color='#fff';m.textContent='Ukládám…';
+ try{await XA('dupd',{id:d.id,title:t,artist:document.getElementById('jbea').value.trim()});await jbLoad();jbShut();jbR()}catch(e){m.style.color='#ff9a9a';m.textContent='Úprava se nepovedla. Spustil jsi 22-rico.sql?'}}
 function jbDel(k){const d=jbGet(k);if(!d||d.def||!confirm('Smazat disk „'+d.title+'“?'))return;XA('ddel',{id:d.id}).then(r=>{if(r){stDelB('jbfy',r.audio);stDelB('jbfy',r.cover)}if(JBC==k){jbA.pause();JBC=null}JBP=JBP.filter(x=>x!=k);jbSavePl();JBL=JBL.filter(x=>x.k!=k);jbNotify();jbR()},e=>alert(JVERR(emsg(e))))}
 // nahrávání disku
 const JAEXT={'audio/mpeg':'mp3','audio/mp3':'mp3','audio/mp4':'m4a','audio/x-m4a':'m4a','audio/m4a':'m4a','audio/aac':'aac','audio/ogg':'ogg','audio/wav':'wav','audio/x-wav':'wav','audio/webm':'webm','audio/flac':'flac','audio/x-flac':'flac','video/mp4':'mp4','video/x-m4v':'m4v','video/quicktime':'mov'},JAMIME={mp3:'audio/mpeg',m4a:'audio/mp4',aac:'audio/aac',ogg:'audio/ogg',wav:'audio/wav',webm:'audio/webm',flac:'audio/flac',mp4:'video/mp4',m4v:'video/mp4',mov:'video/quicktime'};
@@ -903,14 +929,14 @@ async function jbUpGo(){const f=document.getElementById('jaf').files[0],cf=docum
 let HSMOD='web',HJH=[],HSB=0,HDM=[],HCH=[],HVS=false,HVJ=0,HVCUR=null,HVCOV=false,HVL=0,HVO=null,HWT=0,HWI=0,HUID=null;
 const hok=u=>/^https?:\/\//i.test(String(u||''));
 async function hubFn(b){const go=()=>fetch(SB+'/functions/v1/hub-info',{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+ses.access_token,'Content-Type':'application/json'},body:JSON.stringify(b)});let r=await go();if(r.status==401){await refresh();r=await go()}const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||('err '+r.status));return j}
-function hsMode(m){HSMOD=m;$('hsw').classList.toggle('on',m=='web');$('hsa').classList.toggle('on',m=='ai');$('hsi').placeholder=m=='ai'?'Zeptej se Jirky (AI)…':'Hledej na internetu…';if(m=='ai')hsAi('');else $('hso').innerHTML=''}
+function hsMode(m){HSMOD=m;$('hsw').classList.toggle('on',m=='web');$('hsa').classList.toggle('on',m=='ai');$('hsi').placeholder=m=='ai'?'Zeptej se Rica (AI)…':'Hledej na internetu…';if(m=='ai')hsAi('');else $('hso').innerHTML=''}
 function hsAi(msg){const o=$('hso');o.innerHTML=HJH.slice(-6).map(m=>'<div class="hq '+(m.role=='user'?'u':'a')+'">'+esc(m.content)+'</div>').join('')+(msg?'<p class="nt">'+esc(msg)+'</p>':'');o.scrollTop=o.scrollHeight}
 const hsMore=q=>'<a class="hr" href="https://search.seznam.cz/?q='+encodeURIComponent(q)+'" target="_blank" rel="noopener noreferrer"><b>🔎 Hledat „'+esc(q)+'“ na Seznamu</b></a>';
 function hsRes(q,l){l=l.filter(x=>hok(x.url));$('hso').innerHTML=(l.length?l.map(x=>'<a class="hr" href="'+esc(x.url)+'" target="_blank" rel="noopener noreferrer"><b>'+esc(x.title||x.url)+'</b><small>'+esc(x.host||'')+'</small><span>'+esc(x.desc||'')+'</span></a>').join(''):'<p class="nt">Nic jsem nenašel.</p>')+hsMore(q)+'<button type="button" class="gb" onclick="$(\'hso\').innerHTML=\'\'">Zavřít výsledky</button>'}
 async function hsGo(e){if(e)e.preventDefault();const i=$('hsi'),q=i.value.trim();if(!q||HSB)return;HSB=1;
- try{if(HSMOD=='ai'){i.value='';HJH.push({role:'user',content:q.slice(0,400)});hsAi('Jirka přemýšlí…');
+ try{if(HSMOD=='ai'){i.value='';HJH.push({role:'user',content:q.slice(0,400)});hsAi('Rico přemýšlí…');
    try{const r=await XA('jirka',{messages:HJH.slice(-10)});HJH.push({role:'assistant',content:String(r.reply||'…')});hsAi(r.left!=null?'Zbývá dnes zpráv: '+r.left:'')}
-   catch(er){HJH.pop();i.value=q;hsAi(/limit/i.test(String(er))?'Dnešní limit zpráv je vyčerpaný, zkus to zítra.':/busy|overload/i.test(String(er))?'Jirka je dnes vytížený, zkus to později.':'Jirka teď neodpovídá.')}}
+   catch(er){HJH.pop();i.value=q;hsAi(/limit/i.test(String(er))?'Dnešní limit zpráv je vyčerpaný, zkus to zítra.':/busy|overload/i.test(String(er))?'Rico je dnes vytížený, zkus to později.':'Rico teď neodpovídá.')}}
   else{$('hso').innerHTML='<p class="nt">Hledám…</p>';
    try{const r=await hubFn({op:'search',q});hsRes(q,r.results||[])}
    catch(er){$('hso').innerHTML='<p class="nt">Hledání přímo ve hře teď nejde'+(/key|SERPAPI/i.test(String(er&&er.message))?' (na serveru chybí klíč SerpApi)':'')+'. Zkus to na Seznamu:</p>'+hsMore(q)}}}
@@ -922,7 +948,7 @@ async function hubNews(){const w=$('hnw');if(!w)return;let l=null;try{const c=JS
 function hubJb(d,pl){if(!$('hjd'))return;if(arguments.length<2){d=jbGet(JBC);pl=!!d&&!jbA.paused}
  const x=d||jbGet(JBP[0])||JBL[0];
  $('hjd').innerHTML=x?jbDisc(x,pl):'<div style="font-size:44px">💿</div>';
- $('hjn').textContent=x?x.title:'JBfy';
+ $('hjn').textContent=x?x.title:'Ricofy';
  $('hjb').textContent=d?(pl?'▶ Hraje · ':'⏸ Pozastaveno · ')+(d.artist||d.user||''):(x?'Klepni na ▶ a pusť playlist':'Hudba od hráčů · vlastní disky a playlist');
  $('hjp').textContent=pl?'⏸':'▶'}
 function hubJc(c,e){e.stopPropagation();if(c=='n')jbNext();else if(c=='p')jbPrev();else{if(!JBC&&!JBP.length){jbOpen(false);return}jbToggle()}}
@@ -948,8 +974,8 @@ function hvTick(){const hubOn=$('hub').style.display=='flex',cov=!hubOn||$('sc')
  else if(!cov&&HVCOV){HVCOV=false;hvPlay(HVCUR)}
  if(!cov&&Date.now()-HWI>15000){HWI=Date.now();hubMsgRefresh()}}
 function hubWidgets(){if(!$('hsi')||!me)return;
- if(HUID!=me.id){HUID=me.id;SZW=null;SZP=undefined;if(CL)clEnd('',1);CLA=0;CLUT=0;CLU={};HDM=[];HCH=[];HJH=[];HVL=0;HAVL=0;HAV='';NTS=0;NTU=0;NTC=0;hubMsgPaint()}
- hsMode(HSMOD);clInit();clPaint();szWidget();szLoadW();hubNews();hvLoad();hubJb();hubProfile();hubInfo();ntStart();HWI=Date.now();hubMsgRefresh();if(!HWT)HWT=setInterval(hvTick,800)}
+ if(HUID!=me.id){HUID=me.id;SZW=null;SZP=undefined;HLED=0;if(CL)clEnd('',1);CLA=0;CLUT=0;CLU={};HDM=[];HCH=[];HJH=[];HVL=0;HAVL=0;HAV='';NTS=0;NTU=0;NTC=0;hubMsgPaint()}
+ hsMode(HSMOD);hlLoad();clInit();clPaint();szWidget();szLoadW();hubNews();hvLoad();hubJb();hubProfile();hubInfo();ntStart();HWI=Date.now();hubMsgRefresh();if(!HWT)HWT=setInterval(hvTick,800)}
 $('hsf').onsubmit=hsGo;$('hsw').onclick=()=>hsMode('web');$('hsa').onclick=()=>hsMode('ai');$('hsnd').onclick=e=>hvSound(!HVS,e);
 // ===== UPDATE 4.2: téma nebe/peklo, profil, playlisty =====
 let HAV='',HAVL=0,JBS=[],JBIMP=null;
@@ -1131,14 +1157,14 @@ function clInit(){if(!CLT)clLoop()}
 async function clSig(s){const d=s.data||{};
  if(s.kind=='ring'){if(s.age>35)return;
   if(CL){if(CL.id!=s.call)clSend(s.from,'busy',s.call);return}
-  if(clDnd()){clSend(s.from,'decline',s.call);return}
+  if(clDnd()){clSend(s.from,'decline',s.call,{dnd:1});return}
   CL={id:s.call,peer:s.from,name:s.name||'?',role:'in',st:'ring',t:Date.now(),ice:[]};clRing(true);clUi();clTickStart();clPaint();return}
  if(!CL||s.call!=CL.id||s.from!=CL.peer)return;
- if(s.kind=='accept'&&CL.role=='out'&&CL.st=='ring'){CL.st='conn';clRing(false);clUi();await clStart()}
+ if(s.kind=='accept'&&CL.role=='out'&&CL.st=='ring'){CL.st='conn';CL.tc=Date.now();clRing(false);clUi();await clStart()}
  else if(s.kind=='offer'&&CL.role=='in'){await clOffer(d)}
  else if(s.kind=='answer'&&CL.pc&&CL.role=='out'){await CL.pc.setRemoteDescription(d);await clFlush()}
- else if(s.kind=='ice'){if(CL.pc&&CL.pc.remoteDescription){try{await CL.pc.addIceCandidate(d)}catch(e){}}else CL.ice.push(d)}
- else if(s.kind=='decline')clEnd(CL.name+' hovor odmítl/a.',0)
+ else if(s.kind=='ice'){if(d.relay){clRelay(0);return}if(CL.rly)return;if(CL.pc&&CL.pc.remoteDescription){try{await CL.pc.addIceCandidate(d)}catch(e){}}else CL.ice.push(d)}
+ else if(s.kind=='decline')clEnd(d.dnd?CL.name+' má zapnuté Nerušit (hovory blokuje).':CL.name+' hovor odmítl/a.',0)
  else if(s.kind=='busy')clEnd(CL.name+' právě telefonuje.',0)
  else if(s.kind=='end')clEnd('Hovor skončil.',0)}
 async function clFlush(){if(!CL||!CL.pc)return;const q=CL.ice;CL.ice=[];for(const c of q){try{await CL.pc.addIceCandidate(c)}catch(e){}}}
@@ -1152,8 +1178,8 @@ function clPc(){const pc=new RTCPeerConnection({iceServers:CALL_ICE});CL.pc=pc;
  pc.ontrack=e=>{let a=$('cla');if(!a){a=document.createElement('audio');a.id='cla';a.autoplay=true;a.setAttribute('playsinline','');document.body.appendChild(a)}a.srcObject=e.streams[0]||new MediaStream([e.track]);a.play().catch(()=>{})};
  pc.onconnectionstatechange=()=>{if(!CL||CL.pc!==pc)return;const s=pc.connectionState;
   if(s=='connected'){if(CL.st!='live'){CL.st='live';CL.t0=Date.now();if(JBC&&!jbA.paused){jbA.pause();CLJ=1}clUi();clPaint()}}
-  else if(s=='failed')clEnd('Spojení se nepovedlo (síť hráče hovory blokuje).',1);
-  else if(s=='disconnected'){const k=CL;setTimeout(()=>{if(CL===k&&k.pc===pc&&pc.connectionState!='connected')clEnd('Spojení se přerušilo.',1)},7000)}};
+  else if(s=='failed')clRelay(1);
+  else if(s=='disconnected'){const k=CL;setTimeout(()=>{if(CL===k&&k.pc===pc&&pc.connectionState!='connected')clRelay(1)},7000)}};
  return pc}
 async function clStart(){try{const pc=clPc(),o=await pc.createOffer();await pc.setLocalDescription(o);clSend(CL.peer,'offer',CL.id,{type:o.type,sdp:o.sdp})}catch(e){clEnd('Hovor se nepodařilo navázat.',1)}}
 async function clOffer(d){try{const pc=clPc();await pc.setRemoteDescription(d);await clFlush();const a=await pc.createAnswer();await pc.setLocalDescription(a);clSend(CL.peer,'answer',CL.id,{type:a.type,sdp:a.sdp})}catch(e){clEnd('Hovor se nepodařilo navázat.',1)}}
@@ -1163,19 +1189,47 @@ async function clDial(id,name){if(!me||!id||id==me.id)return;if(CL){clToast('Už
  CL={id:clRid(),peer:id,name:name||'?',role:'out',st:'ring',t:Date.now(),ice:[],stream:st};clUi();clTickStart();clPaint();
  try{await rpc('call_send',{p_to:id,p_kind:'ring',p_call:CL.id,p_data:null})}catch(e){const m=String((e&&e.message)||'');clEnd(/rate/.test(m)?'Voláš moc rychle, chvilku počkej.':/muted/.test(m)?'Máš umlčený účet.':/call_send|schema|PGRST|404/i.test(m+JSON.stringify(e||''))?'Hovory nejsou na serveru nastavené (spusť 20-hovory.sql v Supabase).':'Volání se nepovedlo: '+(m||JSON.stringify(e||'')).slice(0,80),0)}}
 async function clAccept(){if(!CL||CL.role!='in'||CL.st!='ring')return;const k=CL;const st=await clMic();if(!st){if(CL===k)clDecline();return}
- if(CL!==k){st.getTracks().forEach(t=>t.stop());return}CL.stream=st;CL.st='conn';clRing(false);clUi();clSend(CL.peer,'accept',CL.id)}
+ if(CL!==k){st.getTracks().forEach(t=>t.stop());return}CL.stream=st;CL.st='conn';CL.tc=Date.now();clRing(false);clUi();clSend(CL.peer,'accept',CL.id)}
 function clDecline(){if(!CL)return;clSend(CL.peer,'decline',CL.id);clEnd('',0)}
 function clHang(){if(!CL)return;if(CL.role=='in'&&CL.st=='ring')return clDecline();clEnd('Hovor skončil.',1)}
 function clMute(){if(!CL||!CL.stream)return;CL.muted=!CL.muted;CL.stream.getAudioTracks().forEach(t=>t.enabled=!CL.muted);clUi()}
 function clEnd(msg,notify){const k=CL;if(!k)return;if(notify!==0)clSend(k.peer,'end',k.id);
- clRing(false);CL=null;try{k.pc&&k.pc.close()}catch(e){}try{k.stream&&k.stream.getTracks().forEach(t=>t.stop())}catch(e){}
+ clRing(false);CL=null;clRelayStop(k);try{k.pc&&k.pc.close()}catch(e){}try{k.stream&&k.stream.getTracks().forEach(t=>t.stop())}catch(e){}
  const a=$('cla');if(a){a.srcObject=null;a.remove()}
  if(CLJ){CLJ=0;try{jbA.play().catch(()=>{})}catch(e){}}
  clearInterval(CLI);CLI=0;if(msg)clToast(msg);else{clUi();clPaint()}}
 function clTickStart(){if(CLI)return;CLI=setInterval(()=>{if(!CL){clearInterval(CLI);CLI=0;return}
  if(CL.st=='ring'&&Date.now()-CL.t>40000){if(CL.role=='out')clEnd('Nikdo to nezvedá.',1);else clEnd('Zmeškaný hovor od '+CL.name+'.',0);return}
- if(CL.st=='conn'&&Date.now()-CL.t>70000){clEnd('Hovor se nepodařilo navázat.',1);return}
+ if(CL.st=='conn'&&!CL.rly&&Date.now()-CL.tc>12000){clRelay(1);return}
+ if(CL.rly&&CL.st!='live'&&Date.now()-CL.tr>12000){clEnd('Záložní spojení se nepovedlo.',1);return}
  clUi();if(CL&&CL.st=='live')clPaint(1)},1000)}
+// --- záložní režim: když přímé spojení (WebRTC) neprojde, zvuk jde přes Supabase Realtime (telefonní kvalita, 8 kHz)
+const clCtx=()=>{if(!CLAC)CLAC=new(window.AudioContext||window.webkitAudioContext)();if(CLAC.state=='suspended')CLAC.resume().catch(()=>{});return CLAC};
+const ulEnc=v=>{let s=Math.max(-32768,Math.min(32767,Math.round(v*32767))),sg=(s>>8)&0x80;if(sg)s=-s;if(s>32635)s=32635;s+=0x84;let e=7;for(let m=0x4000;(s&m)==0&&e>0;e--,m>>=1);return(~(sg|(e<<4)|((s>>(e+3))&0x0F)))&0xFF};
+const ulDec=u=>{u=~u&0xFF;const e=(u>>4)&7,s=(((u&0xF)<<3)+0x84)<<e;return((u&0x80)?(0x84-s):(s-0x84))/32768};
+function clRt(topic,onMsg,onOpen,onErr){const full='realtime:'+topic;let ws,ref=0,hb=0,jn=0,q=[];
+ try{ws=new WebSocket('wss://'+SB.replace(/^https?:\/\//,'')+'/realtime/v1/websocket?apikey='+encodeURIComponent(KEY)+'&vsn=1.0.0')}catch(e){onErr();return null}
+ const snd=(t,e,p)=>{try{ws.send(JSON.stringify({topic:t,event:e,payload:p,ref:String(++ref),join_ref:'1'}))}catch(er){}};
+ ws.onopen=()=>{snd(full,'phx_join',{config:{broadcast:{self:false,ack:false},presence:{key:''},postgres_changes:[],private:false},access_token:ses&&ses.access_token});hb=setInterval(()=>snd('phoenix','heartbeat',{}),25000)};
+ ws.onmessage=ev=>{let m;try{m=JSON.parse(ev.data)}catch(e){return}if(m.topic!=full)return;
+  if(m.event=='phx_reply'&&!jn){if(m.payload&&m.payload.status=='ok'){jn=1;q.splice(0).forEach(p=>snd(full,'broadcast',{type:'broadcast',event:'a',payload:p}));onOpen()}else onErr()}
+  else if(m.event=='broadcast'&&m.payload&&m.payload.event=='a')onMsg(m.payload.payload)};
+ ws.onerror=()=>{if(!jn)onErr()};ws.onclose=()=>{clearInterval(hb)};
+ return{send:p=>{if(!jn){if(q.length<20)q.push(p);return}snd(full,'broadcast',{type:'broadcast',event:'a',payload:p})},close:()=>{clearInterval(hb);try{ws.close()}catch(e){}}}}
+function clRelay(notify){const k=CL;if(!k||k.rly||!k.stream)return;k.rly=1;k.tr=Date.now();k.rx=0;k.tx=0;k.nt=0;
+ if(notify)clSend(k.peer,'ice',k.id,{relay:1});
+ try{k.pc&&k.pc.close()}catch(e){}k.pc=null;clUi();
+ const fail=()=>{if(CL===k)clEnd('Hovor se nepodařilo navázat ani záložním způsobem.',1)};
+ k.rws=clRt('call-'+k.id,d=>{if(CL!==k||!d||typeof d.d!='string'||d.d.length>6000)return;k.rx++;clRelayPlay(k,d.d)},()=>{
+  if(CL!==k)return;k.st='live';k.t0=Date.now();if(JBC&&!jbA.paused){jbA.pause();CLJ=1}clRelayMic(k);clUi();clPaint()},fail)}
+function clRelayMic(k){try{const c=clCtx(),src=c.createMediaStreamSource(k.stream),pr=c.createScriptProcessor(2048,1,1),ratio=c.sampleRate/8000;let ph=0,sum=0,n=0,buf=[];
+ pr.onaudioprocess=e=>{if(CL!==k)return;const inp=e.inputBuffer.getChannelData(0);
+  for(let i=0;i<inp.length;i++){sum+=inp[i];n++;ph+=1;if(ph>=ratio){ph-=ratio;buf.push(sum/n);sum=0;n=0}}
+  while(buf.length>=1600){const ch=buf.splice(0,1600);if(k.muted||!k.rws)continue;let s='';for(let i=0;i<1600;i++)s+=String.fromCharCode(ulEnc(ch[i]));k.tx++;k.rws.send({d:btoa(s)})}};
+ src.connect(pr);pr.connect(c.destination);k.src=src;k.proc=pr}catch(e){clEnd('Mikrofon se nepodařilo spustit.',1)}}
+function clRelayPlay(k,b64){try{const c=clCtx(),bin=atob(b64),n=bin.length;if(!n)return;const ab=c.createBuffer(1,n,8000),ch=ab.getChannelData(0);for(let i=0;i<n;i++)ch[i]=ulDec(bin.charCodeAt(i));
+ const s=c.createBufferSource();s.buffer=ab;s.connect(c.destination);const t=c.currentTime;if(k.nt<t+.05||k.nt>t+1.2)k.nt=t+.25;s.start(k.nt);k.nt+=ab.duration}catch(e){}}
+function clRelayStop(k){try{k.rws&&k.rws.close()}catch(e){}try{k.proc&&(k.proc.onaudioprocess=null,k.proc.disconnect())}catch(e){}try{k.src&&k.src.disconnect()}catch(e){}}
 // --- ovládací lišta (nad hrou i hubem)
 function clUi(){let b=$('cl');if(!b){b=document.createElement('div');b.id='cl';document.body.appendChild(b)}
  if(!CL){b.style.display=CLMSG?'flex':'none';b.className='';const h=CLMSG?'<span class="clt"></span>':'';if(b.dataset.h!=h){b.dataset.h=h;b.innerHTML=h}const t=b.querySelector('.clt');if(t)t.textContent=CLMSG;return}
@@ -1183,7 +1237,7 @@ function clUi(){let b=$('cl');if(!b){b=document.createElement('div');b.id='cl';d
  if(CL.role=='in'&&CL.st=='ring'){cls='ring';lab='📞 <b>'+esc(CL.name)+'</b> ti volá…';h='<span class="clt"></span><button class="cly" onclick="clAccept()">Přijmout</button><button class="cln" onclick="clDecline()">Odmítnout</button>'}
  else if(CL.st=='ring'){lab='📞 Volám <b>'+esc(CL.name)+'</b>…';h='<span class="clt"></span><button class="cln" onclick="clHang()">Zrušit</button>'}
  else if(CL.st=='conn'){lab='⏳ Spojuju s <b>'+esc(CL.name)+'</b>…';h='<span class="clt"></span><button class="cln" onclick="clHang()">Zavěsit</button>'}
- else{cls='live';lab='🟢 <b>'+esc(CL.name)+'</b> · '+clMS((Date.now()-CL.t0)/1000);h='<span class="clt"></span><button class="clm'+(CL.muted?' on':'')+'" onclick="clMute()" aria-label="Ztlumit mikrofon">'+(CL.muted?'🔇':'🎤')+'</button><button class="cln" onclick="clHang()">Zavěsit</button>'}
+ else{cls='live';lab='🟢 <b>'+esc(CL.name)+'</b> · '+clMS((Date.now()-CL.t0)/1000)+(CL.rly?' · 📶 záloha':'');h='<span class="clt"></span><button class="clm'+(CL.muted?' on':'')+'" onclick="clMute()" aria-label="Ztlumit mikrofon">'+(CL.muted?'🔇':'🎤')+'</button><button class="cln" onclick="clHang()">Zavěsit</button>'}
  b.className=cls;if(b.dataset.h!=h){b.dataset.h=h;b.innerHTML=h}
  const t=b.querySelector('.clt');if(t&&t.innerHTML!=lab)t.innerHTML=lab}
 // --- widget v hubu: kdo je online, klepni na 📞
@@ -1194,7 +1248,7 @@ function clDndToggle(){try{localStorage.setItem('jb_dnd',clDnd()?'0':'1')}catch(
 function clDialI(i){const u=CLR[i];if(u)clDial(u.id,u.name)}
 function clPaint(tickOnly){const w=$('hcl');if(!w)return;
  if(!CLUT)clUsers();
- const dnd=clDnd();let h='<div class="wgh"><b>📞 Volání</b><button type="button" class="clq'+(dnd?' on':'')+'" onclick="clDndToggle()" title="Nerušit: hovory se automaticky odmítnou">'+(dnd?'🔕':'🔔')+'</button></div><div class="clb">';
+ const dnd=clDnd();let h='<div class="wgh"><b>📞 Volání</b><button type="button" class="clq'+(dnd?' on':'')+'" onclick="clDndToggle()" title="Nerušit: hovory se automaticky odmítnou">'+(dnd?'🔕 Zapnuto':'🔔')+'</button></div><div class="clb">'+(dnd?'<div class="cls" style="color:#ffd400;margin-bottom:6px">🔕 Máš zapnuté Nerušit, hovory se ti odmítají. Klepni na tlačítko a vypneš to.</div>':'');
  if(CL){const s=CL.st=='live'?'🟢 Hovoříš s <b>'+esc(CL.name)+'</b> · '+clMS((Date.now()-CL.t0)/1000):CL.role=='in'?'📞 Volá ti <b>'+esc(CL.name)+'</b>…':CL.st=='ring'?'📞 Volám <b>'+esc(CL.name)+'</b>…':'⏳ Spojuju s <b>'+esc(CL.name)+'</b>…';
   if(tickOnly){const e=w.querySelector('.cls');if(e){e.innerHTML=s;return}}
   h+='<div class="cls">'+s+'</div>'}
@@ -1202,8 +1256,8 @@ function clPaint(tickOnly){const w=$('hcl');if(!w)return;
   h+=CLE?'<div class="cls" style="color:#ff9a9a">⚠ Hovory na serveru nefungují: '+esc(CLE.slice(0,90))+' (zkontroluj 20-hovory.sql)</div>':'';h+=CLMSG?'<div class="cls">'+esc(CLMSG)+'</div>':'';
   h+=CLR.length?'<div class="clr">'+CLR.map((u,i)=>'<div class="clu">'+avh(MAVA[u.name],u.name,28)+'<span>'+esc(u.name)+'</span><button type="button" onclick="clDialI('+i+')" aria-label="Zavolat '+esc(u.name)+'">📞</button></div>').join('')+'</div>':'<p class="nt">Nikdo jiný teď není online.</p>'}
  w.innerHTML=h+'</div>'}
-// ===== UPDATE 4.6: JBseznamka =====
-const SZI=['Jízda na Chodov','Kavadle','JBfy hudba','JB scroll','Multiplayer závody','Sbírání skinů','Kebab z Kavalírky','Octový Jirka','Dršťková polévka','Tramvaje a metro','Pivo','Káva','Procházky','Filmy a seriály','Hudba','Cestování','Sport','Vaření','Zvířata','Čtení','Noční řeči','Memy','Programování','Gaming'];
+// ===== UPDATE 4.6: Ricoseznamka =====
+const SZI=['Jízda na Chodov','Kavadle','Ricofy hudba','Rico scroll','Multiplayer závody','Sbírání skinů','Kebab z Kavalírky','Ocet','Dršťková polévka','Tramvaje a metro','Pivo','Káva','Procházky','Filmy a seriály','Hudba','Cestování','Sport','Vaření','Zvířata','Čtení','Noční řeči','Memy','Programování','Gaming'];
 const SZC={cervena:['Červená','#e63946'],oranzova:['Oranžová','#fb8500'],zluta:['Žlutá','#ffd400'],zelena:['Zelená','#2e9e48'],tyrkys:['Tyrkysová','#1fb5ad'],modra:['Modrá','#2f6fed'],fialova:['Fialová','#8e44ad'],ruzova:['Růžová','#ff6fa5'],cerna:['Černá','#3a3a3a'],bila:['Bílá','#f1f1f1']};
 const SZG={m:'Muž',f:'Žena',x:'Nebinární / jiné'},SZS={m:'Muže',f:'Ženy',all:'Všechny'},SZO={hetero:'Heterosexuál/ka',homo:'Homosexuál/ka',bi:'Bisexuál/ka',pan:'Pansexuál/ka',ace:'Asexuál/ka',nechci:'Neuvádím'};
 let SZP=undefined,SZQ=[],SZSEEN=new Set(),SZB=0,SZEND=false,SZTAB='find',SZPH='',SZIN=[],SZCOL='cervena',SZAV=0,SZW=null;
@@ -1214,7 +1268,7 @@ const SZERR=m=>({adult:'Musíš potvrdit, že ti je 18 a víc.',incomplete:'Vybe
 function szLoadAv(){if(SZAV)return;SZAV=1;XA('players').then(pl=>{(pl||[]).forEach(p=>{if(p&&p.username)MAVA[p.username]=p.avatar});if(SZTAB=='find'&&$('dt').style.display=='flex')szDeck();else if(SZTAB=='match'&&$('dt').style.display=='flex')szMatches()}).catch(()=>{SZAV=0})}
 // --- widget v hubu
 async function szLoadW(){if(!me||!ses)return;const u=me.id;try{const p=await XA('szget');let m=null;if(p)m=await XA('szmatches');if(!me||me.id!=u)return;SZW={p,m}}catch(e){SZW={err:1}}szWidget()}
-function szWidget(){const w=$('hdt');if(!w)return;let h='<div class="wgh"><b>💘 JBseznamka</b></div><div class="szw">';
+function szWidget(){const w=$('hdt');if(!w)return;let h='<div class="wgh"><b>💘 Ricoseznamka</b></div><div class="szw">';
  if(!SZW)h+='<span class="nt">Načítám…</span>';
  else if(SZW.err)h+='<span class="nt">Seznamka se nenačetla. Zkontroluj, jestli běžel 21-seznamka.sql.</span>';
  else if(!SZW.p)h+='Najdi lidi podle zájmů a swipuj. Vyplň krátký profil.<br><span class="szbtn">Vytvořit profil</span>';
@@ -1223,7 +1277,7 @@ function szWidget(){const w=$('hdt');if(!w)return;let h='<div class="wgh"><b>�
  w.innerHTML=h+'</div>'}
 // --- overlay
 function szShell(tab){SZTAB=tab;const d=$('dt');
- d.innerHTML='<div class="mbar"><button class="rb" onclick="szClose()">←</button><b>💘 JBseznamka</b></div><div class="szt"><button data-t="find" class="'+(tab=='find'?'on':'')+'" onclick="szGo(\'find\')">🔥 Objevovat</button><button data-t="match" class="'+(tab=='match'?'on':'')+'" onclick="szGo(\'match\')">💘 Matche</button><button data-t="prof" class="'+(tab=='prof'?'on':'')+'" onclick="szGo(\'prof\')">✏️ Profil</button></div><div id="szb"></div>';d.style.display='flex'}
+ d.innerHTML='<div class="mbar"><button class="rb" onclick="szClose()">←</button><b>💘 Ricoseznamka</b></div><div class="szt"><button data-t="find" class="'+(tab=='find'?'on':'')+'" onclick="szGo(\'find\')">🔥 Objevovat</button><button data-t="match" class="'+(tab=='match'?'on':'')+'" onclick="szGo(\'match\')">💘 Matche</button><button data-t="prof" class="'+(tab=='prof'?'on':'')+'" onclick="szGo(\'prof\')">✏️ Profil</button></div><div id="szb"></div>';d.style.display='flex'}
 async function szOpen(){szShell('find');$('szb').innerHTML='<p class="nt" style="text-align:center">Načítám…</p>';szLoadAv();
  try{SZP=await XA('szget')}catch(e){$('szb').innerHTML='<p class="nt" style="text-align:center">Seznamka se nenačetla. Spustil jsi 21-seznamka.sql v Supabase?</p>';return}
  SZQ=[];SZSEEN=new Set();SZEND=false;if(!SZP)szGo('prof');else szGo('find')}
@@ -1289,4 +1343,30 @@ async function szSave(){const g=$('szg').value,s=$('szs').value;if(!g||!s)return
  catch(e){szMsgF(SZERR(String((e&&e.message)||'')))}}
 async function szHide(h){try{await XA('szhide',{hide:!!h});SZP=await XA('szget');szGo('prof')}catch(e){szMsgF(SZERR(String((e&&e.message)||'')))}}
 $('hdt').onclick=()=>szOpen();
+// ===== UPDATE 4.7: vlastní rozložení widgetů v hubu =====
+const HLD=['info','news','play','jbfy','prof','calls','dating','scroll','msg'],HLFULL={info:1,news:1,play:1};
+let HLO=HLD.slice(),HLT=[],HLED=0,HLDIRTY=0,HLTM=0;
+function hlBuild(){if($('hgrid'))return;const hw=$('hw'),hst=$('hst');if(!hw||!hst)return;
+ const src={info:[$('hinfo')],news:[document.querySelector('.hnh'),$('hnw')],play:[$('hplay')],jbfy:[$('hjbb')],prof:[$('hpf')],calls:[$('hcl')],dating:[$('hdt')],scroll:[$('hscroll')],msg:[$('hmsg')]};
+ const g=document.createElement('div');g.id='hgrid';
+ for(const id of HLD){const d=document.createElement('div');d.className='hwi';d.dataset.w=id;(src[id]||[]).forEach(e=>e&&d.appendChild(e));g.appendChild(d)}
+ hw.insertBefore(g,hst);
+ const bar=document.createElement('div');bar.id='hlb';bar.innerHTML='<b>🧩 Úprava rozložení</b><span>◀ ▶ posune widget, ↔ změní šířku. Ukládá se automaticky.</span><div><button type="button" onclick="hlEdit(0)">✅ Hotovo</button><button type="button" onclick="hlReset()">↩ Výchozí</button></div>';hw.insertBefore(bar,g);
+ document.querySelectorAll('#hw .hrow,#hw .hrow2').forEach(e=>{if(!e.children.length)e.remove()});
+ const b=document.createElement('button');b.type='button';b.id='hle';b.title='Upravit rozložení hlavní stránky';b.setAttribute('aria-label','Upravit rozložení');b.textContent='🧩';b.onclick=()=>hlEdit(!HLED);hw.insertBefore(b,hw.firstChild)}
+function hlApply(){const g=$('hgrid');if(!g)return;const o=HLO.filter(i=>HLD.includes(i)).filter((i,k,a)=>a.indexOf(i)==k);HLD.forEach(i=>{if(!o.includes(i))o.push(i)});HLO=o;
+ for(const id of o){const e=g.querySelector('[data-w="'+id+'"]');if(!e)continue;g.appendChild(e);const full=!!HLFULL[id]!=HLT.includes(id);e.classList.toggle('full',full);e.classList.toggle('half',!full&&!!HLFULL[id])}
+ g.classList.toggle('edit',!!HLED);$('hlb').style.display=HLED?'flex':'none';$('hle').classList.toggle('on',!!HLED);
+ g.querySelectorAll('.hctl').forEach(e=>e.remove());
+ if(HLED)for(const id of o){const e=g.querySelector('[data-w="'+id+'"]');if(!e)continue;const c=document.createElement('div');c.className='hctl';c.innerHTML='<button type="button" onclick="hlMove(\''+id+'\',-1)" aria-label="Posunout dřív">◀</button><button type="button" onclick="hlSize(\''+id+'\')" aria-label="Změnit šířku">↔</button><button type="button" onclick="hlMove(\''+id+'\',1)" aria-label="Posunout později">▶</button>';e.appendChild(c)}}
+function hlEdit(on){HLED=on?1:0;hlApply()}
+function hlMove(id,d){const i=HLO.indexOf(id),j=i+d;if(i<0||j<0||j>=HLO.length)return;[HLO[i],HLO[j]]=[HLO[j],HLO[i]];HLDIRTY=1;hlApply();hlSave();const e=document.querySelector('#hgrid [data-w="'+id+'"]');if(e&&e.scrollIntoView)e.scrollIntoView({block:'nearest',behavior:'smooth'})}
+function hlSize(id){const k=HLT.indexOf(id);if(k>=0)HLT.splice(k,1);else HLT.push(id);HLDIRTY=1;hlApply();hlSave()}
+function hlReset(){HLO=HLD.slice();HLT=[];HLDIRTY=1;hlApply();hlSave()}
+const hlKey=()=>'jb_layout_'+(me?me.id:'');
+function hlSave(){const v=JSON.stringify({o:HLO,t:HLT});try{localStorage.setItem(hlKey(),v)}catch(e){}clearTimeout(HLTM);HLTM=setTimeout(()=>{XA('prefset',{key:'hub_layout',value:v}).catch(()=>{})},700)}
+function hlParse(v){try{const j=typeof v=='string'?JSON.parse(v):v;if(j&&Array.isArray(j.o)){HLO=j.o.map(String);HLT=Array.isArray(j.t)?j.t.map(String):[];return true}}catch(e){}return false}
+async function hlLoad(){hlBuild();HLDIRTY=0;let had=false;try{had=hlParse(localStorage.getItem(hlKey()))}catch(e){}if(!had){HLO=HLD.slice();HLT=[]}hlApply();
+ const u=me&&me.id;try{const r=await XA('prefget',{key:'hub_layout'});if(!me||me.id!=u||HLDIRTY||HLED)return;if(r&&hlParse(r)){hlApply();try{localStorage.setItem(hlKey(),typeof r=='string'?r:JSON.stringify(r))}catch(e){}}}catch(e){}}
+hlBuild();
 </script></body></html>
